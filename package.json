@@ -1,0 +1,11 @@
+{
+  "name": "bikeshop",
+  "version": "0.0.1",
+  "description": "Maybe this isn't such a quick start, but it's the best I have right now. After the following steps are completed, you will have a working development version of the Trailer-Safeguard Django application connectable on [tsg-dev.local:8000/](http://tsg-dev.local:8000/).",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC"
+}

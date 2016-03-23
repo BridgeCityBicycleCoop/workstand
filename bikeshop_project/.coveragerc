@@ -1,0 +1,7 @@
+[report]
+exclude_lines =
+    prama: no cover
+
+    def __repr__
+
+    def __str__

@@ -1,0 +1,18 @@
+---
+- name: Base tasks
+  hosts: [development, staging, production]
+  remote_user: root
+  roles:
+    - common
+    - zenoamaro.postgresql
+    - python
+    - database
+    - app
+
+- name: Deployment tasks
+  hosts: [production]
+  remote_user: root
+  roles:
+    - deploy-code
+    - supervisor
+    - nginx

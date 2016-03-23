@@ -1,0 +1,18 @@
+# humanstxt.org/
+# The humans responsible & technology colophon
+
+# TEAM
+    Electric Umbrella
+    Drew Larson -- Lead -- @drwlrsn
+
+# THANKS
+
+    <name>
+
+# TECHNOLOGY COLOPHON
+
+    HTML5, CSS3
+    jQuery, Modernizr,
+    Django, Wagtail,
+    Satchless, SASS,
+    Bourbon

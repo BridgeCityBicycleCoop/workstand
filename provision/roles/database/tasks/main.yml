@@ -1,0 +1,18 @@
+---
+- name: create a postgresql database
+  sudo: yes
+  sudo_user: postgres
+  action: postgresql_db name={{ db_name }} template=template0 state=present
+
+- name: add a user to postgresql database
+  sudo: yes
+  sudo_user: postgres
+  action: postgresql_user db={{ db_name }} name={{ db_user }} password={{ db_user_password }} priv=ALL
+
+- name: ensure database backkup directory is present
+  sudo: yes
+  action: file path=/var/backups/{{ db_name }} state=directory owner=postgres
+
+- name: add a cron job to backup database every 1hr
+  sudo: yes
+  action: cron name='database backup' special_time=hourly user=postgres job='/usr/bin/pg_dump -Ft {{ db_name }}  > /var/backups/{{ db_name }}/$(date +"\%Y\%m\%d\%H\%M\%S").tar'

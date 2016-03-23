@@ -1,0 +1,7 @@
+.DS_Store
+.vagrant
+.idea
+*.pyc
+trailersafeguard_project/db.sqlite3
+trailersafeguard_project/static
+trailersafeguard_project/celerybeat.pid

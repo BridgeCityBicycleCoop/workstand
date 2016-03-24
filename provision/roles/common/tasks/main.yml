@@ -12,9 +12,6 @@
 - name: install supervisord
   action: apt update_cache=no pkg=supervisor state=installed
 
-- name: install postfix
-  action: apt update_cache=no pkg=postfix state=installed
-
 - name: install redis
   action: apt name=redis-server update_cache=yes state=latest
 

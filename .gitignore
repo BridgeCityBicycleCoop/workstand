@@ -5,3 +5,6 @@
 trailersafeguard_project/db.sqlite3
 trailersafeguard_project/static
 trailersafeguard_project/celerybeat.pid
+bikeshop_project/static/CACHE
+.bundle
+bikeshop_project/vendor

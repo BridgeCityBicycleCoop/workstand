@@ -1,3 +1,7 @@
-from django.shortcuts import render
+from django.template.response import TemplateResponse
+from django.views.generic import View
 
-# Create your views here.
+
+class DashboardView(View):
+    def get(self, request):
+        return TemplateResponse(request, "base.html")

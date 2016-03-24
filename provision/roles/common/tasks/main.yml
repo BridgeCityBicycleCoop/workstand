@@ -1,6 +1,6 @@
 ---
 - name: install packages needed to for building modules
-  action: apt update_cache=no pkg={{ item }} state=installed
+  action: apt update_cache=yes pkg={{ item }} state=installed
   with_items:
     - build-essential
     - autoconf

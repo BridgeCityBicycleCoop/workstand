@@ -15,9 +15,11 @@ Including another URLconf
 """
 from django.conf.urls import include, url
 from django.contrib import admin
+from registration import urls as auth_urls
 from core import urls as core_urls
 
 urlpatterns = [
-    url("^", include(core_urls)),
+    url("^", include(auth_urls)),
     url(r"^admin/", admin.site.urls),
+    url("^", include(core_urls)),
 ]

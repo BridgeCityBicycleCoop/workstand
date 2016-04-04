@@ -40,3 +40,8 @@ LOGGING = {
         },
     },
 }
+
+INSTALLED_APPS += ["debug_toolbar"]
+
+# Don't worry about IP addresses, just show the toolbar.
+DEBUG_TOOLBAR_CONFIG = {"SHOW_TOOLBAR_CALLBACK": lambda *args: True}

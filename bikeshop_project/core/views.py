@@ -4,4 +4,4 @@ from django.views.generic import View
 
 class DashboardView(View):
     def get(self, request):
-        return TemplateResponse(request, "base.html")
+        return TemplateResponse(request, "dashboard.html")

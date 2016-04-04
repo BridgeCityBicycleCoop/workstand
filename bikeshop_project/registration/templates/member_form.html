@@ -1,0 +1,284 @@
+{% extends 'base.html' %}
+{% load staticfiles %}
+
+{% block styles %}
+    <link rel="stylesheet" href="{% static 'vendor/md-date-time-picker/dist/css/md-date-time-picker.min.css' %}">
+{% endblock %}
+
+{% block scripts %}
+    <script src="{% static 'vendor/moment/min/moment.min.js' %}"></script>
+    <script src="{% static 'vendor/object.observe/dist/object-observe-lite.min.js' %}"></script>
+    <script src="{% static 'vendor/draggabilly/dist/draggabilly.pkgd.min.js' %}"></script>
+    <script src="{% static 'vendor/md-date-time-picker/dist/js/md-date-time-picker.js' %}"></script>
+    <script>
+    var dateOfBirth = new mdDateTimePicker({
+        type: 'date',
+        past: moment().subtract(100, 'years')
+    });
+        document.getElementById('{{ form.date_of_birth.id_for_label }}').addEventListener('focus', function() {
+          dateOfBirth.toggle();
+    });
+    Object.observe(dateOfBirth, function(changes) {
+        var input = document.getElementById('{{ form.date_of_birth.id_for_label }}');
+        input.value = dateOfBirth.time().format('YYYY-MM-DD');
+        input.parentNode.classList.add('is-dirty');
+
+        var threshold = moment.duration(18, 'years');
+        var dob = dateOfBirth.time().clone();
+
+        if (dob.add(threshold).isAfter(moment())) {
+            document.getElementById('{{ form.guardian_name.id_for_label }}').disabled = false;
+            document.getElementById('{{ form.guardian_name.id_for_label }}').parentNode.classList.remove('is-disabled');
+        } else {
+            document.getElementById('{{ form.guardian_name.id_for_label }}').disabled = true;
+            document.getElementById('{{ form.guardian_name.id_for_label }}').parentNode.classList.add('is-disabled');
+        }
+    });
+
+    var waiverCheckBox = document.getElementById('{{ form.waiver_substitute.id_for_label }}');
+    var privelegesCheckBox = document.getElementById('{{ form.priveleges.id_for_label }}');
+    var submitButton = document.getElementById('submit');
+    var requiredCheckboxes = function() {
+        return (waiverCheckBox.checked &&
+                privelegesCheckBox.checked);
+    };
+
+    waiverCheckBox.addEventListener('change', function() {
+        console.log(requiredCheckboxes())
+        if (requiredCheckboxes()) {
+            submitButton.disabled = false;
+        }
+    });
+
+    privelegesCheckBox.addEventListener('change', function() {
+        console.log(requiredCheckboxes())
+        if (requiredCheckboxes()) {
+            submitButton.disabled = false;
+        }
+    });
+
+    // On page load check on the check boxes
+    if (requiredCheckboxes()) {
+        submitButton.disabled = false;
+    }
+
+    </script>
+{% endblock %}
+
+{% block content %}
+    <div class="mdl-cell mdl-cell--8-col">
+        <h1>Membership</h1>
+        <p>
+            The Bridge City Bicycle Co-operative (herein referred to as The BCBC and The Community) is a nonprofit,
+            community bicycle repair education and resource co-operative. We offer our members nonjudgmental repair
+            space, tools and instruction during business hours (hours on website) by donation, and educational
+            workshops. We also offer reconditioned/recycled low cost bikes and parts for sale.
+            The BCBC is operated by volunteers; a medley of professionals, students, bike enthusiasts, activists,
+            and other community members who share a love for cycling in Saskatoon. Membership is open to all
+            individuals and costs $20 per year. A receipt will be issued to you once your membership fee has been paid.
+        </p>
+        <form method="post">
+        {% csrf_token %}
+
+        {% if form.non_field_errors %}
+            <div>
+                <span class="error">{{ form.errors }}</span>
+            </div>
+        {% endif %}
+        <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label {% if form.email.errors %}is-invalid{% endif %}">
+            {{ form.email }}
+            <label class="mdl-textfield__label" for="{{ form.email.id_for_label }}">{{ form.email.label }}</label>
+            {% if form.email.errors %}
+            <span class="mdl-textfield__error">{{ form.email.errors }}</span>
+            {% else %}
+            <span class="mdl-textfield__error">Invalid email.</span>
+            {% endif %}
+        </div>
+        <div>
+            <label class="mdl-checkbox mdl-js-checkbox mdl-js-ripple-effect" for="{{ form.email_consent.id_for_label }}">
+                {{ form.email_consent }}
+                <span class="mdl-checkbox__label">{{ form.email_consent.label }}</span>
+            </label>
+        </div>
+        <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label {% if form.first_name.errors %}is-invalid{% endif %}">
+            {{ form.first_name }}
+            <label class="mdl-textfield__label" for="{{ form.first_name.id_for_label }}">{{ form.first_name.label }}</label>
+            {% if form.first_name.errors %}
+            <span class="mdl-textfield__error">{{ form.first_name.errors }}</span>
+            {% else %}
+            <span class="mdl-textfield__error">Name too long.</span>
+            {% endif %}
+        </div>
+        <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label {% if form.last_name.errors %}is-invalid{% endif %}">
+            {{ form.last_name }}
+            <label class="mdl-textfield__label" for="{{ form.last_name.id_for_label }}">{{ form.last_name.label }}</label>
+            {% if form.last_name.errors %}
+            <span class="mdl-textfield__error">{{ form.last_name.errors }}</span>
+            {% else %}
+            <span class="mdl-textfield__error">Name too long.</span>
+            {% endif %}
+        </div>
+        <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label {% if form.preferred_name.errors %}is-invalid{% endif %}">
+            {{ form.preferred_name }}
+            <label class="mdl-textfield__label" for="{{ form.preferred_name.id_for_label }}">{{ form.preferred_name.label }}</label>
+            {% if form.preferred_name.errors %}
+            <span class="mdl-textfield__error">{{ form.preferred_name.errors }}</span>
+            {% else %}
+            <span class="mdl-textfield__error">Name too long.</span>
+            {% endif %}
+        </div>
+        <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label {% if form.date_of_birth.errors %}is-invalid{% endif %}">
+            {{ form.date_of_birth }}
+            <label class="mdl-textfield__label" for="{{ form.date_of_birth.id_for_label }}">{{ form.date_of_birth.label }}</label>
+            {% if form.date_of_birth.errors %}
+            <span class="mdl-textfield__error">{{ form.date_of_birth.errors }}</span>
+            {% else %}
+            <span class="mdl-textfield__error">Incorrect date.</span>
+            {% endif %}
+        </div>
+        <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label {% if form.guardian_name.errors %}is-invalid{% endif %}">
+            {{ form.guardian_name }}
+            <label class="mdl-textfield__label" for="{{ form.guardian_name.id_for_label }}">{{ form.guardian_name.label }}</label>
+            {% if form.guardian_name.errors %}
+            <span class="mdl-textfield__error">{{ form.guardian_name.errors }}</span>
+            {% else %}
+            <span class="mdl-textfield__error">Name too long.</span>
+            {% endif %}
+        </div>
+        <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label {% if form.phone.errors %}is-invalid{% endif %}">
+            {{ form.phone }}
+            <label class="mdl-textfield__label" for="{{ form.phone.id_for_label }}">{{ form.phone.label }}</label>
+            {% if form.phone.errors %}
+            <span class="mdl-textfield__error">{{ form.phone.errors }}</span>
+            {% else %}
+            <span class="mdl-textfield__error">Digits only.</span>
+            {% endif %}
+        </div>
+        <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label {% if form.post_code.errors %}is-invalid{% endif %}">
+            {{ form.post_code }}
+            <label class="mdl-textfield__label" for="{{ form.post_code.id_for_label }}">{{ form.post_code.label }}</label>
+            {% if form.post_code.errors %}
+            <span class="mdl-textfield__error">{{ form.post_code.errors }}</span>
+            {% else %}
+            <span class="mdl-textfield__error">Format: A0A 0A0</span>
+            {% endif %}
+        </div>
+        <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label {% if form.street.errors %}is-invalid{% endif %}">
+            {{ form.street }}
+            <label class="mdl-textfield__label" for="{{ form.street.id_for_label }}">{{ form.street.label }}</label>
+            {% if form.street.errors %}
+            <span class="mdl-textfield__error">{{ form.street.errors }}</span>
+            {% endif %}
+        </div>
+        <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label {% if form.city.errors %}is-invalid{% endif %}">
+            {{ form.city }}
+            <label class="mdl-textfield__label" for="{{ form.city.id_for_label }}">{{ form.city.label }}</label>
+            {% if form.city.errors %}
+            <span class="mdl-textfield__error">{{ form.city.errors }}</span>
+            {% endif %}
+        </div>
+        <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label {% if form.province.errors %}is-invalid{% endif %}">
+            {{ form.province }}
+            <label class="mdl-textfield__label" for="{{ form.province.id_for_label }}">{{ form.province.label }}</label>
+            {% if form.province.errors %}
+            <span class="mdl-textfield__error">{{ form.province.errors }}</span>
+            {% endif %}
+        </div>
+        <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label {% if form.country.errors %}is-invalid{% endif %}">
+            {{ form.country }}
+            <label class="mdl-textfield__label" for="{{ form.country.id_for_label }}">{{ form.country.label }}</label>
+            {% if form.country.errors %}
+            <span class="mdl-textfield__error">{{ form.country.errors }}</span>
+            {% endif %}
+        </div>
+        <div class="">
+            <h2 class="template__header mdl-typography--title">Voluntary Self Identification</h2>
+            <p>We want to make sure that all members of our community, regardless of race, ethnicity, and gender
+                are able to participate fully in the BCBC. Please share information about your race and/or
+                ethnicity so that we can track how well we are including all communities and whether there may be
+                barriers to certain groups’ participation. Thank you! Do you identify as: (In each category, check
+                all that apply)</p>
+            {% for checkbox in form.self_identification %}
+            <label class="mdl-checkbox mdl-js-checkbox mdl-js-ripple-effect" for="{{ checkbox.id_for_label }}">
+                {{ checkbox }}
+                <span class="mdl-checkbox__label">{{ checkbox.label }}</span>
+            </label>
+            {% endfor %}
+            {% if form.self_identification.errors %}
+            <span class="mdl-textfield__error">{{ form.self_identification.errors }}</span>
+            {% else %}
+            <span class="mdl-textfield__error">Hmm</span>
+            {% endif %}
+        </div>
+        <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label {% if form.gender_other.errors %}is-invalid{% endif %}">
+            {{ form.self_ident_other }}
+            <label class="mdl-textfield__label" for="{{ form.self_ident_other.id_for_label }}">{{ form.self_ident_other.label }}</label>
+            {% if form.self_ident_other.errors %}
+            <span class="mdl-textfield__error">{{ form.self_ident_other.errors }}</span>
+            {% endif %}
+        </div>
+        <div class="">
+            <h3 class="template__header mdl-typography--body-2">Gender Identification</h3>
+            {% for checkbox in form.gender %}
+            <label class="mdl-checkbox mdl-js-checkbox mdl-js-ripple-effect" for="{{ checkbox.id_for_label }}">
+                {{ checkbox }}
+                <span class="mdl-checkbox__label">{{ checkbox.label }}</span>
+            </label>
+            {% endfor %}
+        </div>
+        <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label {% if form.gender_other.errors %}is-invalid{% endif %}">
+            {{ form.gender_other }}
+            <label class="mdl-textfield__label" for="{{ form.gender_other.id_for_label }}">{{ form.gender_other.label }}</label>
+            {% if form.gender_other.errors %}
+            <span class="mdl-textfield__error">{{ form.gender_other.errors }}</span>
+            {% endif %}
+        </div>
+         <div class="">
+            <h6 class="template__header mdl-typography--title">Member Liability Waiver</h6>
+            <p><strong>Children under the age of 18 must have a parent or guardian co-sign the following waiver form.
+                <br>Children under the age of 13 must have guardian supervision when participating in BCBC activities and events.</strong></p>
+             <p>By signing this form in the space provided below, I hereby assume all of the risks of participating and/or volunteering in the Bridge City Bicycle Co-operative, hereinafter referred to as the BCBC and the Community. I realize that liability may arise from negligence or carelessness on the part of the persons or entities being released, from dangerous or defective equipment or property owned, maintained or controlled by them or because of their possible liability without fault. I acknowledge that this Accident Waiver and Release of Liability form will be used by the Community, sponsors and organizers, in which I may participate and that it will govern my actions and responsibilities during my use of its services. In consideration of my application and permitting me to participate in this program, I hereby take action for myself, my executors, administrators, heirs, next of kin, successors, and assigns as follows:</p>
+             <p>(A) Waive, Release and Discharge from any and all liability for my death, disability, personal injury, property damage, property theft or actions of any kind which may hereafter accrue to me including my travelling to and from space or using the shop's bicycle, equipment or other facilities, THE FOLLOWING ENTITIES OR PERSONS: The directors, officers, employees, volunteers, representatives, and agents, the event holders, sponsors, volunteers of the Community;</p>
+             <p>(B) Indemnify and Hold Harmless the entities and persons set forth in (A) above from any and all liabilities and claims arising from my participation in the Community, including my use of a bicycle belonging to the Community, irrespective of whether the cause of the claims or liability arise from the negligence, acts or omissions of me, a third party, or the Community.</p>
+            <label class="mdl-checkbox mdl-js-checkbox mdl-js-ripple-effect" for="{{ form.waiver_substitute.id_for_label }}">
+                {{ form.waiver_substitute }}
+                <span class="mdl-checkbox__label">{{ form.waiver_substitute.label }}</span>
+            </label>
+        </div>
+        <div>
+            <h2 class="template__header mdl-typography--title">Privacy Policy</h2>
+            <p>Bridge City Bicycle Co-operative (BCBC) values the trust of its volunteers, staff, and members and
+                is committed to protecting the privacy of all personal information entrusted to it. BCBC only
+                collects the limited personal information needed to deliver high quality services and programming.
+                Collected information will be used only for the purpose expressly identified or for other purposes
+                which could be reasonably considered to be consistent with out mission. We do not sell, rent or
+                trade personal information. The personal information collected will be protected with appropriate
+                physical, organizational, and electronic safeguards to prevent unauthorized use and will be
+                retained only for as long as needed to achieve the purposes stated above. BCBC may make personal
+                information available to others or to appropriate authorities without permission if the information
+                is used to take action during an emergency that threatens the life, health or security of an
+                individual. Information no longer required will be destroyed or erased. Upon application to the
+                Privacy Officer individuals may access their personal information held by BCBC unless the
+                information contains references to other individuals or cannot be disclosed for legal or security
+                reasons. BCBC commits to promptly correcting any inaccuracies. Complaints should be made in writing
+                to the Privacy Officer who will immediately acknowledge receipt and will respond to the complaint
+                within 30 days. Unresolved complaints may be taken to the federal Privacy Commissioner.</p>
+            <p>Contact BCBC’s Privacy Officer at:
+                <br>905 20th Street West Saskatoon, SK S7M 0Y5 or by:
+                <br>Email: <a href="mailto:bridgecitybicyclecoop@gmail.com">bridgecitybicyclecoop@gmail.com</a></p>
+        </div>
+        <div>
+            <h2 class="template__header mdl-typography--title">Membership and Privileges</h2>
+            <p>I acknowledge that my Membership and Privileges in the Bridge City Bicycle Co-operative is contingent
+                upon fulfilling the above responsibilities.</p>
+            <label class="mdl-checkbox mdl-js-checkbox mdl-js-ripple-effect" for="{{ form.priveleges.id_for_label }}">
+                {{ form.priveleges }}
+                <span class="mdl-checkbox__label">{{ form.priveleges.label }}</span>
+            </label>
+        </div>
+        <div>
+            <button disabled="true" id="submit" type="submit" class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--colored">Submit</button>
+        </div>
+        </form>
+    </div>
+{% endblock %}

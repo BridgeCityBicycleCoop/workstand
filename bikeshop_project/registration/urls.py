@@ -1,6 +1,7 @@
 from django.conf.urls import url
-from django.contrib.auth import views
+
+from .views import MemberFormView
 
 urlpatterns = [
-    url(r"^login/$", views.login, {"template_name": "login.html"}),
+    url(r"^new/$", MemberFormView.as_view()),
 ]

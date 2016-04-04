@@ -50,6 +50,7 @@
     {% compress css %}
     <link rel="stylesheet" type="text/x-scss" href="{% static 'scss/screen.scss' %}">
     {% endcompress %}
+    {% block styles %}{% endblock %}
     <style>
     #view-source {
       position: fixed;
@@ -120,6 +121,7 @@
       </div>
       <main class="mdl-layout__content mdl-color--grey-100">
         <div class="mdl-grid demo-content">
+            {% block content %}
           <div class="demo-charts mdl-color--white mdl-shadow--2dp mdl-cell mdl-cell--12-col mdl-grid">
             <svg fill="currentColor" width="200px" height="200px" viewBox="0 0 1 1" class="demo-chart mdl-cell mdl-cell--4-col mdl-cell--3-col-desktop">
               <use xlink:href="#piechart" mask="url(#piemask)" />
@@ -196,6 +198,7 @@
               </div>
             </div>
           </div>
+        {% endblock %}
         </div>
       </main>
     </div>
@@ -248,5 +251,6 @@
       </svg>
       <a href="https://github.com/google/material-design-lite/blob/master/templates/dashboard/" target="_blank" id="view-source" class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--colored mdl-color-text--white">View Source</a>
     <script src="{% static 'vendor/material-design-lite/material.js' %}"></script>
+    {% block scripts %}{% endblock %}
   </body>
 </html>

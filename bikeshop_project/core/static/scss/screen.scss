@@ -224,3 +224,27 @@ _:-ms-input-placeholder, :root .demo-graph {
       -ms-flex-align: center;
           align-items: center;
 }
+
+.mddtp-picker {
+  z-index: 1;
+}
+
+span.mdl-textfield__error, span.error  {
+  ul {
+    margin: 0;
+    padding: 0;
+  }
+  li {
+    float: left;
+    margin-right: 5px;
+    list-style: none inside none;
+  }
+}
+
+.error {
+  color: rgb(213,0,0);
+  font-size: 12px;
+  margin-top: 3px;
+  visibility: visible;
+  display: block;
+}

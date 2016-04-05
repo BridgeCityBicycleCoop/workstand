@@ -13,7 +13,6 @@ class Membership(models.Model):
     )
     safe_space = models.BooleanField(default=False)
     community = models.BooleanField(default=False)
-    space = models.BooleanField(default=False)
     give_back = models.BooleanField(default=False)
     # this should be a form field that requires the new member to type out there full name
     acknowledgement = models.BooleanField(default=False)

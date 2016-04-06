@@ -4,9 +4,9 @@ from registration.models import Member
 
 
 class MemberForm(ModelForm):
-    self_ident_other = CharField(required=False, label='Self identification', widget=TextInput(attrs={'class': 'mdl-textfield__input'}))
-    gender_other = CharField(required=False, label='Other', widget=TextInput(attrs={'class': 'mdl-textfield__input'}))
-    priveleges = BooleanField(label='I acknowledge', widget=CheckboxInput(attrs={'class': 'mdl-checkbox__input'}))
+    # self_ident_other = CharField(required=False, label='Self identification', widget=TextInput(attrs={'class': 'mdl-textfield__input'}))
+    # gender_other = CharField(required=False, label='Other', widget=TextInput(attrs={'class': 'mdl-textfield__input'}))
+    # priveleges = BooleanField(label='I acknowledge', widget=CheckboxInput(attrs={'class': 'mdl-checkbox__input'}))
     waiver_substitute = BooleanField(label='I have read and agree to the above terms & conditions.', widget=CheckboxInput(attrs={'class': 'mdl-checkbox__input'}))
 
     class Meta:
@@ -24,8 +24,7 @@ class MemberForm(ModelForm):
         )
         exclude = ('waiver',)
         fields = ['email', 'email_consent', 'first_name', 'last_name', 'preferred_name', 'date_of_birth',
-                  'guardian_name', 'phone', 'street', 'city', 'province', 'country', 'post_code', 'self_identification',
-                  'gender', 'waiver']
+                  'guardian_name', 'phone', 'street', 'city', 'province', 'country', 'post_code', 'waiver']
         widgets = {
             'email': EmailInput(attrs={'class': 'mdl-textfield__input'}),
             'email_consent': CheckboxInput(attrs={'class': 'mdl-checkbox__input'}),
@@ -41,9 +40,9 @@ class MemberForm(ModelForm):
             'country': TextInput(attrs={'class': 'mdl-textfield__input'}),
             'post_code': TextInput(attrs={'class': 'mdl-textfield__input',
                                           'pattern': '[A-Za-z][0-9][A-Za-z] [0-9][A-Za-z][0-9]'}),
-            'self_identification': CheckboxSelectMultiple(choices=self_ident_choices,
-                                                          attrs={'class': 'mdl-checkbox__input'}),
-            'gender': CheckboxSelectMultiple(choices=gender_choices, attrs={'class': 'mdl-checkbox__input'}),
+            # 'self_identification': CheckboxSelectMultiple(choices=self_ident_choices,
+            #                                               attrs={'class': 'mdl-checkbox__input'}),
+            # 'gender': CheckboxSelectMultiple(choices=gender_choices, attrs={'class': 'mdl-checkbox__input'}),
         }
 
         labels = {

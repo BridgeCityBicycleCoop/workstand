@@ -17,6 +17,9 @@ class Membership(models.Model):
     give_back = models.BooleanField(default=False)
     # this should be a form field that requires the new member to type out there full name
     acknowledgement = models.BooleanField(default=False)
+    self_identification = models.CharField(max_length=255, null=True, blank=True)
+    gender = models.CharField(max_length=255, null=True, blank=True)
+    involvement = models.CharField(max_length=255, null=True, blank=True)
 
 
 class Payment(models.Model):
@@ -38,8 +41,10 @@ class Payment(models.Model):
 class Visit(models.Model):
     visit_choices = (
         ('VOLUNTEER', 'volunteer'),
-        ('WORK', 'work on bike'),
+        ('WORK', 'work on bike'), # fix
         ('WORKSHOP', 'workshop')
+        # Visit
+        # Donation
     )
     member = models.ForeignKey(
         'registration.Member',

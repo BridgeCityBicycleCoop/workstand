@@ -9,6 +9,8 @@ venv: /opt/venv/{{ app_name }}-{{ group_names[0] }}
 
 db_name: "{{ app_name }}_development"
 db_user: "{{ app_name }}"
+app_port: 8475
 
 db_user_password: "{{ secret_db_user_password }}"
 secret_db_user_password: password
+app_domain_name: bikeshop.local

@@ -41,11 +41,13 @@ class Payment(models.Model):
 class Visit(models.Model):
     visit_choices = (
         ('VOLUNTEER', 'volunteer'),
-        ('WORK', 'work on bike'), # fix
-        ('WORKSHOP', 'workshop')
-        # Visit
-        # Donation
+        ('FIX', 'fix bike'), # fix
+        ('WORKSHOP', 'workshop'),
+        ('VISIT', 'visit'),
+        ('DONATE', 'donate'),
+        ('STAFF', 'staff'),
     )
+    
     member = models.ForeignKey(
         'registration.Member',
         on_delete=models.CASCADE

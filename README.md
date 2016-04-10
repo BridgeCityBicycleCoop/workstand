@@ -34,3 +34,9 @@ GRANT ALL ON SCHEMA public TO public;
 COMMENT ON SCHEMA public IS 'standard public schema';
 ```
 6. Steps 11 and 12 from **Quickstart**.
+
+### Starting & Stopping Application
+1. cd to root of repo
+2. `vagrant up`
+3. try to load [http://bikeshop.local/](http://bikeshop.local/)
+5. `vagrant halt`

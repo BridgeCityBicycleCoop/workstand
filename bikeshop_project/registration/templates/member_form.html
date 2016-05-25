@@ -184,48 +184,7 @@
             <span class="mdl-textfield__error">{{ form.country.errors }}</span>
             {% endif %}
         </div>
-{#        <div class="">#}
-{#            <h2 class="template__header mdl-typography--title">Voluntary Self Identification</h2>#}
-{#            <p>We want to make sure that all members of our community, regardless of race, ethnicity, and gender#}
-{#                are able to participate fully in the BCBC. Please share information about your race and/or#}
-{#                ethnicity so that we can track how well we are including all communities and whether there may be#}
-{#                barriers to certain groups’ participation. Thank you! Do you identify as: (In each category, check#}
-{#                all that apply)</p>#}
-{#            {% for checkbox in form.self_identification %}#}
-{#            <label class="mdl-checkbox mdl-js-checkbox mdl-js-ripple-effect" for="{{ checkbox.id_for_label }}">#}
-{#                {{ checkbox }}#}
-{#                <span class="mdl-checkbox__label">{{ checkbox.label }}</span>#}
-{#            </label>#}
-{#            {% endfor %}#}
-{#            {% if form.self_identification.errors %}#}
-{#            <span class="mdl-textfield__error">{{ form.self_identification.errors }}</span>#}
-{#            {% else %}#}
-{#            <span class="mdl-textfield__error">Hmm</span>#}
-{#            {% endif %}#}
-{#        </div>#}
-{#        <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label {% if form.gender_other.errors %}is-invalid{% endif %}">#}
-{#            {{ form.self_ident_other }}#}
-{#            <label class="mdl-textfield__label" for="{{ form.self_ident_other.id_for_label }}">{{ form.self_ident_other.label }}</label>#}
-{#            {% if form.self_ident_other.errors %}#}
-{#            <span class="mdl-textfield__error">{{ form.self_ident_other.errors }}</span>#}
-{#            {% endif %}#}
-{#        </div>#}
-{#        <div class="">#}
-{#            <h3 class="template__header mdl-typography--body-2">Gender Identification</h3>#}
-{#            {% for checkbox in form.gender %}#}
-{#            <label class="mdl-checkbox mdl-js-checkbox mdl-js-ripple-effect" for="{{ checkbox.id_for_label }}">#}
-{#                {{ checkbox }}#}
-{#                <span class="mdl-checkbox__label">{{ checkbox.label }}</span>#}
-{#            </label>#}
-{#            {% endfor %}#}
-{#        </div>#}
-{#        <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label {% if form.gender_other.errors %}is-invalid{% endif %}">#}
-{#            {{ form.gender_other }}#}
-{#            <label class="mdl-textfield__label" for="{{ form.gender_other.id_for_label }}">{{ form.gender_other.label }}</label>#}
-{#            {% if form.gender_other.errors %}#}
-{#            <span class="mdl-textfield__error">{{ form.gender_other.errors }}</span>#}
-{#            {% endif %}#}
-{#        </div>#}
+
          <div class="">
             <h6 class="template__header mdl-typography--title">Liability Waiver</h6>
             <p><strong>Children under the age of 18 must have a parent or guardian co-sign the following waiver form.

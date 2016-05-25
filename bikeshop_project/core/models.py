@@ -11,11 +11,6 @@ class Membership(models.Model):
         on_delete=models.CASCADE,
         related_name='membership'
     )
-    safe_space = models.BooleanField(default=False)
-    community = models.BooleanField(default=False)
-    give_back = models.BooleanField(default=False)
-    # this should be a form field that requires the new member to type out there full name
-    acknowledgement = models.BooleanField(default=False)
     self_identification = models.CharField(max_length=255, null=True, blank=True)
     gender = models.CharField(max_length=255, null=True, blank=True)
     involvement = models.CharField(max_length=255, null=True, blank=True)

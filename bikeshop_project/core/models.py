@@ -6,16 +6,15 @@ class Membership(models.Model):
     created_at = models.DateTimeField(auto_now_add=True)
     modified_at = models.DateTimeField(auto_now=True)
     renewed_at = models.DateTimeField(default=timezone.now)
-    member = models.OneToOneField(
-        "registration.Member", on_delete=models.CASCADE, related_name="membership"
-    )
     self_identification = models.CharField(max_length=255, null=True, blank=True)
     gender = models.CharField(max_length=255, null=True, blank=True)
     involvement = models.CharField(max_length=255, null=True, blank=True)
+    payment = models.ForeignKey(
+        "Payment", on_delete=models.CASCADE, blank=False, null=True
+    )
 
 
 class Payment(models.Model):
-    membership = models.ForeignKey("Membership", on_delete=models.CASCADE,)
     payment_choices = (
         ("CASH", "cash"),
         ("CHEQUE", "cheque"),

@@ -154,5 +154,22 @@
             this.parentNode.classList.add('is-dirty');
             this.value = renewedAt.time.format('YYYY-MM-DD');
         })
+
+        var responsibilities = [
+                document.getElementById('{{ form.safe_space.id_for_label }}'),
+                document.getElementById('{{ form.respect_community.id_for_label }}'),
+                document.getElementById('{{ form.give_back.id_for_label }}'),
+                document.getElementById('{{ form.respect_shop.id_for_label }}')
+        ];
+        var checkResponsiblities = function () {
+            allAgreed = responsibilities.every(function (checkbox) {
+                return checkbox.checked
+            });
+            var submitButton = document.getElementById('submit');
+            submitButton.disabled = !allAgreed;
+        };
+        responsibilities.forEach(function (checkbox) {
+            checkbox.addEventListener('click', checkResponsiblities)
+        })
         </script>
     {% endblock %}

@@ -4,7 +4,7 @@ from registration.models import Member
 
 
 class MemberForm(ModelForm):
-    waiver_substitute = BooleanField(label='I have read and agree to the above terms & conditions.', widget=CheckboxInput(attrs={'class': 'mdl-checkbox__input'}))
+    waiver_substitute = BooleanField(required=False, label='I have read and agree to the above terms & conditions.', widget=CheckboxInput(attrs={'class': 'mdl-checkbox__input'}))
 
     class Meta:
         model = Member

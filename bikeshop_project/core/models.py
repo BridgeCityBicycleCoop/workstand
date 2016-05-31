@@ -27,14 +27,14 @@ class Membership(models.Model):
 
 class Payment(models.Model):
     payment_choices = (
-        ('CASH', 'cash'),
-        ('CHEQUE', 'cheque'),
-        ('VOLUNTEERING', 'volunteering'),
-        ('STRIPE', 'stripe'),
-        ('PAYPAL', 'paypal')
+        ('NONE', 'None'),
+        ('CASH', 'Cash'),
+        ('CHEQUE', 'Cheque'),
+        ('VOLUNTEERING', 'Volunteering'),
+        ('STRIPE', 'Stripe'),
+        ('PAYPAL', 'PayPal')
     )
-    type = models.CharField(max_length=12, choices=payment_choices)
-    paid = models.BooleanField(default=False)
+    type = models.CharField(max_length=12, choices=payment_choices, default='NONE')
     created_at = models.DateTimeField(auto_now_add=True)
 
 

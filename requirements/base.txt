@@ -4,3 +4,4 @@ django-widget-tweaks==1.4.1
 psycopg2==2.6.1
 django-libsass==0.6
 django_compressor==2.0
+python-dateutil==2.5.3

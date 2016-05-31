@@ -9,12 +9,6 @@ class Membership(models.Model):
     self_identification = models.CharField(max_length=255, null=True, blank=True)
     gender = models.CharField(max_length=255, null=True, blank=True)
     involvement = models.CharField(max_length=255, null=True, blank=True)
-    payment = models.ForeignKey(
-        'Payment',
-        on_delete=models.CASCADE,
-        blank=False,
-        null=True
-    )
     member = models.ForeignKey(
         'registration.Member',
         on_delete=models.CASCADE,
@@ -34,6 +28,13 @@ class Payment(models.Model):
     )
     type = models.CharField(max_length=12, choices=payment_choices)
     created_at = models.DateTimeField(auto_now_add=True)
+    membership = models.ForeignKey(
+        'Membership',
+        on_delete=models.CASCADE,
+        related_name='payments',
+        blank=False,
+        null=True
+    )
 
 
 class Visit(models.Model):

@@ -16,6 +16,13 @@ class Membership(models.Model):
         blank=True,
         null=True,
     )
+    payment = models.OneToOneField(
+        "Payment",
+        on_delete=models.CASCADE,
+        related_name="membership",
+        blank=False,
+        null=True,
+    )
 
 
 class Payment(models.Model):
@@ -28,13 +35,6 @@ class Payment(models.Model):
     )
     type = models.CharField(max_length=12, choices=payment_choices)
     created_at = models.DateTimeField(auto_now_add=True)
-    membership = models.ForeignKey(
-        "Membership",
-        on_delete=models.CASCADE,
-        related_name="payments",
-        blank=False,
-        null=True,
-    )
 
 
 class Visit(models.Model):

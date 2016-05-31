@@ -1,9 +1,15 @@
-from django.forms import ModelForm, TextInput, DateInput, CheckboxSelectMultiple, CharField, BooleanField, CheckboxInput
+import logging
+from django.forms import BooleanField, CharField, CheckboxInput, RadioSelect, ModelForm, TextInput, HiddenInput
 
-from core.models import Membership
+from registration.models import Member
+
+from .models import Membership
+
+logger = logging.getLogger('bikeshop')
 
 
 class MembershipForm(ModelForm):
+    member = CharField(required=True, widget=HiddenInput())
     self_ident_other = CharField(required=False, label='Self identification', widget=TextInput(attrs={'class': 'mdl-textfield__input'}))
     gender_other = CharField(required=False, label='Other', widget=TextInput(attrs={'class': 'mdl-textfield__input'}))
     safe_space = BooleanField(required=True, widget=CheckboxInput(
@@ -27,18 +33,35 @@ class MembershipForm(ModelForm):
             ('First Nations; Métis; or Inuit', 'First Nations; Métis; or Inuit'),
             ('visible minority', 'Visible Minority'),
             ('caucasian', 'Caucasian'),
-            ('Other', 'Other')
+            ('other', 'Other')
         )
 
         gender_choices = (
             ('male', 'Male'),
             ('female', 'Female'),
-            ('other', 'other')
+            ('other', 'Other')
         )
 
         widgets = {
-            'self_identification': CheckboxSelectMultiple(choices=self_ident_choices,
-                                                          attrs={'class': 'mdl-checkbox__input'}),
-            'gender': CheckboxSelectMultiple(choices=gender_choices, attrs={'class': 'mdl-checkbox__input'}),
+            'self_identification': RadioSelect(choices=self_ident_choices, attrs={'class': 'mdl-radio__button'}),
+            'gender': RadioSelect(choices=gender_choices, attrs={'class': 'mdl-radio__button'}),
             'renewed_at': TextInput(attrs={'class': 'mdl-textfield__input'}),
         }
+
+    def save(self, commit=True):
+        instance = super(MembershipForm, self).save(commit=False)
+        member = Member.objects.get(id=self.cleaned_data['member'])
+        instance.member = member
+        logger.debug(self.cleaned_data['self_identification'])
+        logger.debug(self.cleaned_data['gender'])
+
+        if self.cleaned_data['gender_other']:
+            instance.gender = self.cleaned_data['gender_other']
+
+        if self.cleaned_data['self_ident_other']:
+            instance.self_identification = self.cleaned_data['self_ident_other']
+
+        if commit:
+            instance.save()
+
+        return instance

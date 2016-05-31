@@ -9,8 +9,9 @@
     <div class="mdl-cell mdl-cell--8-col">
         <h1>New Membership</h1>
         <form method="post">
+        <formset>
         {% csrf_token %}
-        {{ form.member }}
+        {{ membership_form.member }}
         <p>The Bridge City Bicycle Co­operative aims to be a safe and respectful environment geared towards education, empowerment and community­building. In order to do so we need your input and support.</p>
 
         <h4>Member Privileges</h4>
@@ -20,9 +21,9 @@
             <li>Opportunity to engage in decisions and help to build and develop the community's vision</li>
             <li>The Bridge City Bicycle Co­operative (BCBC) values the trust of its volunteers, staff and members and is committed to protecting the privacy of all personal information entrusted to it. As such, collected information will be used in accordance with our privacy policy outlined on our website and in our shop.</li>
         </ul>
-        {% if form.non_field_errors %}
+        {% if membership_form.non_field_errors %}
             <div>
-                <span class="error">{{ form.errors }}</span>
+                <span class="error">{{ membership_form.errors }}</span>
             </div>
         {% endif %}
         <div>
@@ -35,8 +36,8 @@
                 <li>The BCBC seeks to build a healthy lifestyle community, and behavior seen as hindering this objective will not be tolerated</li>
                 <li>Ask for help: With tools, processes, and even emotions</li>
             </ul>
-            <label class="mdl-checkbox mdl-js-checkbox mdl-js-ripple-effect" for="{{ form.safe_space.id_for_label }}">
-                {{ form.safe_space }}
+            <label class="mdl-checkbox mdl-js-checkbox mdl-js-ripple-effect" for="{{ membership_form.safe_space.id_for_label }}">
+                {{ membership_form.safe_space }}
                 <span class="mdl-checkbox__label">I acknowledge the BCBC is a safe space and agree to maintain it.</span>
             </label>
         </div>
@@ -46,8 +47,8 @@
                 <li>Build positive relationships with Community Members</li>
                 <li>Build positive relationships with CNYC employees, volunteers, and patrons</li>
             </ul>
-            <label class="mdl-checkbox mdl-js-checkbox mdl-js-ripple-effect" for="{{ form.respect_community.id_for_label }}">
-                {{ form.respect_community }}
+            <label class="mdl-checkbox mdl-js-checkbox mdl-js-ripple-effect" for="{{ membership_form.respect_community.id_for_label }}">
+                {{ membership_form.respect_community }}
                 <span class="mdl-checkbox__label">I will respect the community.</span>
             </label>
         </div>
@@ -56,8 +57,8 @@
             <p>
                 Our services are free and Members are encouraged to contribute in any way they can. Our vibrancy comes from the volunteer work of a large community with diverse skills and passions. There are so many ways to be a part of this community, regardless of whether or not you know how to change a tire (yet!). Ask how you can help out or get in touch with our volunteer coordinator (<a href="mailto:volunteer@bridgecitybicyclecoop.com">volunteer@bridgecitybicyclecoop.com</a>)
             </p>
-            <label class="mdl-checkbox mdl-js-checkbox mdl-js-ripple-effect" for="{{ form.give_back.id_for_label }}">
-                {{ form.give_back }}
+            <label class="mdl-checkbox mdl-js-checkbox mdl-js-ripple-effect" for="{{ membership_form.give_back.id_for_label }}">
+                {{ membership_form.give_back }}
                 <span class="mdl-checkbox__label">I acknowledge that giving back is important</span>
             </label>
         </div>
@@ -73,8 +74,8 @@
                 <li>Label your bike with your name, phone number, and the last date you worked on it.</li>
                 <li>Do not force tools and use them only for their intended use. If you need help or guidance, ask someone! It’s what we’re here for!</li>
             </ul>
-            <label class="mdl-checkbox mdl-js-checkbox mdl-js-ripple-effect" for="{{ form.respect_shop.id_for_label }}">
-                {{ form.respect_shop }}
+            <label class="mdl-checkbox mdl-js-checkbox mdl-js-ripple-effect" for="{{ membership_form.respect_shop.id_for_label }}">
+                {{ membership_form.respect_shop }}
                 <span class="mdl-checkbox__label">I will respect the shop.</span>
             </label>
         </div>
@@ -85,50 +86,62 @@
                 ethnicity so that we can track how well we are including all communities and whether there may be
                 barriers to certain groups’ participation. Thank you! Do you identify as: (In each category, check
                 all that apply)</p>
-            {% for checkbox in form.self_identification %}
+            {% for checkbox in membership_form.self_identification %}
             <label class="mdl-radio mdl-js-radio mdl-js-ripple-effect" for="{{ checkbox.id_for_label }}">
                 {{ checkbox }}
                 <span class="mdl-radio__label">{{ checkbox.label }}</span>
             </label>
             {% endfor %}
-            {% if form.self_identification.errors %}
-            <span class="mdl-textfield__error">{{ form.self_identification.errors }}</span>
+            {% if membership_form.self_identification.errors %}
+            <span class="mdl-textfield__error">{{ membership_form.self_identification.errors }}</span>
             {% else %}
             <span class="mdl-textfield__error">Hmm</span>
             {% endif %}
         </div>
-        <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label {% if form.gender_other.errors %}is-invalid{% endif %}">
-            {{ form.self_ident_other }}
-            <label class="mdl-textfield__label" for="{{ form.self_ident_other.id_for_label }}">{{ form.self_ident_other.label }}</label>
-            {% if form.self_ident_other.errors %}
-            <span class="mdl-textfield__error">{{ form.self_ident_other.errors }}</span>
+        <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label {% if membership_form.gender_other.errors %}is-invalid{% endif %}">
+            {{ membership_form.self_ident_other }}
+            <label class="mdl-textfield__label" for="{{ membership_form.self_ident_other.id_for_label }}">{{ membership_form.self_ident_other.label }}</label>
+            {% if membership_form.self_ident_other.errors %}
+            <span class="mdl-textfield__error">{{ membership_form.self_ident_other.errors }}</span>
             {% endif %}
         </div>
         <div class="">
             <h3 class="template__header mdl-typography--body-2">Gender Identification</h3>
-            {% for checkbox in form.gender %}
+            {% for checkbox in membership_form.gender %}
             <label class="mdl-radio mdl-js-radio mdl-js-ripple-effect" for="{{ checkbox.id_for_label }}">
                 {{ checkbox }}
                 <span class="mdl-radio__label">{{ checkbox.label }}</span>
             </label>
             {% endfor %}
         </div>
-        <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label {% if form.gender_other.errors %}is-invalid{% endif %}">
-            {{ form.gender_other }}
-            <label class="mdl-textfield__label" for="{{ form.gender_other.id_for_label }}">{{ form.gender_other.label }}</label>
-            {% if form.gender_other.errors %}
-            <span class="mdl-textfield__error">{{ form.gender_other.errors }}</span>
+        <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label {% if membership_form.gender_other.errors %}is-invalid{% endif %}">
+            {{ membership_form.gender_other }}
+            <label class="mdl-textfield__label" for="{{ membership_form.gender_other.id_for_label }}">{{ membership_form.gender_other.label }}</label>
+            {% if membership_form.gender_other.errors %}
+            <span class="mdl-textfield__error">{{ membership_form.gender_other.errors }}</span>
             {% endif %}
         </div>
-        <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label {% if form.renewed_at.errors %}is-invalid{% endif %}">
-            {{ form.renewed_at }}
-            <label class="mdl-textfield__label" for="{{ form.renewed_at.id_for_label }}">{{ form.renewed_at.label }}</label>
-            {% if form.renewed_at %}
-            <span class="mdl-textfield__error">{{ form.renewed_at.errors }}</span>
+        <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label {% if membership_form.renewed_at.errors %}is-invalid{% endif %}">
+            {{ membership_form.renewed_at }}
+            <label class="mdl-textfield__label" for="{{ membership_form.renewed_at.id_for_label }}">{{ membership_form.renewed_at.label }}</label>
+            {% if membership_form.renewed_at %}
+            <span class="mdl-textfield__error">{{ membership_form.renewed_at.errors }}</span>
             {% else %}
             <span class="mdl-textfield__error">Incorrect date.</span>
             {% endif %}
         </div>
+        </formset>
+        <formset>
+            <div class="">
+                <h3 class="template__header">Payment Type</h3>
+                {% for checkbox in payment_form.type %}
+                <label class="mdl-radio mdl-js-radio mdl-js-ripple-effect" for="{{ checkbox.id_for_label }}">
+                    {{ checkbox }}
+                    <span class="mdl-radio__label">{{ checkbox.label }}</span>
+                </label>
+            {% endfor %}
+            </div>
+        </formset>
         <div>
             <button disabled="true" id="submit" type="submit" class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--colored">Submit</button>
         </div>
@@ -146,21 +159,21 @@
             past: moment().subtract(100, 'years'),
             trigger: document.getElementById('{{  form.renewed_at.id_for_label }}')
         });
-        document.getElementById('{{ form.renewed_at.id_for_label }}').addEventListener('focus', function() {
+        document.getElementById('{{ membership_form.renewed_at.id_for_label }}').addEventListener('focus', function() {
             console.log('Toggle!');
               renewedAt.toggle();
         });
-        document.getElementById('{{  form.renewed_at.id_for_label }}').addEventListener('onOk', function () {
+        document.getElementById('{{  membership_form.renewed_at.id_for_label }}').addEventListener('onOk', function () {
             console.log('onOk');
             this.parentNode.classList.add('is-dirty');
             this.value = renewedAt.time.format('YYYY-MM-DD');
         })
 
         var responsibilities = [
-                document.getElementById('{{ form.safe_space.id_for_label }}'),
-                document.getElementById('{{ form.respect_community.id_for_label }}'),
-                document.getElementById('{{ form.give_back.id_for_label }}'),
-                document.getElementById('{{ form.respect_shop.id_for_label }}')
+                document.getElementById('{{ membership_form.safe_space.id_for_label }}'),
+                document.getElementById('{{ membership_form.respect_community.id_for_label }}'),
+                document.getElementById('{{ membership_form.give_back.id_for_label }}'),
+                document.getElementById('{{ membership_form.respect_shop.id_for_label }}')
         ];
         var checkResponsiblities = function () {
             allAgreed = responsibilities.every(function (checkbox) {

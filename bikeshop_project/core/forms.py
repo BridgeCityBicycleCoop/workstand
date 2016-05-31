@@ -1,9 +1,9 @@
 import logging
-from django.forms import BooleanField, CharField, CheckboxInput, RadioSelect, ModelForm, TextInput, HiddenInput
+from django.forms import BooleanField, CharField, CheckboxInput, RadioSelect, ModelForm, TextInput, HiddenInput, ChoiceField
 
 from registration.models import Member
 
-from .models import Membership
+from .models import Membership, Payment
 
 logger = logging.getLogger('bikeshop')
 
@@ -66,3 +66,12 @@ class MembershipForm(ModelForm):
             instance.save()
 
         return instance
+
+
+class PaymentForm(ModelForm):
+    class Meta:
+        model = Payment
+        fields = ['type']
+        widgets = {
+            'type': RadioSelect(attrs={'class': 'mdl-radio__button'})
+        }

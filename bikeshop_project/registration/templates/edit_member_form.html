@@ -189,10 +189,33 @@
         </div>
         </form>
     </div>
-    {% if not form.instance.membership %}
     <div class="mdl-cell mdl-cell--8-col">
-        <h3>No membership found.</h3>
-    <a class="mdl-button mdl-js-button mdl-button--flat mdl-js-ripple-effect mdl-button--colored" href="{% url 'new_membership' member_id=member.id %}">Add membership</a>
+        {% if  form.instance.memberships %}
+            <table class="mdl-data-table mdl-js-data-table">
+            <thead>
+                <tr>
+                    <th class="mdl-data-table__cell--non-numeric">Renewed at</th>
+                    <th class="mdl-data-table__cell--non-numeric">Created at</th>
+                    <th class="mdl-data-table__cell--non-numeric">Expires at</th>
+                    <th class="mdl-data-table__cell--non-numeric">Paid by</th>
+                </tr>
+            </thead>
+            <tbody>
+            <h3>Membership History</h3>
+                {% for membership in form.instance.memberships.all %}
+                <tr>
+                    <td class="mdl-data-table__cell--non-numeric">{{ membership.renewed_at }}</td>
+                    <td class="mdl-data-table__cell--non-numeric">{{ membership.created_at }}</td>
+                    <td class="mdl-data-table__cell--non-numeric">{{ membership.expires_at }}</td>
+                    <td class="mdl-data-table__cell--non-numeric">{{ membership.payment.type }}</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+            </table>
+        {% else %}
+            <h3>No membership found.</h3>
+        {% endif %}
+        <a class="mdl-button mdl-js-button mdl-button--flat mdl-js-ripple-effect mdl-button--colored" href="{% url 'new_membership' member_id=member.id %}">Add membership</a>
     </div>
-    {% endif %}
+
 {% endblock %}

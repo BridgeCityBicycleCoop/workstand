@@ -10,6 +10,7 @@
         <h1>New Membership</h1>
         <form method="post">
         {% csrf_token %}
+        {{ form.member }}
         <p>The Bridge City Bicycle Co­operative aims to be a safe and respectful environment geared towards education, empowerment and community­building. In order to do so we need your input and support.</p>
 
         <h4>Member Privileges</h4>
@@ -85,9 +86,9 @@
                 barriers to certain groups’ participation. Thank you! Do you identify as: (In each category, check
                 all that apply)</p>
             {% for checkbox in form.self_identification %}
-            <label class="mdl-checkbox mdl-js-checkbox mdl-js-ripple-effect" for="{{ checkbox.id_for_label }}">
+            <label class="mdl-radio mdl-js-radio mdl-js-ripple-effect" for="{{ checkbox.id_for_label }}">
                 {{ checkbox }}
-                <span class="mdl-checkbox__label">{{ checkbox.label }}</span>
+                <span class="mdl-radio__label">{{ checkbox.label }}</span>
             </label>
             {% endfor %}
             {% if form.self_identification.errors %}
@@ -106,9 +107,9 @@
         <div class="">
             <h3 class="template__header mdl-typography--body-2">Gender Identification</h3>
             {% for checkbox in form.gender %}
-            <label class="mdl-checkbox mdl-js-checkbox mdl-js-ripple-effect" for="{{ checkbox.id_for_label }}">
+            <label class="mdl-radio mdl-js-radio mdl-js-ripple-effect" for="{{ checkbox.id_for_label }}">
                 {{ checkbox }}
-                <span class="mdl-checkbox__label">{{ checkbox.label }}</span>
+                <span class="mdl-radio__label">{{ checkbox.label }}</span>
             </label>
             {% endfor %}
         </div>
@@ -168,6 +169,9 @@
             var submitButton = document.getElementById('submit');
             submitButton.disabled = !allAgreed;
         };
+
+        document.addEventListener("DOMContentLoaded", checkResponsiblities);
+
         responsibilities.forEach(function (checkbox) {
             checkbox.addEventListener('click', checkResponsiblities)
         })

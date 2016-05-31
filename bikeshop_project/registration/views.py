@@ -23,6 +23,7 @@ class MemberFormView(View):
 
         context = dict(form=form)
         if member:
+            context["member"] = member
             return TemplateResponse(request, "edit_member_form.html", context=context)
         return TemplateResponse(request, "member_form.html", context=context)
 
@@ -32,6 +33,7 @@ class MemberFormView(View):
             member = Member.objects.get(id=member_id)
             form = MemberForm(request.POST, instance=member)
         except Member.DoesNotExist:
+            member = None
             form = MemberForm(request.POST)
         logger.debug(form)
         if form.is_valid():
@@ -44,4 +46,6 @@ class MemberFormView(View):
         logger.debug(form)
 
         context = {"form": form}
+        if member:
+            context["member"] = member
         return TemplateResponse(request, "member_form.html", context=context)

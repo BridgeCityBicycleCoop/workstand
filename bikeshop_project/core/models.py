@@ -1,5 +1,8 @@
 from django.db import models
 from django.utils import timezone
+from django.utils.functional import cached_property
+
+from dateutil.relativedelta import relativedelta
 
 
 class Membership(models.Model):
@@ -23,6 +26,10 @@ class Membership(models.Model):
         blank=False,
         null=True,
     )
+
+    @cached_property
+    def expires_at(self):
+        return self.renewed_at + relativedelta(years=1)
 
 
 class Payment(models.Model):

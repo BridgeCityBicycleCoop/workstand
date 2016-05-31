@@ -12,10 +12,10 @@ class Membership(models.Model):
     payment = models.ForeignKey(
         "Payment", on_delete=models.CASCADE, blank=False, null=True
     )
-    member = models.OneToOneField(
+    member = models.ForeignKey(
         "registration.Member",
         on_delete=models.CASCADE,
-        related_name="membership",
+        related_name="memberships",
         blank=True,
         null=True,
     )

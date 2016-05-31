@@ -10,7 +10,8 @@ logger = logging.getLogger('bikeshop')
 
 class MembershipForm(ModelForm):
     member = CharField(required=True, widget=HiddenInput())
-    self_ident_other = CharField(required=False, label='Self identification', widget=TextInput(attrs={'class': 'mdl-textfield__input'}))
+    self_ident_other = CharField(required=False, label='Self identification',
+                                 widget=TextInput(attrs={'class': 'mdl-textfield__input'}))
     gender_other = CharField(required=False, label='Other', widget=TextInput(attrs={'class': 'mdl-textfield__input'}))
     safe_space = BooleanField(required=True, widget=CheckboxInput(
         attrs={'class': 'mdl-checkbox__input'}

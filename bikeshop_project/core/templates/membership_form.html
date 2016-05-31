@@ -1,0 +1,192 @@
+{% extends 'base.html' %}
+{% load staticfiles %}
+
+{% block styles %}
+    <link rel="stylesheet" href="{% static 'vendor/md-date-time-picker/dist/css/mdDateTimePicker.min.css' %}">
+{% endblock %}
+
+{% block content %}
+    <div class="mdl-cell mdl-cell--8-col">
+        <h1>New Membership</h1>
+        <form method="post">
+        <formset>
+        {% csrf_token %}
+        {{ membership_form.member }}
+        <p>The Bridge City Bicycle Co­operative aims to be a safe and respectful environment geared towards education, empowerment and community­building. In order to do so we need your input and support.</p>
+
+        <h4>Member Privileges</h4>
+        <ul>
+            <li>Access to the BCBC tools, stands, and workspace</li>
+            <li>Access to friendly mechanical assistance and education when available</li>
+            <li>Opportunity to engage in decisions and help to build and develop the community's vision</li>
+            <li>The Bridge City Bicycle Co­operative (BCBC) values the trust of its volunteers, staff and members and is committed to protecting the privacy of all personal information entrusted to it. As such, collected information will be used in accordance with our privacy policy outlined on our website and in our shop.</li>
+        </ul>
+        {% if membership_form.non_field_errors %}
+            <div>
+                <span class="error">{{ membership_form.errors }}</span>
+            </div>
+        {% endif %}
+        <div>
+            <h4>Member Responsibilities</h4>
+            <h5>Respect and Maintaining a Safe Space</h5>
+            <ul>
+                <li>Respect others and self</li>
+                <li>Help others</li>
+                <li>Racist, ableist, ageist, homophobic, sexist, and classist behavior and language will not be tolerated</li>
+                <li>The BCBC seeks to build a healthy lifestyle community, and behavior seen as hindering this objective will not be tolerated</li>
+                <li>Ask for help: With tools, processes, and even emotions</li>
+            </ul>
+            <label class="mdl-checkbox mdl-js-checkbox mdl-js-ripple-effect" for="{{ membership_form.safe_space.id_for_label }}">
+                {{ membership_form.safe_space }}
+                <span class="mdl-checkbox__label">I acknowledge the BCBC is a safe space and agree to maintain it.</span>
+            </label>
+        </div>
+        <div>
+            <h5>Respect the Community</h5>
+            <ul>
+                <li>Build positive relationships with Community Members</li>
+                <li>Build positive relationships with CNYC employees, volunteers, and patrons</li>
+            </ul>
+            <label class="mdl-checkbox mdl-js-checkbox mdl-js-ripple-effect" for="{{ membership_form.respect_community.id_for_label }}">
+                {{ membership_form.respect_community }}
+                <span class="mdl-checkbox__label">I will respect the community.</span>
+            </label>
+        </div>
+        <div>
+            <h5>Giving back</h5>
+            <p>
+                Our services are free and Members are encouraged to contribute in any way they can. Our vibrancy comes from the volunteer work of a large community with diverse skills and passions. There are so many ways to be a part of this community, regardless of whether or not you know how to change a tire (yet!). Ask how you can help out or get in touch with our volunteer coordinator (<a href="mailto:volunteer@bridgecitybicyclecoop.com">volunteer@bridgecitybicyclecoop.com</a>)
+            </p>
+            <label class="mdl-checkbox mdl-js-checkbox mdl-js-ripple-effect" for="{{ membership_form.give_back.id_for_label }}">
+                {{ membership_form.give_back }}
+                <span class="mdl-checkbox__label">I acknowledge that giving back is important</span>
+            </label>
+        </div>
+        <div>
+            <h5>Respect the Space</h5>
+            <ul>
+                <li>Replace tools when not using them so that others can play too.</li>
+                <li>Do not steal or borrow articles within the space for personal use.</li>
+                <li>If you don't know what it is, how to use it, or where it goes, ask someone</li>
+                <li>Ensure you always leave time to clean up after yourself and others, and then do so</li>
+                <li>If you have to leave in the middle of a project, put pieces into a small bag and attach it to the bike</li>
+                <li>Personal projects may be kept at the BCBC for a maximum of one day; however, this is highly discouraged due to lack of space and the concern for theft.</li>
+                <li>Label your bike with your name, phone number, and the last date you worked on it.</li>
+                <li>Do not force tools and use them only for their intended use. If you need help or guidance, ask someone! It’s what we’re here for!</li>
+            </ul>
+            <label class="mdl-checkbox mdl-js-checkbox mdl-js-ripple-effect" for="{{ membership_form.respect_shop.id_for_label }}">
+                {{ membership_form.respect_shop }}
+                <span class="mdl-checkbox__label">I will respect the shop.</span>
+            </label>
+        </div>
+                <div class="">
+            <h2 class="template__header mdl-typography--title">Voluntary Self Identification</h2>
+            <p>We want to make sure that all members of our community, regardless of race, ethnicity, and gender
+                are able to participate fully in the BCBC. Please share information about your race and/or
+                ethnicity so that we can track how well we are including all communities and whether there may be
+                barriers to certain groups’ participation. Thank you! Do you identify as: (In each category, check
+                all that apply)</p>
+            {% for checkbox in membership_form.self_identification %}
+            <label class="mdl-radio mdl-js-radio mdl-js-ripple-effect" for="{{ checkbox.id_for_label }}">
+                {{ checkbox }}
+                <span class="mdl-radio__label">{{ checkbox.label }}</span>
+            </label>
+            {% endfor %}
+            {% if membership_form.self_identification.errors %}
+            <span class="mdl-textfield__error">{{ membership_form.self_identification.errors }}</span>
+            {% else %}
+            <span class="mdl-textfield__error">Hmm</span>
+            {% endif %}
+        </div>
+        <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label {% if membership_form.gender_other.errors %}is-invalid{% endif %}">
+            {{ membership_form.self_ident_other }}
+            <label class="mdl-textfield__label" for="{{ membership_form.self_ident_other.id_for_label }}">{{ membership_form.self_ident_other.label }}</label>
+            {% if membership_form.self_ident_other.errors %}
+            <span class="mdl-textfield__error">{{ membership_form.self_ident_other.errors }}</span>
+            {% endif %}
+        </div>
+        <div class="">
+            <h3 class="template__header mdl-typography--body-2">Gender Identification</h3>
+            {% for checkbox in membership_form.gender %}
+            <label class="mdl-radio mdl-js-radio mdl-js-ripple-effect" for="{{ checkbox.id_for_label }}">
+                {{ checkbox }}
+                <span class="mdl-radio__label">{{ checkbox.label }}</span>
+            </label>
+            {% endfor %}
+        </div>
+        <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label {% if membership_form.gender_other.errors %}is-invalid{% endif %}">
+            {{ membership_form.gender_other }}
+            <label class="mdl-textfield__label" for="{{ membership_form.gender_other.id_for_label }}">{{ membership_form.gender_other.label }}</label>
+            {% if membership_form.gender_other.errors %}
+            <span class="mdl-textfield__error">{{ membership_form.gender_other.errors }}</span>
+            {% endif %}
+        </div>
+        <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label {% if membership_form.renewed_at.errors %}is-invalid{% endif %}">
+            {{ membership_form.renewed_at }}
+            <label class="mdl-textfield__label" for="{{ membership_form.renewed_at.id_for_label }}">{{ membership_form.renewed_at.label }}</label>
+            {% if membership_form.renewed_at %}
+            <span class="mdl-textfield__error">{{ membership_form.renewed_at.errors }}</span>
+            {% else %}
+            <span class="mdl-textfield__error">Incorrect date.</span>
+            {% endif %}
+        </div>
+        </formset>
+        <formset>
+            <div class="">
+                <h3 class="template__header">Payment Type</h3>
+                {% for checkbox in payment_form.type %}
+                <label class="mdl-radio mdl-js-radio mdl-js-ripple-effect" for="{{ checkbox.id_for_label }}">
+                    {{ checkbox }}
+                    <span class="mdl-radio__label">{{ checkbox.label }}</span>
+                </label>
+            {% endfor %}
+            </div>
+        </formset>
+        <div>
+            <button disabled="true" id="submit" type="submit" class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--colored">Submit</button>
+        </div>
+        </form>
+    </div>
+{% endblock %}
+
+{% block scripts %}
+        <script src="{% static 'vendor/moment/min/moment.min.js' %}"></script>
+        <script src="{% static 'vendor/draggabilly/dist/draggabilly.pkgd.min.js' %}"></script>
+        <script src="{% static 'vendor/md-date-time-picker/dist/js/mdDateTimePicker.min.js' %}"></script>
+        <script>
+        var renewedAt = new mdDateTimePicker.default({
+            type: 'date',
+            past: moment().subtract(100, 'years'),
+            trigger: document.getElementById('{{  form.renewed_at.id_for_label }}')
+        });
+        document.getElementById('{{ membership_form.renewed_at.id_for_label }}').addEventListener('focus', function() {
+            console.log('Toggle!');
+              renewedAt.toggle();
+        });
+        document.getElementById('{{  membership_form.renewed_at.id_for_label }}').addEventListener('onOk', function () {
+            console.log('onOk');
+            this.parentNode.classList.add('is-dirty');
+            this.value = renewedAt.time.format('YYYY-MM-DD');
+        })
+
+        var responsibilities = [
+                document.getElementById('{{ membership_form.safe_space.id_for_label }}'),
+                document.getElementById('{{ membership_form.respect_community.id_for_label }}'),
+                document.getElementById('{{ membership_form.give_back.id_for_label }}'),
+                document.getElementById('{{ membership_form.respect_shop.id_for_label }}')
+        ];
+        var checkResponsiblities = function () {
+            allAgreed = responsibilities.every(function (checkbox) {
+                return checkbox.checked
+            });
+            var submitButton = document.getElementById('submit');
+            submitButton.disabled = !allAgreed;
+        };
+
+        document.addEventListener("DOMContentLoaded", checkResponsiblities);
+
+        responsibilities.forEach(function (checkbox) {
+            checkbox.addEventListener('click', checkResponsiblities)
+        })
+        </script>
+    {% endblock %}

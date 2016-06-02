@@ -29,6 +29,7 @@ INSTALLED_APPS = [
     "django.contrib.sessions",
     "django.contrib.messages",
     "django.contrib.staticfiles",
+    "webpack_loader",
     "compressor",
     "registration",
     "core",
@@ -114,6 +115,7 @@ STATICFILES_FINDERS = (
 )
 STATICFILES_DIRS = [
     ("vendor", os.path.join(BASE_DIR, "../vendor")),
+    os.path.join(BASE_DIR, "../assets"),
 ]
 STATIC_ROOT = "static"
 STATIC_URL = "/static/"
@@ -121,3 +123,13 @@ STATIC_URL = "/static/"
 AUTH_USER_MODEL = "registration.Member"
 
 COMPRESS_PRECOMPILERS = (("text/x-scss", "django_libsass.SassCompiler"),)
+
+WEBPACK_LOADER = {
+    "DEFAULT": {
+        "CACHE": False,
+        "BUNDLE_DIR_NAME": "bundles/",  # must end with slash
+        "STATS_FILE": os.path.join(BASE_DIR, "../webpack-stats.json"),
+        "POLL_INTERVAL": 0.1,
+        "IGNORE": [".+\.hot-update.js", ".+\.map"],
+    }
+}

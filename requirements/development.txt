@@ -3,3 +3,4 @@
 django-debug-toolbar
 PyYAML
 gunicorn==19.4.5
+django-webpack-loader

@@ -1,12 +1,17 @@
+import logging
+
 from django.contrib import messages
-from django.http import HttpResponseRedirect
+from django.core.urlresolvers import reverse
+from django.http import HttpResponse, HttpResponseRedirect
 from django.template.response import TemplateResponse
 from django.views.generic import View
-from django.core.urlresolvers import reverse
+
+import json
+from haystack.query import SearchQuerySet
 
 from .forms import MemberForm
 from .models import Member
-import logging
+
 logger = logging.getLogger('bikeshop')
 
 
@@ -46,3 +51,13 @@ class MemberFormView(View):
         if member:
             context['member'] = member
         return TemplateResponse(request, 'member_form.html', context=context)
+
+
+class MemberSearchView(View):
+    def get(self, request, query):
+        sqs = SearchQuerySet().models(Member).autocomplete(text=query)[:5]
+        results = [dict(name=result.object.get_full_name(), email=result.object.email, id=result.object.id) for result in sqs]
+
+        data = json.dumps(dict(results=results))
+
+        return HttpResponse(data, content_type='application/json')

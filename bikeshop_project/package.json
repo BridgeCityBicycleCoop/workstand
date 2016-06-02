@@ -1,0 +1,34 @@
+{
+  "name": "workstand",
+  "version": "0.0.1",
+  "description": "A membership management app for the BCBC.",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "babel": "^6.5.2",
+    "babel-core": "^6.9.1",
+    "babel-loader": "^6.2.4",
+    "babel-preset-es2015": "^6.9.0",
+    "babel-preset-react": "^6.5.0",
+    "babel-preset-stage-0": "^6.5.0",
+    "css-loader": "^0.23.1",
+    "extract-text-webpack-plugin": "^1.0.1",
+    "i": "^0.3.5",
+    "node-sass": "^3.4.2",
+    "normalize.css": "^4.1.1",
+    "postcss-loader": "^0.9.1",
+    "react": "^15.1.0",
+    "react-addons-css-transition-group": "^15.1.0",
+    "react-dom": "^15.1.0",
+    "react-toolbox": "^0.16.2",
+    "sass-loader": "^3.2.0",
+    "style-loader": "^0.13.1",
+    "toolbox-loader": "0.0.3",
+    "webpack": "^1.13.1",
+    "webpack-bundle-tracker": "0.0.93"
+  }
+}

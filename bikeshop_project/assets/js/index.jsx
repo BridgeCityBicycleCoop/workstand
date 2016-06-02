@@ -1,40 +1,80 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import Autocomplete from 'react-toolbox/lib/autocomplete';
+import injectTapEventPlugin from 'react-tap-event-plugin';
 
-const source = {
-  'ES-es': 'Spain',
-  'TH-th': 'Thailand',
-  'EN-gb': 'England',
-  'EN-en': 'USA'
-};
+// Needed for onTouchTap
+// http://stackoverflow.com/a/34015469/988941
+injectTapEventPlugin();
 
-class AutocompleteTest extends React.Component {
-  state = {
-    countries: ['ES-es', 'TH-th']
-  };
+import getMuiTheme from 'material-ui/styles/getMuiTheme';
+import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
+import AutoComplete from 'material-ui/AutoComplete';
+import { polyFill } from 'es6-promise';
+import fetch from 'isomorphic-fetch';
 
-  handleChange = (value) => {
-    this.setState({countries: value});
-  };
+class MemberAutoComplete extends React.Component {
 
-  render () {
-    return (
-      <Autocomplete
-        direction="down"
-        selectedPosition="above"
-        label="Choose countries"
-        onChange={this.handleChange}
-        source={source}
-        value={this.state.countries}
-      />
-    );
+    constructor (props) {
+    super(props);
+    this.state = {members: [], error: '' };
+    this.handleUpdate = this.handleUpdate.bind(this);
+    this.signIn = this.signIn.bind(this);
+    // this.filter = this.filter.bind(this);
   }
+
+    handleUpdate (text, dataSource) {
+        let self = this;
+        fetch(`//bikeshop.local/member/search/${text}/`)
+            .then((response) => {
+                if (response.status === 200)
+                    return response.json();
+            })
+            .then((data) => {
+                console.log(data.results);
+                if (data.results.length > 0) {
+                    self.setState({
+                        error: '',
+                        members: data.results.map((result) => {
+                            return {text: `${result.name}`, value: `${result.name} <${result.email}>`, id: result.id}
+                        })
+                    });
+                } else {
+                    self.setState({error: 'Member not found.'})
+                }
+                // self.setState({members: data.results})
+            })
+    }
+
+    handleFilter (searchText, key) {
+        console.log(searchText);
+        console.log(key);
+    }
+
+    signIn (chosenRequest, idx) {
+        console.log(chosenRequest)
+        console.log(this.state.members[idx])
+    }
+
+    render () {
+        return <AutoComplete
+            dataSource={this.state.members}
+            onUpdateInput={this.handleUpdate}
+            openOnFocus={true}
+            filter={AutoComplete.noFilter}
+            onNewRequest={this.signIn}
+            errorText={this.state.error}
+        />
+    }
 }
+
 
 class App extends React.Component {
     render () {
-        return (<AutocompleteTest />)
+        return (
+            <MuiThemeProvider muiTheme={getMuiTheme()}>
+                <MemberAutoComplete />
+            </MuiThemeProvider>
+        )
     }
 }
 

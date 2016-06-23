@@ -4,8 +4,10 @@
   "description": "A membership management app for the BCBC.",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
-  },
+  "build": "webpack --config webpack.config.js --progress --colors",
+  "build-production": "webpack --config webpack.prod.config.js --progress --colors",
+  "watch": "node server.js"
+},
   "author": "",
   "license": "ISC",
   "devDependencies": {
@@ -28,12 +30,14 @@
     "react": "^15.1.0",
     "react-addons-css-transition-group": "^15.1.0",
     "react-dom": "^15.1.0",
+    "react-hot-loader": "^1.3.0",
     "react-tap-event-plugin": "^1.0.0",
     "react-toolbox": "^0.16.2",
     "sass-loader": "^3.2.0",
     "style-loader": "^0.13.1",
     "toolbox-loader": "0.0.3",
     "webpack": "^1.13.1",
-    "webpack-bundle-tracker": "0.0.93"
+    "webpack-bundle-tracker": "0.0.93",
+    "webpack-dev-server": "^1.14.1"
   }
 }

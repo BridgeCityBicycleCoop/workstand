@@ -21,7 +21,26 @@ export default class SignIn extends React.Component {
         this.signIn = this.signIn.bind(this);
         this.chooseMember = this.chooseMember.bind(this);
         this.handlePurposeChoice = this.handlePurposeChoice.bind(this);
-  }
+    }
+
+    componentDidMount () {
+        fetch('//bikeshop.local/member/signin/')
+            .then((response) => {
+                return response.json()
+            })
+            .then((data) => {
+                const visits = JSON.parse(data);
+                this.setState({signedIn: visits.map((visit) => {
+                    return {
+                        id: visit.member.id,
+                        purpose: visit.purpose,
+                        text: visit.member.full_name,
+                        value: `${visit.member.full_name} <${visit.member.email}>`,
+                        at: moment(visit.created_at)
+                    }
+                })})
+            })
+    }
 
     handlePurposeChoice (event, index, value) {
         this.setState({...this.state, signOn: {...this.state.signOn, purpose: value}});

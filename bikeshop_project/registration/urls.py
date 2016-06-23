@@ -3,7 +3,7 @@ from django.conf.urls import url
 from .views import MemberFormView, MemberSearchView, MemberSignIn
 
 urlpatterns = [
-    url(r"^new/$", MemberFormView.as_view(), name="signup"),
+    url(r"^new/$", MemberFormView.as_view(), name="member_new"),
     url(
         r"^search/(?P<query>[\w@\.\+]+)/$",
         MemberSearchView.as_view(),

@@ -1,16 +1,21 @@
 import logging
 
 from django.contrib import messages
+from django.utils.decorators import method_decorator
 from django.core.urlresolvers import reverse
-from django.http import HttpResponse, HttpResponseRedirect
+from django.http import HttpResponse, HttpResponseRedirect, JsonResponse
 from django.template.response import TemplateResponse
 from django.views.generic import View
+from django.shortcuts import get_object_or_404
+from django.views.decorators.csrf import csrf_exempt
+from django.core import serializers
 
 import json
 from haystack.query import SearchQuerySet
 
 from .forms import MemberForm
 from .models import Member
+from core.models import Visit
 
 logger = logging.getLogger("bikeshop")
 
@@ -70,3 +75,18 @@ class MemberSearchView(View):
         data = json.dumps(dict(results=results))
 
         return HttpResponse(data, content_type="application/json")
+
+
+class MemberSignIn(View):
+    @method_decorator(csrf_exempt)
+    def dispatch(self, request, *args, **kwargs):
+        return super(MemberSignIn, self).dispatch(request, *args, **kwargs)
+
+    def post(self, request):
+        member = get_object_or_404(Member, id=request.POST.get("id"))
+        Visit.objects.create(member=member, purpose=request.POST.get("purpose"))
+
+        data = json.dumps(dict(results=dict(id=member.id)))
+        # logger.debug(data)
+
+        return JsonResponse(data=data, safe=False, status=201)

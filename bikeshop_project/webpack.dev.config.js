@@ -28,10 +28,8 @@ config.module.loaders.push(
     {
         test: /\.jsx?$/,
         exclude: /node_modules/,
-        loader: 'babel-loader',
-        query: {
-            presets: ['es2015', 'stage-0', 'react']
-        }
+        loaders: ['react-hot','babel-loader']
+
     },
     {
         test: /(\.scss|\.css)$/,

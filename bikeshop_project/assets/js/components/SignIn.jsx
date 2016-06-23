@@ -24,7 +24,7 @@ export default class SignIn extends React.Component {
     }
 
     componentDidMount () {
-        fetch('//bikeshop.local/member/signin/')
+        fetch('/members/signin/')
             .then((response) => {
                 return response.json()
             })
@@ -49,7 +49,7 @@ export default class SignIn extends React.Component {
     handleUpdate (text, dataSource) {
         const self = this;
         self.setState({searchText: text})
-        fetch(`//bikeshop.local/member/search/${text}/`)
+        fetch(`/members/search/${text}/`)
             .then((response) => {
                 if (response.status === 200)
                     return response.json();
@@ -74,7 +74,7 @@ export default class SignIn extends React.Component {
         const member = this.state.signOn.member;
 
         if (!this.state.signedIn.find((signedInMember) => {return signedInMember.id === member.id})) {
-            fetch('//bikeshop.local/member/signin/', {
+            fetch('/members/signin/', {
                 method: 'post',
                 body: `id=${member.id}&purpose=${purpose}`,
                 headers: {

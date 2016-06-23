@@ -26,7 +26,7 @@ urlpatterns = [
     url(r'^', include(core_urls)),
     url(r'^login/', login, {'template_name': 'login.html'}, name='login'),
     url(r'^logout/', logout_then_login, name='logout'),
-    url(r'^member/', include(member_urls)),
+    url(r'^members/', include(member_urls)),
     url(r'^admin/', admin.site.urls),
 ]
 

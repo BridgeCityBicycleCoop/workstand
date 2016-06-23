@@ -21,6 +21,7 @@
     "i": "^0.3.5",
     "isomorphic-fetch": "^2.2.1",
     "material-ui": "^0.15.0",
+    "moment": "^2.13.0",
     "node-sass": "^3.4.2",
     "normalize.css": "^4.1.1",
     "postcss-loader": "^0.9.1",

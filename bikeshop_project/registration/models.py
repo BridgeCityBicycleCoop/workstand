@@ -65,6 +65,10 @@ class Member(AbstractBaseUser, PermissionsMixin):
     USERNAME_FIELD = "email"
     # REQUIRED_FIELDS = []
 
+    @property
+    def full_name(self):
+        return "{0} {1}".format(self.first_name, self.last_name)
+
     def get_full_name(self):
         # The user is identified by their email address
         if self.first_name and self.last_name:

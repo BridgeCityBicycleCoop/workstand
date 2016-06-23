@@ -142,3 +142,6 @@ HAYSTACK_CONNECTIONS = {
         "PATH": os.path.join(os.path.dirname(__file__), "whoosh_index"),
     },
 }
+
+LOGIN_REDIRECT_URL = "home"
+LOGIN_URL = "login"

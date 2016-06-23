@@ -8,5 +8,5 @@ urlpatterns = [
         NewMembershipView.as_view(),
         name="new_membership",
     ),
-    url(r"^$", DashboardView.as_view()),
+    url(r"^$", DashboardView.as_view(), name="home"),
 ]

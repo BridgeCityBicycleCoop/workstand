@@ -9,7 +9,7 @@
   action: file dest={{ venv }} state=directory
 
 - name: install requirements
-  action: pip executable=pip3 virtualenv={{ venv }} virtualenv_python=python3 requirements=/tmp/requirements/{{ group_names[0] }}.txt extra_args='--upgrade --force-reinstall'
+  action: pip virtualenv={{ venv }} virtualenv_python=python3 requirements=/tmp/requirements/{{ group_names[0] }}.txt extra_args='--upgrade --force-reinstall'
   register: requirements
   tags:
     - reqs

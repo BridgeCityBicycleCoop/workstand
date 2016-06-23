@@ -8,3 +8,4 @@ python-dateutil==2.5.3
 whoosh==2.7.4
 git+git://github.com/django-haystack/django-haystack.git
 djangorestframework
+django-webpack-loader

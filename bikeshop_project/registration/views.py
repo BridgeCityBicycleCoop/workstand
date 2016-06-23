@@ -9,6 +9,7 @@ from django.utils import timezone
 from django.utils.decorators import method_decorator
 from django.views.decorators.csrf import csrf_exempt
 from django.views.generic import View
+from django.views.generic import TemplateView
 
 from core.models import Visit
 from haystack.query import SearchQuerySet
@@ -103,3 +104,10 @@ class MemberSignIn(View):
         json = JSONRenderer().render(serializer.data)
 
         return JsonResponse(data=json.decode(), safe=False, status=200)
+
+class Members(TemplateView):
+    template_name = 'members.html'
+
+    def get(self, request):
+        members = Member.objects.all()
+        return self.render_to_response(dict(members=members))

@@ -5,6 +5,8 @@ from django.core.urlresolvers import reverse
 from django.http import HttpResponseRedirect
 from django.template.response import TemplateResponse
 from django.views.generic import TemplateView, View
+from django.utils.decorators import method_decorator
+from django.contrib.auth.decorators import login_required
 
 from registration.models import Member
 
@@ -13,11 +15,13 @@ from .forms import MembershipForm, PaymentForm
 logger = logging.getLogger(__name__)
 
 
+@method_decorator(login_required, name="dispatch")
 class DashboardView(View):
     def get(self, request):
         return TemplateResponse(request, "dashboard.html")
 
 
+@method_decorator(login_required, name="dispatch")
 class NewMembershipView(TemplateView):
     template_name = "membership_form.html"
 

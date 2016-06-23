@@ -32,6 +32,7 @@ INSTALLED_APPS = [
     'haystack',
     'webpack_loader',
     'compressor',
+    'rest_framework',
 
     'registration',
     'core',

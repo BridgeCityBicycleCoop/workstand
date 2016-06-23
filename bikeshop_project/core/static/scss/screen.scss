@@ -368,3 +368,7 @@ span.mdl-textfield__error, span.error  {
   visibility: visible;
   display: block;
 }
+
+html [type="button"] {
+  -webkit-appearance: initial !important;
+}

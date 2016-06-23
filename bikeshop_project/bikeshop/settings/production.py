@@ -42,3 +42,13 @@ LOGGING = {
         },
     },
 }
+
+WEBPACK_LOADER = {
+    "DEFAULT": {
+        "CACHE": False,
+        "BUNDLE_DIR_NAME": "dist/",
+        "STATS_FILE": os.path.join(BASE_DIR, "../webpack-stats-prod.json"),
+        "POLL_INTERVAL": 0.1,
+        "IGNORE": [".+\.hot-update.js", ".+\.map"],
+    }
+}

@@ -38,7 +38,7 @@ class Payment(models.Model):
         ("CASH", "Cash"),
         ("CHEQUE", "Cheque"),
         ("VOLUNTEERING", "Volunteering"),
-        ("STRIPE", "Stripe"),
+        ("SQUARE", "Square"),
         ("PAYPAL", "PayPal"),
     )
     type = models.CharField(max_length=12, choices=payment_choices, default="NONE")

@@ -40,6 +40,7 @@ class Payment(models.Model):
         ("VOLUNTEERING", "Volunteering"),
         ("SQUARE", "Square"),
         ("PAYPAL", "PayPal"),
+        ("UNKNOWN", "Unknown"),
     )
     type = models.CharField(max_length=12, choices=payment_choices, default="NONE")
     created_at = models.DateTimeField(auto_now_add=True)

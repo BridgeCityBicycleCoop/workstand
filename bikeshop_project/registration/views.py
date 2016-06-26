@@ -1,6 +1,7 @@
 import json
 import logging
 
+from django.contrib.auth.decorators import login_required
 from django.core.urlresolvers import reverse
 from django.http import HttpResponse, HttpResponseRedirect, JsonResponse
 from django.shortcuts import get_object_or_404
@@ -8,14 +9,12 @@ from django.template.response import TemplateResponse
 from django.utils import timezone
 from django.utils.decorators import method_decorator
 from django.views.decorators.csrf import csrf_exempt
-from django.views.generic import View
-from django.views.generic import TemplateView
+from django.views.generic import TemplateView, View
+from rest_framework.renderers import JSONRenderer
+from rest_framework.serializers import ModelSerializer
 
 from core.models import Visit
 from haystack.query import SearchQuerySet
-
-from rest_framework.serializers import ModelSerializer
-from rest_framework.renderers import JSONRenderer
 
 from .forms import MemberForm
 from .models import Member
@@ -23,6 +22,7 @@ from .models import Member
 logger = logging.getLogger("bikeshop")
 
 
+@method_decorator(login_required, name="dispatch")
 class MemberFormView(View):
     def get(self, request, member_id=None):
         try:
@@ -120,6 +120,7 @@ class MemberSignIn(View):
         return JsonResponse(data=json.decode(), safe=False, status=200)
 
 
+@method_decorator(login_required, name="dispatch")
 class Members(TemplateView):
     template_name = "members.html"
 

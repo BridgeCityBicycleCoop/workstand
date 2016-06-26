@@ -9,3 +9,4 @@ whoosh==2.7.4
 git+git://github.com/django-haystack/django-haystack.git
 djangorestframework
 django-webpack-loader
+requests

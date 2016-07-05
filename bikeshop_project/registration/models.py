@@ -63,6 +63,10 @@ class CustomUser(AbstractBaseUser, PermissionsMixin):
     def __str__(self):  # __unicode__ on Python 2
         return self.email
 
+    class Meta:
+        verbose_name = 'User'
+        verbose_name_plural = 'Users'
+
 
 class Member(models.Model):
     user = models.OneToOneField(CustomUser, on_delete=models.CASCADE, null=True)

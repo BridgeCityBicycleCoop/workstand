@@ -28,7 +28,7 @@ def payment_type(pt):
     try:
         return [type for type in types if type[1].lower() == pt.lower()][0]
     except IndexError:
-        return ('UNKNOWN', 'Unknown')
+        return 'UNKNOWN', 'Unknown'
 
 
 def member_import():

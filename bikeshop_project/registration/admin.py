@@ -1,20 +1,20 @@
 from django.contrib import admin
-from .models import Member
+from .models import CustomUser, Member
 from django.contrib.auth.admin import UserAdmin
 from django.contrib.auth.forms import UserChangeForm
 
 
-class MemberChangeForm(UserChangeForm):
+class CustomUserChangeForm(UserChangeForm):
     class Meta(UserChangeForm.Meta):
-        model = Member
+        model = CustomUser
 
 
-class MemberAdmin(UserAdmin):
-    form = MemberChangeForm
+@admin.register(CustomUser)
+class CustomUserAdmin(UserAdmin):
+    form = CustomUserChangeForm
 
-    fieldsets = fieldsets = (
+    fieldsets = (
         (None, {"fields": ("email", "password")}),
-        ("Personal info", {"fields": ("first_name", "last_name")}),
         (
             "Permissions",
             {"fields": ("is_active", "is_superuser", "groups", "user_permissions")},
@@ -25,10 +25,13 @@ class MemberAdmin(UserAdmin):
         (None, {"classes": ("wide",), "fields": ("email", "password1", "password2"),}),
     )
     ordering = ("email",)
-    list_display = ("email", "first_name", "last_name")
+    list_display = ("email",)
     list_filter = ("is_superuser", "is_active", "groups")
-    search_fields = ("email", "first_name", "last_name", "email")
+    search_fields = ("email",)
 
 
-# Register your models here.
-admin.site.register(Member, MemberAdmin)
+@admin.register(Member)
+class MemberAdmin(admin.ModelAdmin):
+    list_display = ("get_full_name",)
+    ordering = ("last_name",)
+    search_fields = ("email", "first_name", "last_name")

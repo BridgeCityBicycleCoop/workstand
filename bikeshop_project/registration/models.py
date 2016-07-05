@@ -6,14 +6,12 @@ from django.contrib.auth.models import (
 from django.db import models
 
 
-class CustomMemberManager(BaseUserManager):
-    def create_user(self, email, first_name, last_name, password=None):
+class CustomUserManager(BaseUserManager):
+    def create_user(self, email, password=None):
         """
         Creates and saves a User with the given email and password.
         :param email: str
         :param password: str
-        :param first_name: str
-        :param last_name: str
         :return: object `CustomUser`
         """
         if not email:
@@ -40,9 +38,44 @@ class CustomMemberManager(BaseUserManager):
         return user
 
 
-class Member(AbstractBaseUser, PermissionsMixin):
+class CustomUser(AbstractBaseUser, PermissionsMixin):
     email = models.EmailField(
         verbose_name="email address", max_length=255, unique=True,
+    )
+    is_admin = models.BooleanField(default=False)
+    is_active = models.BooleanField(default=True)
+
+    objects = CustomUserManager()
+
+    USERNAME_FIELD = "email"
+
+    @property
+    def is_staff(self):
+        # Simplest possible answer: All admins are staff
+        return self.is_admin
+
+    def get_short_name(self):
+        return self.email
+
+    def get_full_name(self):
+        return self.email
+
+    def __str__(self):  # __unicode__ on Python 2
+        return self.email
+
+    class Meta:
+        verbose_name = "User"
+        verbose_name_plural = "Users"
+
+
+class Member(models.Model):
+    user = models.OneToOneField(CustomUser, on_delete=models.CASCADE, null=True)
+    email = models.EmailField(
+        verbose_name="email address",
+        max_length=255,
+        unique=False,
+        null=True,
+        blank=True,
     )
     email_consent = models.BooleanField(default=False)
     first_name = models.CharField(max_length=255, null=False)
@@ -58,12 +91,6 @@ class Member(AbstractBaseUser, PermissionsMixin):
     post_code = models.CharField(max_length=20, null=True, blank=False)
     waiver = models.DateTimeField(null=True, blank=True)
     is_active = models.BooleanField(default=True)
-    is_admin = models.BooleanField(default=False)
-
-    objects = CustomMemberManager()
-
-    USERNAME_FIELD = "email"
-    # REQUIRED_FIELDS = []
 
     @property
     def full_name(self):
@@ -71,19 +98,14 @@ class Member(AbstractBaseUser, PermissionsMixin):
 
     def get_full_name(self):
         # The user is identified by their email address
-        if self.first_name and self.last_name:
-            return "{0} {1}".format(self.first_name, self.last_name)
-        else:
-            return self.email
+        return "{0} {1}".format(self.first_name, self.last_name)
 
     def get_short_name(self):
         # The user is identified by their email address
-        return self.email
+        if self.email:
+            return self.email
+        else:
+            return self.last_name
 
     def __str__(self):  # __unicode__ on Python 2
         return self.email
-
-    @property
-    def is_staff(self):
-        # Simplest possible answer: All admins are staff
-        return self.is_admin

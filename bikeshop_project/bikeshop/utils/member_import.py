@@ -44,7 +44,7 @@ def member_import():
             try:
                 waiver = dateutil.parser.parse(row.get('signed', None))
             except ValueError:
-                dob = None
+                waiver = None
 
             try:
                 renewed_at = dateutil.parser.parse(row.get('timestamp', None))

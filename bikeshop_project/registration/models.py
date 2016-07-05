@@ -98,14 +98,14 @@ class Member(models.Model):
 
     def get_full_name(self):
         # The user is identified by their email address
-        if self.first_name and self.last_name:
-            return "{0} {1}".format(self.first_name, self.last_name)
-        else:
-            return self.email
+        return "{0} {1}".format(self.first_name, self.last_name)
 
     def get_short_name(self):
         # The user is identified by their email address
-        return self.user.email
+        if self.email:
+            return self.email
+        else:
+            return self.last_name
 
     def __str__(self):  # __unicode__ on Python 2
-        return self.user.email
+        return self.email

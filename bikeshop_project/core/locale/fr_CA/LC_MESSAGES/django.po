@@ -1,0 +1,239 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: PACKAGE VERSION\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2016-07-05 03:43+0000\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"Language: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+#. Translators: This is a text field for ethnic and cultural self identification.
+#. Translators: This is a text field for entering genders other than male and female
+#: core/forms.py:17 core/forms.py:20 core/forms.py:43 core/forms.py:50
+msgid "Other"
+msgstr ""
+
+#: core/forms.py:40
+msgid "First Nations; Métis; or Inuit"
+msgstr ""
+
+#: core/forms.py:41
+msgid "Visible Minority"
+msgstr ""
+
+#: core/forms.py:42
+msgid "Caucasian"
+msgstr ""
+
+#: core/forms.py:48
+msgid "Male"
+msgstr ""
+
+#: core/forms.py:49
+msgid "Female"
+msgstr ""
+
+#: core/templates/membership_form.html:10
+msgid "New Membership"
+msgstr ""
+
+#: core/templates/membership_form.html:15
+msgid ""
+"The Bridge City Bicycle Co-operative aims to be a safe and respectful "
+"environment geared towards education, empowerment and community-building. In "
+"order to do so we need your input and support."
+msgstr ""
+
+#: core/templates/membership_form.html:17
+msgid "Member Privileges "
+msgstr ""
+
+#: core/templates/membership_form.html:19
+msgid "Access to the BCBC tools, stands, and workspace "
+msgstr ""
+
+#: core/templates/membership_form.html:20
+msgid ""
+"Opportunity to engage in decisions and help to build and develop the "
+"community's vision"
+msgstr ""
+
+#: core/templates/membership_form.html:21
+msgid ""
+"The Bridge City Bicycle Co-operative (BCBC) values the trust of its "
+"volunteers, staff and members and is committed to protecting the privacy of "
+"all personal information entrusted to it. As such, collected information "
+"will be used in accordance with our privacy policy outlined on our website "
+"and in our shop."
+msgstr ""
+
+#: core/templates/membership_form.html:22
+msgid "Access to friendly mechanical assistance and education when available"
+msgstr ""
+
+#: core/templates/membership_form.html:30
+msgid "Member Responsibilities"
+msgstr ""
+
+#: core/templates/membership_form.html:31
+msgid "Respect and Maintaining a Safe Space"
+msgstr ""
+
+#: core/templates/membership_form.html:33
+msgid "Respect others and self"
+msgstr ""
+
+#: core/templates/membership_form.html:34
+msgid "Help others"
+msgstr ""
+
+#: core/templates/membership_form.html:35
+msgid ""
+"Racist, ableist, ageist, homophobic, sexist, and classist behavior and "
+"language will not be tolerated"
+msgstr ""
+
+#: core/templates/membership_form.html:36
+msgid ""
+"The BCBC seeks to build a healthy lifestyle community, and behavior seen as "
+"hindering this objective will not be tolerated"
+msgstr ""
+
+#: core/templates/membership_form.html:37
+msgid "Ask for help: With tools, processes, and even emotions"
+msgstr ""
+
+#: core/templates/membership_form.html:41
+msgid "I acknowledge the BCBC is a safe space and agree to maintain it."
+msgstr ""
+
+#: core/templates/membership_form.html:45
+msgid "Respect the Community"
+msgstr ""
+
+#: core/templates/membership_form.html:47
+msgid "Build positive relationships with Community Members"
+msgstr ""
+
+#: core/templates/membership_form.html:48
+msgid ""
+"Build positive relationships with CNYC employees, volunteers, and patrons"
+msgstr ""
+
+#: core/templates/membership_form.html:52
+msgid "I will respect the community."
+msgstr ""
+
+#: core/templates/membership_form.html:56
+msgid "Giving back"
+msgstr ""
+
+#: core/templates/membership_form.html:58
+msgid ""
+"Our services are free and Members are encouraged to contribute in any way "
+"they can. Our vibrancy comes from the volunteer work of a large community "
+"with diverse skills and passions. There are so many ways to be a part of "
+"this community, regardless of whether or not you know how to change a tire "
+"(yet!). Ask how you can help out or get in touch with our volunteer "
+"coordinator"
+msgstr ""
+
+#: core/templates/membership_form.html:62
+msgid "I acknowledge that giving back is important"
+msgstr ""
+
+#: core/templates/membership_form.html:66
+msgid "Respect the Space"
+msgstr ""
+
+#: core/templates/membership_form.html:68
+msgid "Replace tools when not using them so that others can play too."
+msgstr ""
+
+#: core/templates/membership_form.html:69
+msgid "Do not steal or borrow articles within the space for personal use."
+msgstr ""
+
+#: core/templates/membership_form.html:70
+msgid ""
+"If you don't know what it is, how to use it, or where it goes, ask someone"
+msgstr ""
+
+#: core/templates/membership_form.html:71
+msgid ""
+"Ensure you always leave time to clean up after yourself and others, and then "
+"do so"
+msgstr ""
+
+#: core/templates/membership_form.html:72
+msgid ""
+"If you have to leave in the middle of a project, put pieces into a small bag "
+"and attach it to the bike"
+msgstr ""
+
+#: core/templates/membership_form.html:73
+msgid ""
+"Personal projects may be kept at the BCBC for a maximum of one day; however, "
+"this is highly discouraged due to lack of space and the concern for theft."
+msgstr ""
+
+#: core/templates/membership_form.html:74
+msgid ""
+"Label your bike with your name, phone number, and the last date you worked "
+"on it."
+msgstr ""
+
+#: core/templates/membership_form.html:75
+msgid ""
+"Do not force tools and use them only for their intended use. If you need "
+"help or guidance, ask someone! It’s what we’re here for!"
+msgstr ""
+
+#: core/templates/membership_form.html:79
+msgid "I will respect the shop."
+msgstr ""
+
+#: core/templates/membership_form.html:83
+msgid "Voluntary Self Identification"
+msgstr ""
+
+#: core/templates/membership_form.html:84
+msgid ""
+"We want to make sure that all members of our community, regardless of race, "
+"ethnicity, and gender are able to participate fully in the BCBC. Please "
+"share information about your race and/or ethnicity so that we can track how "
+"well we are including all communities and whether there may be barriers to "
+"certain groups’ participation. Thank you! Do you identify as: (In each "
+"category, check all that apply)"
+msgstr ""
+
+#: core/templates/membership_form.html:109
+msgid "Gender Identification"
+msgstr ""
+
+#: core/templates/membership_form.html:126
+msgid "Renewed"
+msgstr ""
+
+#: core/templates/membership_form.html:130
+msgid "Incorrect date."
+msgstr ""
+
+#: core/templates/membership_form.html:136
+msgid "Payment Type"
+msgstr ""
+
+#: core/templates/membership_form.html:146
+msgctxt "Button action"
+msgid "Submit"
+msgstr ""

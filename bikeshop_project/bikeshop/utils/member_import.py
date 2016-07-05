@@ -54,7 +54,7 @@ def member_import():
 
             try:
                 new_member = Member.objects.create(
-                    email=row.get("email", None) or email_generator(),
+                    email=row.get("email", None),
                     email_consent=row.get("email_consent", False),
                     first_name=row.get("first_name"),
                     last_name=row.get("last_name"),

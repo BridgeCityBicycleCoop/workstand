@@ -122,7 +122,7 @@ STATICFILES_DIRS = [
 STATIC_ROOT = "static"
 STATIC_URL = "/static/"
 
-AUTH_USER_MODEL = "registration.Member"
+AUTH_USER_MODEL = "registration.CustomUser"
 
 COMPRESS_PRECOMPILERS = (("text/x-scss", "django_libsass.SassCompiler"),)
 

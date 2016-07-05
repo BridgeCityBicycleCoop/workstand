@@ -22,10 +22,14 @@ def email_generator():
     return "{0}.{1}@example.com".format(*local)
 
 
-def payment_type(pt):
-    types = Payment.payment_choices
+def get_payment_type(pt):
+    payment_types = Payment.payment_choices
     try:
-        return [type for type in types if type[1].lower() == pt.lower()][0]
+        return [
+            payment_type
+            for payment_type in payment_types
+            if payment_type[1].lower() == pt.lower()
+        ][0]
     except IndexError:
         return "UNKNOWN", "Unknown"
 
@@ -71,10 +75,10 @@ def member_import():
                 )
 
                 payment = Payment.objects.create(
-                    type=payment_type(row.get("payment"))[0],
+                    type=get_payment_type(row.get("payment"))[0],
                 )
 
-                membership = Membership.objects.create(
+                Membership.objects.create(
                     renewed_at=renewed_at,
                     self_identification=row.get("self_identification", None),
                     gender=row.get("gender", None),

@@ -1,21 +1,21 @@
 {% extends 'dashboard.html' %}
-{% load staticfiles %}
+{% load staticfiles i18n %}
 
 {% block content %}
     <div class="mdl-cell mdl-cell--8-col">
-        <h1>New Membership</h1>
+        <h1>{% blocktrans %}New Membership{% endblocktrans %}</h1>
         <form method="post">
         <formset>
         {% csrf_token %}
         {{ membership_form.member }}
-        <p>The Bridge City Bicycle Co­operative aims to be a safe and respectful environment geared towards education, empowerment and community­building. In order to do so we need your input and support.</p>
+        <p>{% blocktrans %}The Bridge City Bicycle Co-operative aims to be a safe and respectful environment geared towards education, empowerment and community-building. In order to do so we need your input and support.{% endblocktrans %}</p>
 
-        <h4>Member Privileges</h4>
+        <h4>{% blocktrans %}Member Privileges {% endblocktrans %}</h4>
         <ul>
-            <li>Access to the BCBC tools, stands, and workspace</li>
-            <li>Access to friendly mechanical assistance and education when available</li>
-            <li>Opportunity to engage in decisions and help to build and develop the community's vision</li>
-            <li>The Bridge City Bicycle Co­operative (BCBC) values the trust of its volunteers, staff and members and is committed to protecting the privacy of all personal information entrusted to it. As such, collected information will be used in accordance with our privacy policy outlined on our website and in our shop.</li>
+            <li>{% blocktrans %}Access to the BCBC tools, stands, and workspace {% endblocktrans %}</li>
+            <li>{% blocktrans %}Opportunity to engage in decisions and help to build and develop the community's vision{% endblocktrans %}</li>
+            <li>{% blocktrans %}The Bridge City Bicycle Co-operative (BCBC) values the trust of its volunteers, staff and members and is committed to protecting the privacy of all personal information entrusted to it. As such, collected information will be used in accordance with our privacy policy outlined on our website and in our shop.{% endblocktrans %}</li>
+            <li>{% blocktrans %}Access to friendly mechanical assistance and education when available{% endblocktrans %}</li>
         </ul>
         {% if membership_form.non_field_errors %}
             <div>
@@ -23,65 +23,65 @@
             </div>
         {% endif %}
         <div>
-            <h4>Member Responsibilities</h4>
-            <h5>Respect and Maintaining a Safe Space</h5>
+            <h4>{% blocktrans %}Member Responsibilities{% endblocktrans %}</h4>
+            <h5>{% blocktrans %}Respect and Maintaining a Safe Space{% endblocktrans %}</h5>
             <ul>
-                <li>Respect others and self</li>
-                <li>Help others</li>
-                <li>Racist, ableist, ageist, homophobic, sexist, and classist behavior and language will not be tolerated</li>
-                <li>The BCBC seeks to build a healthy lifestyle community, and behavior seen as hindering this objective will not be tolerated</li>
-                <li>Ask for help: With tools, processes, and even emotions</li>
+                <li>{% blocktrans %}Respect others and self{% endblocktrans %}</li>
+                <li>{% blocktrans %}Help others{% endblocktrans %}</li>
+                <li>{% blocktrans %}Racist, ableist, ageist, homophobic, sexist, and classist behavior and language will not be tolerated{% endblocktrans %}</li>
+                <li>{% blocktrans %}The BCBC seeks to build a healthy lifestyle community, and behavior seen as hindering this objective will not be tolerated{% endblocktrans %}</li>
+                <li>{% blocktrans %}Ask for help: With tools, processes, and even emotions{% endblocktrans %}</li>
             </ul>
             <label class="mdl-checkbox mdl-js-checkbox mdl-js-ripple-effect" for="{{ membership_form.safe_space.id_for_label }}">
                 {{ membership_form.safe_space }}
-                <span class="mdl-checkbox__label">I acknowledge the BCBC is a safe space and agree to maintain it.</span>
+                <span class="mdl-checkbox__label">{% blocktrans %}I acknowledge the BCBC is a safe space and agree to maintain it.{% endblocktrans %}</span>
             </label>
         </div>
         <div>
-            <h5>Respect the Community</h5>
+            <h5>{% blocktrans %}Respect the Community{% endblocktrans %}</h5>
             <ul>
-                <li>Build positive relationships with Community Members</li>
-                <li>Build positive relationships with CNYC employees, volunteers, and patrons</li>
+                <li>{% blocktrans %}Build positive relationships with Community Members{% endblocktrans %}</li>
+                <li>{% blocktrans %}Build positive relationships with CNYC employees, volunteers, and patrons{% endblocktrans %}</li>
             </ul>
             <label class="mdl-checkbox mdl-js-checkbox mdl-js-ripple-effect" for="{{ membership_form.respect_community.id_for_label }}">
                 {{ membership_form.respect_community }}
-                <span class="mdl-checkbox__label">I will respect the community.</span>
+                <span class="mdl-checkbox__label">{% blocktrans %}I will respect the community.{% endblocktrans %}</span>
             </label>
         </div>
         <div>
-            <h5>Giving back</h5>
+            <h5>{% blocktrans %}Giving back{% endblocktrans %}</h5>
             <p>
-                Our services are free and Members are encouraged to contribute in any way they can. Our vibrancy comes from the volunteer work of a large community with diverse skills and passions. There are so many ways to be a part of this community, regardless of whether or not you know how to change a tire (yet!). Ask how you can help out or get in touch with our volunteer coordinator (<a href="mailto:volunteer@bridgecitybicyclecoop.com">volunteer@bridgecitybicyclecoop.com</a>)
+                {% blocktrans %}Our services are free and Members are encouraged to contribute in any way they can. Our vibrancy comes from the volunteer work of a large community with diverse skills and passions. There are so many ways to be a part of this community, regardless of whether or not you know how to change a tire (yet!). Ask how you can help out or get in touch with our volunteer coordinator{% endblocktrans %} (<a href="mailto:volunteer@bridgecitybicyclecoop.com">volunteer@bridgecitybicyclecoop.com</a>)
             </p>
             <label class="mdl-checkbox mdl-js-checkbox mdl-js-ripple-effect" for="{{ membership_form.give_back.id_for_label }}">
                 {{ membership_form.give_back }}
-                <span class="mdl-checkbox__label">I acknowledge that giving back is important</span>
+                <span class="mdl-checkbox__label">{% blocktrans %}I acknowledge that giving back is important{% endblocktrans %}</span>
             </label>
         </div>
         <div>
-            <h5>Respect the Space</h5>
+            <h5>{% blocktrans %}Respect the Space{% endblocktrans %}</h5>
             <ul>
-                <li>Replace tools when not using them so that others can play too.</li>
-                <li>Do not steal or borrow articles within the space for personal use.</li>
-                <li>If you don't know what it is, how to use it, or where it goes, ask someone</li>
-                <li>Ensure you always leave time to clean up after yourself and others, and then do so</li>
-                <li>If you have to leave in the middle of a project, put pieces into a small bag and attach it to the bike</li>
-                <li>Personal projects may be kept at the BCBC for a maximum of one day; however, this is highly discouraged due to lack of space and the concern for theft.</li>
-                <li>Label your bike with your name, phone number, and the last date you worked on it.</li>
-                <li>Do not force tools and use them only for their intended use. If you need help or guidance, ask someone! It’s what we’re here for!</li>
+                <li>{% blocktrans %}Replace tools when not using them so that others can play too.{% endblocktrans %}</li>
+                <li>{% blocktrans %}Do not steal or borrow articles within the space for personal use.{% endblocktrans %}</li>
+                <li>{% blocktrans %}If you don't know what it is, how to use it, or where it goes, ask someone{% endblocktrans %}</li>
+                <li>{% blocktrans %}Ensure you always leave time to clean up after yourself and others, and then do so{% endblocktrans %}</li>
+                <li>{% blocktrans %}If you have to leave in the middle of a project, put pieces into a small bag and attach it to the bike{% endblocktrans %}</li>
+                <li>{% blocktrans %}Personal projects may be kept at the BCBC for a maximum of one day; however, this is highly discouraged due to lack of space and the concern for theft.{% endblocktrans %}</li>
+                <li>{% blocktrans %}Label your bike with your name, phone number, and the last date you worked on it.{% endblocktrans %}</li>
+                <li>{% blocktrans %}Do not force tools and use them only for their intended use. If you need help or guidance, ask someone! It’s what we’re here for!{% endblocktrans %}</li>
             </ul>
             <label class="mdl-checkbox mdl-js-checkbox mdl-js-ripple-effect" for="{{ membership_form.respect_shop.id_for_label }}">
                 {{ membership_form.respect_shop }}
-                <span class="mdl-checkbox__label">I will respect the shop.</span>
+                <span class="mdl-checkbox__label">{% blocktrans %}I will respect the shop.{% endblocktrans %}</span>
             </label>
         </div>
                 <div class="">
-            <h2 class="template__header mdl-typography--title">Voluntary Self Identification</h2>
-            <p>We want to make sure that all members of our community, regardless of race, ethnicity, and gender
+            <h2 class="template__header mdl-typography--title">{% blocktrans %}Voluntary Self Identification{% endblocktrans %}</h2>
+            <p>{% blocktrans trimmed %}We want to make sure that all members of our community, regardless of race, ethnicity, and gender
                 are able to participate fully in the BCBC. Please share information about your race and/or
                 ethnicity so that we can track how well we are including all communities and whether there may be
                 barriers to certain groups’ participation. Thank you! Do you identify as: (In each category, check
-                all that apply)</p>
+                all that apply){% endblocktrans %}</p>
             {% for checkbox in membership_form.self_identification %}
             <label class="mdl-radio mdl-js-radio mdl-js-ripple-effect" for="{{ checkbox.id_for_label }}">
                 {{ checkbox }}
@@ -102,7 +102,7 @@
             {% endif %}
         </div>
         <div class="">
-            <h3 class="template__header mdl-typography--body-2">Gender Identification</h3>
+            <h3 class="template__header mdl-typography--body-2">{% blocktrans %}Gender Identification{% endblocktrans %}</h3>
             {% for checkbox in membership_form.gender %}
             <label class="mdl-radio mdl-js-radio mdl-js-ripple-effect" for="{{ checkbox.id_for_label }}">
                 {{ checkbox }}
@@ -119,17 +119,17 @@
         </div>
         <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label {% if membership_form.renewed_at.errors %}is-invalid{% endif %}">
             {{ membership_form.renewed_at }}
-            <label class="mdl-textfield__label" for="{{ membership_form.renewed_at.id_for_label }}">{{ membership_form.renewed_at.label }}</label>
+            <label class="mdl-textfield__label" for="{{ membership_form.renewed_at.id_for_label }}">{% trans 'Renewed' %}</label>
             {% if membership_form.renewed_at %}
             <span class="mdl-textfield__error">{{ membership_form.renewed_at.errors }}</span>
             {% else %}
-            <span class="mdl-textfield__error">Incorrect date.</span>
+            <span class="mdl-textfield__error">{% blocktrans %}Incorrect date.{% endblocktrans %}</span>
             {% endif %}
         </div>
         </formset>
         <formset>
             <div class="">
-                <h3 class="template__header">Payment Type</h3>
+                <h3 class="template__header">{% blocktrans %}Payment Type{% endblocktrans %}</h3>
                 {% for checkbox in payment_form.type %}
                 <label class="mdl-radio mdl-js-radio mdl-js-ripple-effect" for="{{ checkbox.id_for_label }}">
                     {{ checkbox }}
@@ -139,7 +139,7 @@
             </div>
         </formset>
         <div>
-            <button disabled="true" id="submit" type="submit" class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--colored">Submit</button>
+            <button disabled="true" id="submit" type="submit" class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--colored">{% trans 'Submit' context 'Button action' %}</button>
         </div>
         </form>
     </div>

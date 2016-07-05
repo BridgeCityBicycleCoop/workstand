@@ -1,5 +1,8 @@
 import logging
-from django.forms import BooleanField, CharField, CheckboxInput, RadioSelect, ModelForm, TextInput, HiddenInput
+
+from django.forms import (
+    BooleanField, CharField, CheckboxInput, ChoiceField, HiddenInput, ModelForm, RadioSelect, TextInput)
+from django.utils.translation import ugettext as _
 
 from registration.models import Member
 
@@ -10,9 +13,11 @@ logger = logging.getLogger('bikeshop')
 
 class MembershipForm(ModelForm):
     member = CharField(required=True, widget=HiddenInput())
-    self_ident_other = CharField(required=False, label='Self identification',
+    # Translators: This is a text field for ethnic and cultural self identification.
+    self_ident_other = CharField(required=False, label=_('Other'),
                                  widget=TextInput(attrs={'class': 'mdl-textfield__input'}))
-    gender_other = CharField(required=False, label='Other', widget=TextInput(attrs={'class': 'mdl-textfield__input'}))
+    # Translators: This is a text field for entering genders other than male and female
+    gender_other = CharField(required=False, label=_('Other'), widget=TextInput(attrs={'class': 'mdl-textfield__input'}))
     safe_space = BooleanField(required=True, widget=CheckboxInput(
         attrs={'class': 'mdl-checkbox__input'}
     ))
@@ -30,17 +35,19 @@ class MembershipForm(ModelForm):
         model = Membership
         fields = ['renewed_at', 'self_identification', 'gender']
 
+        # Translators: Choices for ethnic and cultural self-identification
         self_ident_choices = (
-            ('First Nations; Métis; or Inuit', 'First Nations; Métis; or Inuit'),
-            ('visible minority', 'Visible Minority'),
-            ('caucasian', 'Caucasian'),
-            ('other', 'Other')
+            ('First Nations; Métis; or Inuit', _('First Nations; Métis; or Inuit')),
+            ('visible minority', _('Visible Minority')),
+            ('caucasian', _('Caucasian')),
+            ('other', _('Other'))
         )
 
+        # Translators: Choices for gender self-identification
         gender_choices = (
-            ('male', 'Male'),
-            ('female', 'Female'),
-            ('other', 'Other')
+            ('male', _('Male')),
+            ('female', _('Female')),
+            ('other', _('Other'))
         )
 
         widgets = {

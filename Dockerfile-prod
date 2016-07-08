@@ -1,0 +1,13 @@
+FROM python:3.5
+RUN apt-get update
+RUN apt-get install -y nodejs npm
+RUN ln -s /usr/bin/nodejs /usr/bin/node
+RUN mkdir /code
+WORKDIR /code
+RUN mkdir requirements
+ADD bikeshop_project /code
+COPY requirements /code/requirements
+RUN pip install -r requirements/production.txt
+RUN npm install
+RUN npm run build-production
+RUN DJANGO_SETTINGS_MODULE=bikeshop.settings.production python manage.py collectstatic --no-input

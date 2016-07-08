@@ -1,5 +1,3 @@
 -r base.txt
 -r testing.txt
 django-debug-toolbar
-PyYAML
-gunicorn==19.4.5

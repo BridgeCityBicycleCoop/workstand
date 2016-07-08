@@ -1,4 +1,0 @@
----
-- name: Configure supvervisor to run {{ app_name }}
-  action: template src={{ group_names[0] }}/supervisor-program.conf dest=/etc/supervisor/conf.d/{{ app_name }}.conf
-  notify: restart supervisor

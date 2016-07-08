@@ -4,23 +4,12 @@ from .base import *
 # SECURITY WARNING: keep the secret key used in production secret!
 WSGI_APPLICATION = 'bikeshop.wsgi.application'
 
-SECRET_KEY = os.environ['DJANGO_SECRET_KEY']
+SECRET_KEY = os.environ.get('DJANGO_SECRET_KEY', 'secret')
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = False
 
 ALLOWED_HOSTS = ['shop.bcbc.bike']
-
-DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.postgresql',
-        'NAME': 'bikeshop_production',
-        'USER': 'bikeshop',
-        'PASSWORD': os.environ['DJANGO_DB_PASSWORD'],
-        'HOST': '127.0.0.1',
-        'PORT': '5432',
-    }
-}
 
 LOGGING = {
     'version': 1,

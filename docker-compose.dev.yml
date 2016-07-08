@@ -1,0 +1,15 @@
+version: "2"
+services:
+  workstand:
+    build:
+      context: ./Dockerfile
+    command: "bash -c 'npm run watch & python manage.py runserver 0.0.0.0:8000'"
+    ports:
+      - "8000:8000"
+      - "3000:3000"
+    volumes:
+      - ./bikeshop_project:/code
+  redis:
+    restart: always
+  db:
+    restart: always

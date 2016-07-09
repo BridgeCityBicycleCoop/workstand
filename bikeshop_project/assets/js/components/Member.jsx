@@ -13,7 +13,7 @@ export default class Member extends React.Component {
                 errorText={this.props.error}
                 hintText="Search members"
                 searchText={this.props.searchText}
-                
+                fullWidth={true}
             />
         );
     }

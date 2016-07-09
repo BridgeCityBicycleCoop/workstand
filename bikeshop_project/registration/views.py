@@ -1,5 +1,6 @@
 import json
 import logging
+from datetime import timedelta
 
 from django.contrib.auth.decorators import login_required
 from django.core.urlresolvers import reverse
@@ -108,8 +109,8 @@ class MemberSignIn(View):
         return JsonResponse(data=data, safe=False, status=201)
 
     def get(self, request):
-        start = timezone.now().replace(hour=0, minute=0, second=0, microsecond=0)
-        end = start.replace(hour=23, minute=59, second=59, microsecond=999999)
+        start = timezone.now()
+        end = start + timedelta(hours=4)
         visits = Visit.objects.filter(
             created_at__lte=end, created_at__gte=start
         ).prefetch_related()

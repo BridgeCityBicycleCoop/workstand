@@ -92,10 +92,6 @@ class Member(models.Model):
     waiver = models.DateTimeField(null=True, blank=True)
     is_active = models.BooleanField(default=True)
 
-    @property
-    def full_name(self):
-        return "{0} {1}".format(self.first_name, self.last_name)
-
     def get_full_name(self):
         # The user is identified by their email address
         return "{0} {1}".format(self.first_name, self.last_name)

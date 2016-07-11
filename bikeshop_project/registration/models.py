@@ -1,4 +1,5 @@
-from django.contrib.auth.models import AbstractBaseUser, BaseUserManager, PermissionsMixin
+from django.contrib.auth.models import (AbstractBaseUser, BaseUserManager,
+                                        PermissionsMixin)
 from django.db import models
 
 
@@ -69,14 +70,15 @@ class CustomUser(AbstractBaseUser, PermissionsMixin):
 
 
 class Member(models.Model):
-    user = models.OneToOneField(CustomUser, on_delete=models.CASCADE, null=True)
+    user = models.OneToOneField(CustomUser, on_delete=models.CASCADE,
+                                null=True)
     email = models.EmailField(
         verbose_name='email address',
         max_length=255,
         unique=False,
         null=True,
         blank=True,
-    )
+        )
     email_consent = models.BooleanField(default=False)
     first_name = models.CharField(max_length=255, null=False)
     last_name = models.CharField(max_length=255, null=False)

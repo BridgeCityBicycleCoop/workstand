@@ -16,7 +16,7 @@ class CustomUserManager(BaseUserManager):
 
         user = self.model(
             email=self.normalize_email(email),
-        )
+            )
 
         user.set_password(password)
         user.save(using=self._db)
@@ -42,7 +42,7 @@ class CustomUser(AbstractBaseUser, PermissionsMixin):
         verbose_name='email address',
         max_length=255,
         unique=True,
-    )
+        )
     is_admin = models.BooleanField(default=False)
     is_active = models.BooleanField(default=True)
 

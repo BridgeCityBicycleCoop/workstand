@@ -10,8 +10,8 @@ class TestCustomUserManager(TestCase):
         self.assertTrue(new_user.pk)
 
     def test_create_user_no_email(self):
-        with self.assertRaises(ValueError) as context_manager:
-            new_user = CustomUser.objects.create_user(email=None)
+        with self.assertRaises(ValueError):
+            CustomUser.objects.create_user(email=None)
 
     def test_create_superuser(self):
         new_user = CustomUser.objects\

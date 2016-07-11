@@ -1,7 +1,7 @@
 from django.test import TestCase
 
 
-from .models import CustomUser, Member
+from ..models import CustomUser, Member
 
 
 class TestCustomUserManager(TestCase):

@@ -10,3 +10,5 @@ bikeshop_project/static/CACHE
 bikeshop_project/vendor
 bikeshop_project/assets/bundles
 bikeshop_project/webpack-stats.json
+/bikeshop_project/htmlcov
+/bikeshop_project/.coverage

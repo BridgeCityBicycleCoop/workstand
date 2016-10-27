@@ -9,6 +9,10 @@ ADD bikeshop_project /code
 COPY requirements /code/requirements
 RUN pip install -r requirements/development.txt
 RUN npm install
+RUN npm install -g bower
+COPY bower.json
+RUN bower install
+RUN python manage.py migrate
 EXPOSE 8000:8000
 EXPOSE 3000:3000
 CMD python manage.py runserver 0.0.0.0:8000

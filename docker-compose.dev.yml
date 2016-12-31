@@ -3,13 +3,29 @@ services:
   workstand:
     build:
       context: .
-    command: "bash -c 'npm run watch & python manage.py runserver 0.0.0.0:8000'"
+    command: "bash -c 'python manage.py runserver 0.0.0.0:8000'"
     ports:
       - "8000:8000"
-      - "3000:3000"
+    depends_on:
+      - redis
+      - db
+      - webpack
+    links:
+      - redis
+      - db
     volumes:
       - ./bikeshop_project:/code
   redis:
     restart: always
   db:
     restart: always
+  webpack:
+    build:
+      context: .
+      dockerfile: Dockerfile-webpack
+    command: "npm run watch"
+    ports:
+      - "3000:3000"
+    restart: always
+    volumes:
+      - ./bikeshop_project:/code

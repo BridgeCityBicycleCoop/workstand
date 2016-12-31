@@ -1,3 +1,4 @@
+import sys
 from .base import *
 
 
@@ -14,10 +15,13 @@ DATABASES = {
         'ENGINE': 'django.db.backends.postgresql',
         'NAME': 'postgres',
         'USER': 'postgres',
-        'HOST': 'db',
+        'HOST': 'workstand_db_1',
         'PORT': '5432',
     }
 }
+
+if 'test' in sys.argv or 'test_coverage' in sys.argv: #Covers regular testing and django-coverage
+    DATABASES['default']['ENGINE'] = 'django.db.backends.sqlite3'
 
 LOGGING = {
     'version': 1,
@@ -45,9 +49,11 @@ LOGGING = {
     },
 }
 
-INSTALLED_APPS += [
-    'debug_toolbar'
-]
+# INSTALLED_APPS += [
+#     'debug_toolbar'
+# ]
+
+# MIDDLEWARE_CLASSES += ['debug_toolbar.middleware.DebugToolbarMiddleware']
 
 # Don't worry about IP addresses, just show the toolbar.
 DEBUG_TOOLBAR_CONFIG = {

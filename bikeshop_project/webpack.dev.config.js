@@ -7,13 +7,13 @@ var config = require('./webpack.base.config.js')
 
 // Use webpack dev server
 config.entry = [
-    'webpack-dev-server/client?http://localhost:3000',
+    'webpack-dev-server/client?http://webpack.docker:3000',
     'webpack/hot/only-dev-server',
     './assets/js/index'
 ]
 
 // override django's STATIC_URL for webpack bundles
-config.output.publicPath = 'http://localhost:3000/assets/bundles/'
+config.output.publicPath = 'http://webpack.docker:3000/assets/bundles/'
 
 // Add HotModuleReplacementPlugin and BundleTracker plugins
 config.plugins = config.plugins.concat([

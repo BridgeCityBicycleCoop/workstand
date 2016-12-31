@@ -14,6 +14,7 @@ export default class Member extends React.Component {
                 hintText="Search members"
                 searchText={this.props.searchText}
                 fullWidth={true}
+                textFieldStyle={{textAlign: 'center', fontSize: '32px', lineHeight: '48px'}}
             />
         );
     }

@@ -6,7 +6,7 @@ django-libsass==0.6
 django_compressor==2.0
 python-dateutil==2.5.3
 whoosh==2.7.4
-git+git://github.com/django-haystack/django-haystack.git
+django-haystack==2.5.1
 djangorestframework
 django-webpack-loader
 requests

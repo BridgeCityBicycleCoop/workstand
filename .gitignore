@@ -12,3 +12,5 @@ bikeshop_project/assets/bundles
 bikeshop_project/webpack-stats.json
 /bikeshop_project/htmlcov
 /bikeshop_project/.coverage
+node_modules
+whoosh_index

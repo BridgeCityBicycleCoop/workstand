@@ -8,11 +8,13 @@ from django.test import Client, TestCase
 
 from core.models import Visit
 from model_mommy import mommy
+from copy import copy
 
 from ..models import CustomUser, Member
 from ..views import MemberFormView
 
 logger = logging.getLogger('bikeshop')
+
 
 class TestMemberFormView(TestCase):
     def setUp(self):
@@ -51,9 +53,13 @@ class TestMemberFormView(TestCase):
         url = reverse('member_edit', kwargs=dict(member_id=self.member.id))
         c = Client()
         c.force_login(self.user)
-        member_data = {'first_name': 'First2'}
-        response = c.post(url, member_data)
-        self.assertEqual(response.status_code, 201)
+        member_data = {
+            'first_name': 'First2',
+            'last_name': 'Last',
+            'post_code': 'H0H0H0',
+        }
+        response = c.post(url, member_data, follow=True)
+        self.assertEqual(response.status_code, 200)
         self.assertEqual(response.context['form'].instance.first_name, 'First2')
 
 
@@ -119,7 +125,8 @@ class TestMemberSignIn(TestCase):
         """
         for member in self.members:
             if member is self.members[0]:
-                Visit.objects.create(member=member, purpose=Visit.visit_choices[0], created_at=datetime.now() - timedelta(hours=5))
+                Visit.objects.create(member=member, purpose=Visit.visit_choices[0],
+                                     created_at=datetime.now() - timedelta(hours=5))
             else:
                 Visit.objects.create(member=member, purpose=Visit.visit_choices[0])
 

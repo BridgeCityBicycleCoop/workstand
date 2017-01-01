@@ -49,13 +49,20 @@ LOGGING = {
     },
 }
 
-# INSTALLED_APPS += [
-#     'debug_toolbar'
-# ]
+INSTALLED_APPS += [
+    'corsheaders',
+    # 'debug_toolbar'
+]
 
-# MIDDLEWARE_CLASSES += ['debug_toolbar.middleware.DebugToolbarMiddleware']
+MIDDLEWARE_CLASSES.insert(0, 'django.middleware.common.CommonMiddleware')
+
+# MIDDLEWARE_CLASSES += [
+#     'debug_toolbar.middleware.DebugToolbarMiddleware'
+# ]
 
 # Don't worry about IP addresses, just show the toolbar.
 DEBUG_TOOLBAR_CONFIG = {
     'SHOW_TOOLBAR_CALLBACK': lambda *args: True
 }
+
+CORS_ORIGIN_ALLOW_ALL = True

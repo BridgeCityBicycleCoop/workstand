@@ -66,3 +66,8 @@ class Visit(models.Model):
     member = models.ForeignKey("registration.Member", on_delete=models.CASCADE)
     created_at = models.DateTimeField(auto_now_add=True)
     purpose = models.CharField(max_length=50, choices=visit_choices)
+
+    def __str__(self):
+        return "<Visit purpose: {purpose} created_at: {created_at}>".format(
+            purpose=self.purpose, created_at=self.created_at.isoformat()
+        )

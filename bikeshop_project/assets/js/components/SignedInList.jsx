@@ -30,7 +30,7 @@ export default class SignedInList extends React.Component {
         return (
             <div className="mdl-cell mdl-cell--12-col">
                 <h3>Members signed in</h3>
-                {members}
+                {!!members.length ? members : 'No members currently signed in.'}
             </div>
         );
     }

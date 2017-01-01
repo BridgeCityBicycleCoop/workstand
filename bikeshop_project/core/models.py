@@ -47,13 +47,20 @@ class Payment(models.Model):
 
 
 class Visit(models.Model):
+    VOLUNTEER = "VOLUNTEER"
+    FIX = "FIX"
+    WORKSHOP = "WORKSHOP"
+    VISIT = "VISIT"
+    DONATE = "DONATE"
+    STAFF = "STAFF"
+
     visit_choices = (
-        ("VOLUNTEER", "volunteer"),
-        ("FIX", "fix bike"),  # fix
-        ("WORKSHOP", "workshop"),
-        ("VISIT", "visit"),
-        ("DONATE", "donate"),
-        ("STAFF", "staff"),
+        (VOLUNTEER, "volunteer"),
+        (FIX, "fix bike"),  # fix
+        (WORKSHOP, "workshop"),
+        (VISIT, "visit"),
+        (DONATE, "donate"),
+        (STAFF, "staff"),
     )
 
     member = models.ForeignKey("registration.Member", on_delete=models.CASCADE)

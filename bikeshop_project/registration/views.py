@@ -1,26 +1,22 @@
 import json
-import logging
-from datetime import timedelta
 
 from django.contrib.auth.decorators import login_required
 from django.core.urlresolvers import reverse
 from django.http import HttpResponse, HttpResponseRedirect, JsonResponse
 from django.shortcuts import get_object_or_404
 from django.template.response import TemplateResponse
-from django.utils import timezone
 from django.utils.decorators import method_decorator
 from django.views.decorators.csrf import csrf_exempt
 from django.views.generic import TemplateView, View
+from haystack.query import SearchQuerySet
+from rest_framework import serializers
 from rest_framework.renderers import JSONRenderer
 from rest_framework.serializers import ModelSerializer
 
 from core.models import Visit
-from haystack.query import SearchQuerySet
-
+from registration.utils import signin_member, get_signed_in_members
 from .forms import MemberForm
 from .models import Member
-
-logger = logging.getLogger('bikeshop')
 
 
 @method_decorator(login_required, name='dispatch')
@@ -69,16 +65,22 @@ class MemberSearchView(View):
 
 
 class MemberSerializer(ModelSerializer):
+    first_name = serializers.CharField(allow_blank=True, required=False)
+    last_name = serializers.CharField(allow_blank=True, required=False)
+
     class Meta:
         model = Member
-        fields = ('full_name', 'email', 'id')
+        fields = ('first_name', 'last_name', 'email', 'id')
+
 
 class VisitSerializer(ModelSerializer):
     member = MemberSerializer()
+
     class Meta:
         model = Visit
         fields = ('created_at', 'purpose', 'member')
         depth = 1
+
 
 class MemberSignIn(View):
     @method_decorator(csrf_exempt)
@@ -87,21 +89,17 @@ class MemberSignIn(View):
 
     def post(self, request):
         member = get_object_or_404(Member, id=request.POST.get('id'))
-        Visit.objects.create(member=member, purpose=request.POST.get('purpose'))
-        data = json.dumps(dict(results=dict(id=member.id)))
+        visit = signin_member(member, request.POST.get('purpose'))
+        data = json.dumps(dict(results=dict(id=member.id, created_at=visit.created_at.isoformat())))
 
         return JsonResponse(data=data, safe=False, status=201)
 
     def get(self, request):
-        start = timezone.now()
-        end = start + timedelta(hours=4)
-        visits = Visit.objects.filter(created_at__lte=end,
-                                      created_at__gte=start).prefetch_related()
-
+        visits = get_signed_in_members().prefetch_related()
         serializer = VisitSerializer(visits, many=True)
-        json = JSONRenderer().render(serializer.data)
+        results_json = JSONRenderer().render(serializer.data)
 
-        return JsonResponse(data=json.decode(), safe=False, status=200)
+        return JsonResponse(data=results_json.decode(), safe=False, status=200)
 
 
 @method_decorator(login_required, name='dispatch')

@@ -28,7 +28,7 @@ export default class SignedInList extends React.Component {
         });
         
         return (
-            <div>
+            <div className="mdl-cell mdl-cell--12-col">
                 <h3>Members signed in</h3>
                 {members}
             </div>

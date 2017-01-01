@@ -9,15 +9,19 @@ export default class SignedInList extends React.Component {
         this.componentWillUnmount = this.componentWillUnmount.bind(this);
         this.tick = this.tick.bind(this);
     }
+
     componentDidMount () {
         this.timer = setInterval(this.tick, 50);
     }
+
     componentWillUnmount () {
         clearInterval(this.timer);
     }
+
     tick () {
         this.setState({tick: this.state.tick++});
     }
+
     render () {
         let members = this.props.members.map((member) => {
             return <ListItem key={member.id} primaryText={member.text} secondaryText={`${member.purpose} – ${member.at.fromNow()}`} />

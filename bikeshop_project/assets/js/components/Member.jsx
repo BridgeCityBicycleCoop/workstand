@@ -15,6 +15,7 @@ export default class Member extends React.Component {
                 searchText={this.props.searchText}
                 fullWidth={true}
                 textFieldStyle={{textAlign: 'center', fontSize: '32px', lineHeight: '48px'}}
+                tabIndex={this.props.tabIndex}
             />
         );
     }

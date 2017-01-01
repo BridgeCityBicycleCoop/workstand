@@ -9,6 +9,7 @@ export default class Purpose extends React.Component {
               value={this.props.default}
               onChange={this.props.handleChange.bind(this)}
               fullWidth={true}
+              tabIndex={this.props.tabIndex}
               >
                 <MenuItem value={'VOLUNTEER'} primaryText="Volunteer" />
                 <MenuItem value={'FIX'} primaryText="Fix" />

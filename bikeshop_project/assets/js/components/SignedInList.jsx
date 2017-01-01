@@ -23,8 +23,12 @@ export default class SignedInList extends React.Component {
     }
 
     render () {
-        let members = this.props.members.map((member) => {
-            return <ListItem key={member.id} primaryText={member.text} secondaryText={`${member.purpose} – ${member.at.fromNow()}`} />
+        const members = this.props.members.sort((l, r) => {
+                return l.at.diff(r.at);
+            })
+            .reverse()
+            .map((member) => {
+                return <ListItem key={member.id} primaryText={member.text} secondaryText={`${member.purpose} – ${member.at.fromNow()}`} />
         });
         
         return (

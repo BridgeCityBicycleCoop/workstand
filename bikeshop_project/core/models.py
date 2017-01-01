@@ -67,7 +67,7 @@ class Visit(models.Model):
         'registration.Member',
         on_delete=models.CASCADE
     )
-    created_at = models.DateTimeField(auto_now_add=True)
+    created_at = models.DateTimeField(default=timezone.now)
     purpose = models.CharField(max_length=50, choices=visit_choices)
 
     def __str__(self):

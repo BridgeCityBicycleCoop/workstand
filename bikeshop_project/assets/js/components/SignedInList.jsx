@@ -3,6 +3,14 @@ import { ListItem } from 'material-ui/List';
 import moment from 'moment';
 
 export default class SignedInList extends React.Component {
+  static propTypes = {
+    members: PropTypes.arrayOf(PropTypes.shape({
+      id: PropTypes.number,
+      purpose: PropTypes.string,
+      at: PropTypes.instanceOf(moment),
+    })),
+  }
+
   constructor(props) {
     super(props);
     this.state = { tick: 0 };

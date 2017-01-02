@@ -90,7 +90,7 @@ export default class SignIn extends React.Component {
     this.setState({ ...this.state, signOn: { ...this.state.signOn, purpose: value } });
   }
 
-  handleUpdate(text, dataSource) {
+  handleUpdate(text) {
     const self = this;
     self.setState({ searchText: text });
     fetch(`/members/search/${text}/`)

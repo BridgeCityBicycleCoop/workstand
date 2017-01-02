@@ -129,20 +129,19 @@ export default class SignIn extends React.Component {
               error={this.state.error}
               members={this.state.members}
               searchText={this.state.searchText}
-              tabIndex={1}
             />
           </div>
           <div className="mdl-cell mdl-cell--4-col">
             <Purpose
               handleChange={this.handlePurposeChoice}
-              default={this.state.signOn.purpose} tabIndex={2}
+              default={this.state.signOn.purpose}
             />
           </div>
         </div>
 
         <div className="mdl-grid">
           <div className="mdl-cell mdl-cell--2-col mdl-cell--10-offset">
-            <RaisedButton onClick={this.signIn} label="Sign-in" tabIndex={3} />
+            <RaisedButton onClick={this.signIn} label="Sign-in" />
           </div>
         </div>
         <div className="mdl-grid">

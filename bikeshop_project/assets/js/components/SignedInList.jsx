@@ -1,5 +1,6 @@
+import React, { PropTypes } from 'react';
 import { ListItem } from 'material-ui/List';
-import React from 'react';
+import moment from 'moment';
 
 export default class SignedInList extends React.Component {
   constructor(props) {

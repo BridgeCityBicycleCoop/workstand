@@ -61,3 +61,5 @@ MIDDLEWARE_CLASSES.insert(0, "django.middleware.common.CommonMiddleware")
 DEBUG_TOOLBAR_CONFIG = {"SHOW_TOOLBAR_CALLBACK": lambda *args: True}
 
 CORS_ORIGIN_ALLOW_ALL = True
+
+ALLOWED_HOSTS = ["workstand.docker"]

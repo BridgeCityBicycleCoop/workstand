@@ -66,3 +66,5 @@ DEBUG_TOOLBAR_CONFIG = {
 }
 
 CORS_ORIGIN_ALLOW_ALL = True
+
+ALLOWED_HOSTS = ['workstand.docker']

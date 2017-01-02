@@ -1,5 +1,6 @@
+import _ from 'lodash';
 import React, { PropTypes } from 'react';
-import { ListItem } from 'material-ui/List';
+import { Table, TableBody, TableHeader, TableHeaderColumn, TableRow, TableRowColumn } from 'material-ui/Table';
 import moment from 'moment';
 
 export default class SignedInList extends React.Component {
@@ -27,19 +28,47 @@ export default class SignedInList extends React.Component {
     clearInterval(this.timer);
   }
 
+  sortMembers(members) {
+    return _.sortBy(members, m => m.at.valueOf()).reverse();
+  }
+
   tick() {
     this.setState({ tick: this.state.tick += 1 });
   }
 
   render() {
-    const members = this.props.members.sort((l, r) => l.at.diff(r.at))
-            .reverse()
-            .map(member => <ListItem key={member.id} primaryText={member.text} secondaryText={`${member.purpose} – ${member.at.fromNow()}`} />);
+    const memberRows = this.sortMembers(this.props.members)
+        .map(member => (
+          <TableRow selectable={false} key={member.id}>
+            <TableRowColumn>{member.text}</TableRowColumn>
+            <TableRowColumn>{member.purpose}</TableRowColumn>
+            <TableRowColumn>{member.at.fromNow()}</TableRowColumn>
+            <TableRowColumn><a href={`/members/edit/${member.id}/`}>Profile</a></TableRowColumn>
+          </TableRow>
+        ));
 
     return (
       <div className="mdl-cell mdl-cell--12-col">
         <h3>Members signed in</h3>
-        {members.length ? members : 'No members currently signed in.'}
+        <Table selectable={false}>
+          <TableHeader adjustForCheckbox={false} displaySelectAll={false}>
+            <TableRow>
+              <TableHeaderColumn>Name</TableHeaderColumn>
+              <TableHeaderColumn>Purpose</TableHeaderColumn>
+              <TableHeaderColumn>Signed-in At</TableHeaderColumn>
+              <TableHeaderColumn/>
+            </TableRow>
+          </TableHeader>
+          <TableBody displayRowCheckbox={false}>
+            {memberRows.length ?
+              memberRows :
+              <TableRow>
+                <TableRowColumn>{'No members currently signed in.'}</TableRowColumn>
+              </TableRow>
+            }
+          </TableBody>
+        </Table>
+
       </div>
     );
   }

@@ -1,10 +1,11 @@
 import fetch from 'isomorphic-fetch';
 import moment from 'moment';
-import React from 'react';
-import RaisedButton from 'material-ui/RaisedButton';
 import { polyFill } from 'es6-promise';
-import Purpose from './Purpose';
+import RaisedButton from 'material-ui/RaisedButton';
+import React from 'react';
+
 import Member from './Member';
+import Purpose from './Purpose';
 import SignedInList from './SignedInList';
 
 export default class SignIn extends React.Component {
@@ -40,26 +41,15 @@ export default class SignIn extends React.Component {
             });
   }
 
-  handleUpdate(text, dataSource) {
-    const self = this;
-    self.setState({ searchText: text });
-    fetch(`/members/search/${text}/`)
-            .then((response) => {
-              if (response.status === 200) {
-                return response.json();
-              }
-            })
-            .then((data) => {
-              if (data.results.length > 0) {
-                self.setState({
-                  ...this.state,
-                  error: '',
-                  members: data.results.map(result => ({ text: `${result.name}`, value: `${result.name} <${result.email}>`, id: result.id })),
-                });
-              } else {
-                self.setState({ ...this.state, error: 'Member not found.' });
-              }
-            });
+  chooseMember(chosenRequest, index) {
+    const member = this.state.members[index];
+    const purpose = this.state.signOn.purpose;
+
+    this.setState({ ...this.state, signOn: { member, purpose } });
+  }
+
+  onUpdateSearchText(searchText) {
+    this.setState({ searchText });
   }
 
   signIn() {
@@ -96,19 +86,30 @@ export default class SignIn extends React.Component {
     }
   }
 
-  chooseMember(chosenRequest, index) {
-    const member = this.state.members[index];
-    const purpose = this.state.signOn.purpose;
-
-    this.setState({ ...this.state, signOn: { member, purpose } });
-  }
-
-  onUpdateSearchText(searchText) {
-    this.setState({ searchText });
-  }
-
   handlePurposeChoice(event, index, value) {
     this.setState({ ...this.state, signOn: { ...this.state.signOn, purpose: value } });
+  }
+
+  handleUpdate(text, dataSource) {
+    const self = this;
+    self.setState({ searchText: text });
+    fetch(`/members/search/${text}/`)
+            .then((response) => {
+              if (response.status === 200) {
+                return response.json();
+              }
+            })
+            .then((data) => {
+              if (data.results.length > 0) {
+                self.setState({
+                  ...this.state,
+                  error: '',
+                  members: data.results.map(result => ({ text: `${result.name}`, value: `${result.name} <${result.email}>`, id: result.id })),
+                });
+              } else {
+                self.setState({ ...this.state, error: 'Member not found.' });
+              }
+            });
   }
 
   render() {
@@ -132,7 +133,10 @@ export default class SignIn extends React.Component {
             />
           </div>
           <div className="mdl-cell mdl-cell--4-col">
-            <Purpose handleChange={this.handlePurposeChoice} default={this.state.signOn.purpose} tabIndex={2} />
+            <Purpose
+              handleChange={this.handlePurposeChoice}
+              default={this.state.signOn.purpose} tabIndex={2}
+            />
           </div>
         </div>
 

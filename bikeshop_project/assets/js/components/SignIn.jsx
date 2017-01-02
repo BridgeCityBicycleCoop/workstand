@@ -41,15 +41,15 @@ export default class SignIn extends React.Component {
             });
   }
 
+  onUpdateSearchText(searchText) {
+    this.setState({ searchText });
+  }
+
   chooseMember(chosenRequest, index) {
     const member = this.state.members[index];
     const purpose = this.state.signOn.purpose;
 
     this.setState({ ...this.state, signOn: { member, purpose } });
-  }
-
-  onUpdateSearchText(searchText) {
-    this.setState({ searchText });
   }
 
   signIn() {

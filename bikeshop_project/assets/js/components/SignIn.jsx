@@ -134,7 +134,7 @@ export default class SignIn extends React.Component {
           <div className="mdl-cell mdl-cell--4-col">
             <Purpose
               handleChange={this.handlePurposeChoice}
-              default={this.state.signOn.purpose}
+              initialValue={this.state.signOn.purpose}
             />
           </div>
         </div>

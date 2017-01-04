@@ -98,6 +98,7 @@ export default class SignIn extends React.Component {
               if (response.status === 200) {
                 return response.json();
               }
+              throw new Error('Bad response from server');
             })
             .then((data) => {
               if (data.results.length > 0) {

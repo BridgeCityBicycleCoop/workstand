@@ -14,6 +14,7 @@ config.entry = {
   signin: './assets/js/index',
   members: './assets/js/members/index',
   babelPolyfill: 'babel-polyfill',
+  bikes: './assets/js/bikes/index',
 };
 
 // override django's STATIC_URL for webpack bundles

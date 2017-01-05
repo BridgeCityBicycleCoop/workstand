@@ -7,6 +7,7 @@ django_compressor==2.1.1 # Updated from 2.0
 python-dateutil==2.6.0 # Updated from 2.5.3
 whoosh==2.7.4
 django-haystack==2.6.1 # Updated from 2.5.1
+django-fsm==2.4.0
 djangorestframework
 django-webpack-loader
 requests

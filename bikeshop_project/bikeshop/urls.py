@@ -24,6 +24,7 @@ from rest_framework_jwt.views import obtain_jwt_token
 import registration
 from core import urls as core_urls
 from registration import urls as member_urls
+from bike import urls as bike_urls
 
 routeLists = [
     registration.urls.apiRoutes,
@@ -39,6 +40,7 @@ urlpatterns = [
     url(r'^login/', login, {'template_name': 'login.html'}, name='login'),
     url(r'^logout/', logout_then_login, name='logout'),
     url(r'^members/', include(member_urls)),
+    url(r'^bikes/', include(bike_urls)),
     url(r'^admin/', admin.site.urls),
     url(r'^api/v1/', include(router.urls)),
     url(r'^api/v1/token-auth/', obtain_jwt_token),

@@ -36,6 +36,7 @@ INSTALLED_APPS = [
 
     'registration',
     'core',
+    'bike',
 ]
 
 MIDDLEWARE_CLASSES = [

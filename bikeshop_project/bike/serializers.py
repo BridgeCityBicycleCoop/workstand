@@ -6,3 +6,4 @@ from bike.models import Bike
 class BikeSerializer(serializers.HyperlinkedModelSerializer):
     class Meta:
         model = Bike
+        fields = '__all__'

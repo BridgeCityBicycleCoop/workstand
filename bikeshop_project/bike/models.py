@@ -52,7 +52,7 @@ class Bike(models.Model):
 
     colour = models.TextField(blank=False, null=False)
     make = models.TextField(blank=False, null=False)
-    size = models.TextField(choices=size_choices, max_length=2)
+    size = models.TextField(choices=size_choices, blank=True, null=True, max_length=2)
     serial_number = models.TextField(blank=False, null=False)
     source = models.TextField(blank=False, null=False, choices=source_choices)
     stripped = models.NullBooleanField()
@@ -72,7 +72,7 @@ class Bike(models.Model):
 
     def can_assessed(self):
         return self.colour is not None and self.make is not None and self.size is not None and self.source is not None \
-               and self.price is not None
+               and self.price is not None and self.size is not None
 
     def can_available(self):
         return self.stolen is not None and self.cpic_searched_at is not None and self.serial_number is not None

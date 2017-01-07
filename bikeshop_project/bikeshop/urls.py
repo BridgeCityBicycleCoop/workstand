@@ -23,12 +23,14 @@ from rest_framework_jwt.views import obtain_jwt_token
 
 import registration
 import bike
+import registration
 from bike import urls as bike_urls
 from core import urls as core_urls
 from registration import urls as member_urls
 
 routeLists = [
     bike.urls.apiRoutes,
+    registration.urls.apiRoutes,
 ]
 
 router = routers.DefaultRouter()

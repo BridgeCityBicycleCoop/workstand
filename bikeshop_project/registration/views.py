@@ -10,6 +10,7 @@ from django.utils.decorators import method_decorator
 from django.views.decorators.csrf import csrf_exempt
 from django.views.generic import TemplateView, View
 from haystack.query import SearchQuerySet
+from rest_framework import serializers
 from rest_framework import viewsets
 from rest_framework.renderers import JSONRenderer
 from rest_framework.serializers import ModelSerializer
@@ -68,7 +69,7 @@ class MemberSearchView(View):
 
 
 class VisitSerializer(ModelSerializer):
-    member = MemberSerializer()
+    member = MemberSignInSerializer()
 
     class Meta:
         model = Visit

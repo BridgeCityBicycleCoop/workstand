@@ -1,10 +1,17 @@
 from django.contrib.auth.decorators import login_required
+from django.shortcuts import get_object_or_404
 from django.utils.decorators import method_decorator
 from django.views.generic import TemplateView
+from django_fsm import can_proceed
 from rest_framework import viewsets
+from rest_framework.decorators import detail_route
+from rest_framework.exceptions import ValidationError
+from rest_framework.response import Response
 
-from bike.models import Bike
+from bike.models import Bike, BikeState
 from bike.serializers import BikeSerializer
+
+from rest_framework import status
 
 
 @method_decorator(login_required, name='dispatch')
@@ -18,3 +25,30 @@ class BikesView(TemplateView):
 class BikeViewSet(viewsets.ModelViewSet):
     queryset = Bike.objects.all()
     serializer_class = BikeSerializer
+
+    @detail_route(methods=['put'])
+    def assessed(self, request, pk):
+        bike = get_object_or_404(Bike, pk=pk)
+        state = BikeState.ASSESSED
+        if not can_proceed(bike.assessed):
+            raise ValidationError(detail=f'Transition from {bike.state} to {state}')
+
+        bike.assessed()
+        bike.save()
+
+        serializer = BikeSerializer(bike, context={'request': request})
+        return Response(serializer.data, status=status.HTTP_200_OK)
+
+    @detail_route(methods=['put'])
+    def available(self, request, pk):
+        bike = get_object_or_404(Bike, pk=pk)
+        state = BikeState.AVAILABLE
+        if not can_proceed(bike.available):
+            raise ValidationError(detail=f'Transition from {bike.state} to {state}')
+
+        bike.available()
+        bike.save()
+
+        serializer = BikeSerializer(bike, context={'request': request})
+        return Response(serializer.data, status=status.HTTP_200_OK)
+

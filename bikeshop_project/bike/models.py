@@ -75,7 +75,7 @@ class Bike(models.Model):
                and self.price is not None
 
     def can_available(self):
-        return self.stolen is not None and self.cpic_searched_at is not None and self.serial_number is not None
+        return self.stolen is False and self.cpic_searched_at is not None and self.serial_number is not None
 
     def can_claim(self):
         return self.claimed_by is None or self.last_worked_on > timezone.now() + timedelta(weeks=4)

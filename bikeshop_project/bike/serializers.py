@@ -7,3 +7,6 @@ class BikeSerializer(serializers.HyperlinkedModelSerializer):
     class Meta:
         model = Bike
         fields = '__all__'
+
+    created_at = serializers.ReadOnlyField()
+    state = serializers.ReadOnlyField()

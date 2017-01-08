@@ -68,3 +68,16 @@ class BikeViewSet(viewsets.ModelViewSet):
         serializer = BikeSerializer(bike, context={'request': request})
         return Response(serializer.data, status=status.HTTP_200_OK)
 
+    @detail_route(methods=['put'])
+    def purchase(self, request, pk):
+        bike = get_object_or_404(Bike, pk=pk)
+        member = get_object_or_404(Member, id=request.data.get('member'))
+        state = BikeState.CLAIMED
+        if not can_proceed(bike.purchase):
+            raise ValidationError(detail=f'Transition from {bike.state} to {state}')
+
+        bike.purchase(member)
+        bike.save()
+
+        serializer = BikeSerializer(bike, context={'request': request})
+        return Response(serializer.data, status=status.HTTP_200_OK)

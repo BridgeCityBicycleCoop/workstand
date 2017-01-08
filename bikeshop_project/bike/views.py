@@ -81,3 +81,29 @@ class BikeViewSet(viewsets.ModelViewSet):
 
         serializer = BikeSerializer(bike, context={'request': request})
         return Response(serializer.data, status=status.HTTP_200_OK)
+
+    @detail_route(methods=['put'])
+    def scrap(self, request, pk):
+        bike = get_object_or_404(Bike, pk=pk)
+        state = BikeState.SCRAPPED
+        if not can_proceed(bike.scrap):
+            raise ValidationError(detail=f'Transition from {bike.state} to {state}')
+
+        bike.scrap()
+        bike.save()
+
+        serializer = BikeSerializer(bike, context={'request': request})
+        return Response(serializer.data, status=status.HTTP_200_OK)
+
+    @detail_route(methods=['put'])
+    def stolen(self, request, pk):
+        bike = get_object_or_404(Bike, pk=pk)
+        state = BikeState.TRANSFERRED_TO_POLICE
+        if not can_proceed(bike.transfer_to_police):
+            raise ValidationError(detail=f'Transition from {bike.state} to {state}')
+
+        bike.transfer_to_police()
+        bike.save()
+
+        serializer = BikeSerializer(bike, context={'request': request})
+        return Response(serializer.data, status=status.HTTP_200_OK)

@@ -33,6 +33,7 @@ INSTALLED_APPS = [
     'webpack_loader',
     'compressor',
     'rest_framework',
+    'channels',
 
     'registration',
     'core',
@@ -176,3 +177,13 @@ REST_FRAMEWORK = {
 }
 
 DATE_INPUT_FORMATS = ['iso-8601']
+
+CHANNEL_LAYERS = {
+    "default": {
+        "BACKEND": "asgi_redis.RedisChannelLayer",
+        "CONFIG": {
+            "hosts": [os.environ.get('REDIS_URL', 'redis://redis:6379')],
+        },
+        "ROUTING": "bike.routing.channel_routing",
+    },
+}

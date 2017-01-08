@@ -7,6 +7,7 @@ from model_mommy import mommy
 from rest_framework import status
 from .models import Bike, BikeState
 
+
 class TestGet(TestCase):
     def setUp(self):
         self.user = mommy.make('registration.CustomUser', is_admin=True, is_superuser=True)

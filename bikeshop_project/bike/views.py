@@ -13,6 +13,8 @@ from bike.serializers import BikeSerializer
 
 from rest_framework import status
 
+from registration.models import Member
+
 
 @method_decorator(login_required, name='dispatch')
 class BikesView(TemplateView):
@@ -47,6 +49,20 @@ class BikeViewSet(viewsets.ModelViewSet):
             raise ValidationError(detail=f'Transition from {bike.state} to {state}')
 
         bike.available()
+        bike.save()
+
+        serializer = BikeSerializer(bike, context={'request': request})
+        return Response(serializer.data, status=status.HTTP_200_OK)
+
+    @detail_route(methods=['put'])
+    def claim(self, request, pk):
+        bike = get_object_or_404(Bike, pk=pk)
+        member = get_object_or_404(Member, id=request.data.get('member'))
+        state = BikeState.CLAIMED
+        if not can_proceed(bike.claim):
+            raise ValidationError(detail=f'Transition from {bike.state} to {state}')
+
+        bike.claim(member)
         bike.save()
 
         serializer = BikeSerializer(bike, context={'request': request})

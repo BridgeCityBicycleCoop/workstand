@@ -5,6 +5,8 @@ from model_mommy import timezone
 from rest_framework.test import APIClient
 from model_mommy import mommy
 from rest_framework import status
+
+from registration.models import Member
 from .models import Bike, BikeState
 
 
@@ -150,3 +152,77 @@ class TestGet(TestCase):
 
         self.assertEqual(result.status_code, status.HTTP_200_OK)
         self.assertEqual(result.data['state'], BikeState.AVAILABLE)
+
+    def test_claim_cannot_transition_wrong_state(self):
+        member = mommy.make(Member)
+
+        data = {
+            "colour": "black",
+            "make": "Miyata",
+            "serial_number": "12345676",
+            "source": Bike.COS_BIKE_DIVERSION_PILOT,
+            "donated_by": "Greg",
+            "donated_at": "2017-01-01",
+            "size": Bike.SMALL,
+            "price": Decimal('68.00'),
+            "state": BikeState.ASSESSED,
+            "stolen": False,
+            "cpic_searched_at": timezone.now(),
+        }
+        bike = Bike.objects.create(**data)
+        client = APIClient()
+        client.force_authenticate(user=self.user, token='blah')
+        result = client.put(f'/api/v1/bikes/{bike.id}/claim/', data={'member': member.id}, format='json')
+
+        self.assertEqual(result.status_code, status.HTTP_400_BAD_REQUEST)
+
+    def test_claim_cannot_transition_claimed(self):
+        member = mommy.make(Member)
+
+        data = {
+            "colour": "black",
+            "make": "Miyata",
+            "serial_number": "12345676",
+            "source": Bike.COS_BIKE_DIVERSION_PILOT,
+            "donated_by": "Greg",
+            "donated_at": "2017-01-01",
+            "size": Bike.SMALL,
+            "price": Decimal('68.00'),
+            "state": BikeState.CLAIMED,
+            "stolen": False,
+            "cpic_searched_at": timezone.now(),
+            "claimed_by": member,
+            "last_worked_on": timezone.now()
+        }
+        bike = Bike.objects.create(**data)
+        client = APIClient()
+        client.force_authenticate(user=self.user, token='blah')
+        result = client.put('/api/v1/bikes/{bike_id}/claim/'.format(bike_id=bike.id), data={'member': member.id}, format='json')
+
+        self.assertEqual(result.status_code, status.HTTP_400_BAD_REQUEST)
+
+    def test_claim_can_transition(self):
+        member = mommy.make(Member)
+
+        data = {
+            "colour": "black",
+            "make": "Miyata",
+            "serial_number": "12345676",
+            "source": Bike.COS_BIKE_DIVERSION_PILOT,
+            "donated_by": "Greg",
+            "donated_at": "2017-01-01",
+            "size": Bike.SMALL,
+            "price": Decimal('68.00'),
+            "state": BikeState.AVAILABLE,
+            "stolen": False,
+            "cpic_searched_at": timezone.now(),
+        }
+
+        bike = Bike.objects.create(**data)
+        self.assertEqual(bike.state, BikeState.AVAILABLE)
+        client = APIClient()
+        client.force_authenticate(user=self.user, token='blah')
+        result = client.put(f'/api/v1/bikes/{bike.id}/claim/', data={'member': member.id}, format='json')
+
+        self.assertEqual(result.status_code, status.HTTP_200_OK)
+        self.assertEqual(result.data['state'], BikeState.CLAIMED)

@@ -157,7 +157,7 @@
         var renewedAt = new mdDateTimePicker.default({
             type: 'date',
             past: moment().subtract(100, 'years'),
-            trigger: document.getElementById('{{  form.renewed_at.id_for_label }}')
+            trigger: document.getElementById('{{  membership_form.renewed_at.id_for_label }}')
         });
         document.getElementById('{{ membership_form.renewed_at.id_for_label }}').addEventListener('focus', function() {
             console.log('Toggle!');
@@ -175,6 +175,7 @@
                 document.getElementById('{{ membership_form.give_back.id_for_label }}'),
                 document.getElementById('{{ membership_form.respect_shop.id_for_label }}')
         ];
+
         var checkResponsiblities = function () {
             allAgreed = responsibilities.every(function (checkbox) {
                 return checkbox.checked

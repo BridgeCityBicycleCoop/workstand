@@ -5,9 +5,6 @@ services:
     depends_on:
       - redis
       - db
-    links:
-      - redis
-      - db
   redis:
     image: redis:latest
   db:

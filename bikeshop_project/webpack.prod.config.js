@@ -1,5 +1,6 @@
 var webpack = require('webpack')
 var BundleTracker = require('webpack-bundle-tracker')
+const ExtractTextPlugin = require('extract-text-webpack-plugin')
 
 var config = require('./webpack.base.config.js')
 
@@ -7,6 +8,7 @@ config.output.path = require('path').resolve('./assets/dist')
 
 config.plugins = config.plugins.concat([
   new BundleTracker({filename: './webpack-stats-prod.json'}),
+  new ExtractTextPlugin('react-toolbox.css', {allChunks: true}),
 
   // removes a lot of debugging code in React
   new webpack.DefinePlugin({
@@ -27,7 +29,11 @@ config.plugins = config.plugins.concat([
 
 // Add a loader for JSX files
 config.module.loaders.push(
-  { test: /\.jsx?$/, exclude: /node_modules/, loader: 'babel' }
+  { test: /\.jsx?$/, exclude: /node_modules/, loader: 'babel' },
+  {
+        test: /(\.scss|\.css)$/,
+        loader: ExtractTextPlugin.extract('style', 'css?sourceMap&modules&importLoaders=1&localIdentName=[name]__[local]___[hash:base64:5]!postcss!sass?sourceMap!toolbox')
+    }
 )
 
 module.exports = config

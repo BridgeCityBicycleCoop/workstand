@@ -27,8 +27,7 @@ module.exports = {
     resolve: {
         modulesDirectories: [
             'node_modules',
-            'bower_components',
-            path.resolve(__dirname, './node_modules')
+            'bower_components'
         ],
         extensions: ['', '.js', '.jsx', '.scss']
     },

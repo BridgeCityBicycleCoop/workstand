@@ -3,6 +3,7 @@ services:
   nginx:
     build:
       context: docker/nginx
+    image: bcbc/nginx:production
     ports:
       - "80:80"
     links:
@@ -13,7 +14,7 @@ services:
     build:
       context: .
       dockerfile: Dockerfile-prod
-    image: workstand:production
+    image: bcbc/workstand:production
     env_file:
       - workstand.env
     command: gunicorn --log-file=- -b 0.0.0.0:8000 bikeshop.wsgi:application

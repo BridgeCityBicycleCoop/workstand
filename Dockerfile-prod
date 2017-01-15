@@ -8,6 +8,8 @@ RUN mkdir requirements
 ADD bikeshop_project /code
 COPY requirements /code/requirements
 RUN pip install -r requirements/production.txt
-RUN npm install
+WORKDIR /code/bikeshop_project
+rm node_modules
+RUN npm clean cache
 RUN npm run build-production
 RUN DJANGO_SETTINGS_MODULE=bikeshop.settings.production python manage.py collectstatic --no-input

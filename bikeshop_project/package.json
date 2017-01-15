@@ -4,8 +4,8 @@
   "description": "A membership management app for the BCBC.",
   "main": "index.js",
   "scripts": {
-  "build": "webpack --config webpack.config.js --progress --colors",
-  "build-production": "webpack --config webpack.prod.config.js --progress --colors",
+  "build": "node_modules/.bin/webpack --config webpack.config.js --progress --colors",
+  "build-production": "node_modules/.bin/webpack --config webpack.prod.config.js --progress --colors",
   "watch": "node server.js"
 },
   "author": "",
@@ -17,7 +17,9 @@
     "moment": "^2.13.0",
     "react": "^15.4.1",
     "react-dom": "^15.4.1",
-    "react-tap-event-plugin": "^2.0.1"
+    "react-tap-event-plugin": "^2.0.1",
+    "webpack": "^1.13.1",
+    "webpack-bundle-tracker": "0.0.93"
   },
   "devDependencies": {
     "babel": "^6.5.2",
@@ -38,8 +40,6 @@
     "sass-loader": "^3.2.0",
     "style-loader": "^0.13.1",
     "toolbox-loader": "0.0.3",
-    "webpack": "^1.13.1",
-    "webpack-bundle-tracker": "0.0.93",
     "webpack-dev-server": "^1.14.1",
     "eslint": "^3.9.1",
     "eslint-plugin-jsx-a11y": "^2.2.3",

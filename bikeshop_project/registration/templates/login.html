@@ -1,0 +1,67 @@
+{% extends 'base.html' %}
+
+{% load staticfiles compress %}
+
+{% block styles %}
+    {{ block.super }}
+    {% compress css %}
+    <link href="{% static 'vendor/material-design-lite/src/icon-toggle/_icon-toggle.scss' %}" rel="stylesheet" type="text/x-scss">
+    {% endcompress %}
+{% endblock %}
+
+{% block scripts %}
+    {{ block.super }}
+    <script>
+    var passwordToggle = document.getElementById('icon-toggle-1');
+    passwordToggle.addEventListener('change', function () {
+        toggle();
+    });
+
+    var passwordField = document.getElementById('password');
+
+    var toggle = function () {
+        if (passwordToggle.checked) {
+            passwordField.type = 'password';
+            passwordToggle.nextElementSibling.textContent = 'visibility_off'
+        }
+        else {
+            passwordField.type = 'text';
+            passwordToggle.nextElementSibling.textContent = 'visibility'
+        }
+    }
+    </script>
+{% endblock %}
+
+
+
+{% block content %}
+<div class="demo-graphs mdl-shadow--2dp mdl-color--white mdl-cell mdl-cell--8-col mdl-shadow--2dp mdl-cell--2-offset">
+    <h2 class="mdl-card__title-text">Login</h2>
+    <form method="post">
+        {% if form.non_field_errors %}
+            <div>
+                <span class="error">{{ form.non_field_errors }}</span>
+            </div>
+        {% endif %}
+        {% csrf_token %}
+      <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
+        <input class="mdl-textfield__input" type="text" id="username" name="username">
+        <label class="mdl-textfield__label" for="username">Email address</label>
+      </div>
+    <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
+        <input class="mdl-textfield__input" type="password" id="password" name="password">
+        <label class="mdl-textfield__label" for="password">Password</label>
+    </div>
+    <label class="mdl-icon-toggle mdl-js-icon-toggle mdl-js-ripple-effect" for="icon-toggle-1">
+        <input type="checkbox" id="icon-toggle-1" class="mdl-icon-toggle__input" checked>
+        <i class="mdl-icon-toggle__label material-icons">visibility_off</i>
+    </label>
+    <div>
+        <button type="submit" class="mdl-button mdl-button--colored mdl-js-button mdl-js-ripple-effect">
+            Login
+        </button>
+    </div>
+    </form>
+
+</div>
+{% endblock %}

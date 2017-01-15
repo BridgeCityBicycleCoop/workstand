@@ -1,0 +1,35 @@
+version: "2"
+services:
+  nginx:
+    build:
+      context: docker/nginx
+    image: bcbc/nginx:production
+    ports:
+      - "80:80"
+    links:
+      - workstand
+    volumes_from:
+      - workstand:ro
+  workstand:
+    build:
+      context: .
+      dockerfile: Dockerfile-prod
+    image: bcbc/workstand:production
+    env_file:
+      - workstand.env
+    command: gunicorn --log-file=- -b 0.0.0.0:8000 bikeshop.wsgi:application
+    environment:
+      - DJANGO_SETTINGS_MODULE=bikeshop.settings.production
+    volumes:
+      - static:/code/static
+    depends_on:
+      - redis
+      - db
+  redis:
+    restart: always
+  db:
+    restart: always
+
+volumes:
+  static:
+    external: false

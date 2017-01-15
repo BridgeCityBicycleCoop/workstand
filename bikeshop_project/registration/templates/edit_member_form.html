@@ -1,0 +1,221 @@
+{% extends 'dashboard.html' %}
+{% load staticfiles %}
+
+{% block styles %}
+    <link rel="stylesheet" href="{% static 'vendor/md-date-time-picker/dist/css/mdDateTimePicker.min.css' %}">
+{% endblock %}
+
+{% block scripts %}
+    <script src="{% static 'vendor/moment/min/moment.min.js' %}"></script>
+    <script src="{% static 'vendor/object.observe/dist/object-observe-lite.min.js' %}"></script>
+    <script src="{% static 'vendor/draggabilly/dist/draggabilly.pkgd.min.js' %}"></script>
+    <script src="{% static 'vendor/md-date-time-picker/dist/js/mdDateTimePicker.min.js' %}"></script>
+    <script>
+    var dateOfBirth = new mdDateTimePicker.default({
+        type: 'date',
+        past: moment().subtract(100, 'years')
+    });
+        document.getElementById('{{ form.date_of_birth.id_for_label }}').addEventListener('focus', function() {
+          dateOfBirth.toggle();
+    });
+    Object.observe(dateOfBirth, function(changes) {
+        var input = document.getElementById('{{ form.date_of_birth.id_for_label }}');
+        input.value = dateOfBirth.time().format('YYYY-MM-DD');
+        input.parentNode.classList.add('is-dirty');
+
+        var threshold = moment.duration(18, 'years');
+        var dob = dateOfBirth.time().clone();
+
+        if (dob.add(threshold).isAfter(moment())) {
+            document.getElementById('{{ form.guardian_name.id_for_label }}').disabled = false;
+            document.getElementById('{{ form.guardian_name.id_for_label }}').parentNode.classList.remove('is-disabled');
+        } else {
+            document.getElementById('{{ form.guardian_name.id_for_label }}').disabled = true;
+            document.getElementById('{{ form.guardian_name.id_for_label }}').parentNode.classList.add('is-disabled');
+        }
+    });
+
+    var waiverCheckBox = document.getElementById('{{ form.waiver_substitute.id_for_label }}');
+    var submitButton = document.getElementById('submit');
+    var requiredCheckboxes = function() {
+        return waiverCheckBox.checked;
+    };
+
+    waiverCheckBox.addEventListener('change', function() {
+        if (requiredCheckboxes()) {
+            submitButton.disabled = false;
+        }
+        else {
+            submitButton.disabled = true;
+        }
+    });
+
+    // On page load check on the check boxes
+    if (requiredCheckboxes()) {
+        submitButton.disabled = false;
+    }
+
+    </script>
+{% endblock %}
+
+{% block content %}
+    <div class="mdl-cell mdl-cell--8-col">
+        <h1>{{ form.instance.first_name }} {{ form.instance.last_name }}</h1>
+        <p>
+            The Bridge City Bicycle Co-operative (herein referred to as The BCBC and The Community) is a nonprofit,
+            community bicycle repair education and resource co-operative. We offer our members nonjudgmental repair
+            space, tools and instruction during business hours (hours on website) by donation, and educational
+            workshops. We also offer reconditioned/recycled low cost bikes and parts for sale.
+            The BCBC is operated by volunteers; a medley of professionals, students, bike enthusiasts, activists,
+            and other community members who share a love for cycling in Saskatoon. Membership is open to all
+            individuals and costs $20 per year. A receipt will be issued to you once your membership fee has been paid.
+        </p>
+        <form method="post">
+        {% csrf_token %}
+
+        {% if form.non_field_errors %}
+            <div>
+                <span class="error">{{ form.errors }}</span>
+            </div>
+        {% endif %}
+        <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label {% if form.email.errors %}is-invalid{% endif %}">
+            {{ form.email }}
+            <label class="mdl-textfield__label" for="{{ form.email.id_for_label }}">{{ form.email.label }}</label>
+            {% if form.email.errors %}
+            <span class="mdl-textfield__error">{{ form.email.errors }}</span>
+            {% else %}
+            <span class="mdl-textfield__error">Invalid email.</span>
+            {% endif %}
+        </div>
+        <div>
+            <label class="mdl-checkbox mdl-js-checkbox mdl-js-ripple-effect" for="{{ form.email_consent.id_for_label }}">
+                {{ form.email_consent }}
+                <span class="mdl-checkbox__label">{{ form.email_consent.label }}</span>
+            </label>
+        </div>
+        <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label {% if form.first_name.errors %}is-invalid{% endif %}">
+            {{ form.first_name }}
+            <label class="mdl-textfield__label" for="{{ form.first_name.id_for_label }}">{{ form.first_name.label }}</label>
+            {% if form.first_name.errors %}
+            <span class="mdl-textfield__error">{{ form.first_name.errors }}</span>
+            {% else %}
+            <span class="mdl-textfield__error">Name too long.</span>
+            {% endif %}
+        </div>
+        <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label {% if form.last_name.errors %}is-invalid{% endif %}">
+            {{ form.last_name }}
+            <label class="mdl-textfield__label" for="{{ form.last_name.id_for_label }}">{{ form.last_name.label }}</label>
+            {% if form.last_name.errors %}
+            <span class="mdl-textfield__error">{{ form.last_name.errors }}</span>
+            {% else %}
+            <span class="mdl-textfield__error">Name too long.</span>
+            {% endif %}
+        </div>
+        <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label {% if form.preferred_name.errors %}is-invalid{% endif %}">
+            {{ form.preferred_name }}
+            <label class="mdl-textfield__label" for="{{ form.preferred_name.id_for_label }}">{{ form.preferred_name.label }}</label>
+            {% if form.preferred_name.errors %}
+            <span class="mdl-textfield__error">{{ form.preferred_name.errors }}</span>
+            {% else %}
+            <span class="mdl-textfield__error">Name too long.</span>
+            {% endif %}
+        </div>
+        <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label {% if form.date_of_birth.errors %}is-invalid{% endif %}">
+            {{ form.date_of_birth }}
+            <label class="mdl-textfield__label" for="{{ form.date_of_birth.id_for_label }}">{{ form.date_of_birth.label }}</label>
+            {% if form.date_of_birth.errors %}
+            <span class="mdl-textfield__error">{{ form.date_of_birth.errors }}</span>
+            {% else %}
+            <span class="mdl-textfield__error">Incorrect date.</span>
+            {% endif %}
+        </div>
+        <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label {% if form.guardian_name.errors %}is-invalid{% endif %}">
+            {{ form.guardian_name }}
+            <label class="mdl-textfield__label" for="{{ form.guardian_name.id_for_label }}">{{ form.guardian_name.label }}</label>
+            {% if form.guardian_name.errors %}
+            <span class="mdl-textfield__error">{{ form.guardian_name.errors }}</span>
+            {% else %}
+            <span class="mdl-textfield__error">Name too long.</span>
+            {% endif %}
+        </div>
+        <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label {% if form.phone.errors %}is-invalid{% endif %}">
+            {{ form.phone }}
+            <label class="mdl-textfield__label" for="{{ form.phone.id_for_label }}">{{ form.phone.label }}</label>
+            {% if form.phone.errors %}
+            <span class="mdl-textfield__error">{{ form.phone.errors }}</span>
+            {% else %}
+            <span class="mdl-textfield__error">Digits only.</span>
+            {% endif %}
+        </div>
+        <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label {% if form.post_code.errors %}is-invalid{% endif %}">
+            {{ form.post_code }}
+            <label class="mdl-textfield__label" for="{{ form.post_code.id_for_label }}">{{ form.post_code.label }}</label>
+            {% if form.post_code.errors %}
+            <span class="mdl-textfield__error">{{ form.post_code.errors }}</span>
+            {% else %}
+            <span class="mdl-textfield__error">Format: A0A 0A0</span>
+            {% endif %}
+        </div>
+        <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label {% if form.street.errors %}is-invalid{% endif %}">
+            {{ form.street }}
+            <label class="mdl-textfield__label" for="{{ form.street.id_for_label }}">{{ form.street.label }}</label>
+            {% if form.street.errors %}
+            <span class="mdl-textfield__error">{{ form.street.errors }}</span>
+            {% endif %}
+        </div>
+        <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label {% if form.city.errors %}is-invalid{% endif %}">
+            {{ form.city }}
+            <label class="mdl-textfield__label" for="{{ form.city.id_for_label }}">{{ form.city.label }}</label>
+            {% if form.city.errors %}
+            <span class="mdl-textfield__error">{{ form.city.errors }}</span>
+            {% endif %}
+        </div>
+        <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label {% if form.province.errors %}is-invalid{% endif %}">
+            {{ form.province }}
+            <label class="mdl-textfield__label" for="{{ form.province.id_for_label }}">{{ form.province.label }}</label>
+            {% if form.province.errors %}
+            <span class="mdl-textfield__error">{{ form.province.errors }}</span>
+            {% endif %}
+        </div>
+        <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label {% if form.country.errors %}is-invalid{% endif %}">
+            {{ form.country }}
+            <label class="mdl-textfield__label" for="{{ form.country.id_for_label }}">{{ form.country.label }}</label>
+            {% if form.country.errors %}
+            <span class="mdl-textfield__error">{{ form.country.errors }}</span>
+            {% endif %}
+        </div>
+        <div>
+            <button id="submit" type="submit" class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--colored">Submit</button>
+        </div>
+        </form>
+    </div>
+    <div class="mdl-cell mdl-cell--8-col">
+        {% if  form.instance.memberships %}
+            <table class="mdl-data-table mdl-js-data-table">
+            <thead>
+                <tr>
+                    <th class="mdl-data-table__cell--non-numeric">Renewed at</th>
+                    <th class="mdl-data-table__cell--non-numeric">Created at</th>
+                    <th class="mdl-data-table__cell--non-numeric">Expires at</th>
+                    <th class="mdl-data-table__cell--non-numeric">Paid by</th>
+                </tr>
+            </thead>
+            <tbody>
+            <h3>Membership History</h3>
+                {% for membership in form.instance.memberships.all %}
+                <tr>
+                    <td class="mdl-data-table__cell--non-numeric">{{ membership.renewed_at }}</td>
+                    <td class="mdl-data-table__cell--non-numeric">{{ membership.created_at }}</td>
+                    <td class="mdl-data-table__cell--non-numeric">{{ membership.expires_at }}</td>
+                    <td class="mdl-data-table__cell--non-numeric">{{ membership.payment.type }}</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+            </table>
+        {% else %}
+            <h3>No membership found.</h3>
+        {% endif %}
+        <a class="mdl-button mdl-js-button mdl-button--flat mdl-js-ripple-effect mdl-button--colored" href="{% url 'new_membership' member_id=member.id %}">Add membership</a>
+    </div>
+
+{% endblock %}

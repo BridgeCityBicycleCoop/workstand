@@ -1,4 +1,4 @@
 -r base.txt
 -r testing.txt
 django-debug-toolbar
-PyYAML
+django-cors-headers

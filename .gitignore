@@ -8,3 +8,12 @@ trailersafeguard_project/celerybeat.pid
 bikeshop_project/static/CACHE
 .bundle
 bikeshop_project/vendor
+bikeshop_project/assets/bundles
+bikeshop_project/webpack-stats.json
+/bikeshop_project/htmlcov
+/bikeshop_project/.coverage
+node_modules
+whoosh_index
+bikeshop_project/assets/dist
+npm-debug.log
+bikeshop_project/webpack-stats-prod.json

@@ -1,0 +1,17 @@
+version: "2"
+services:
+  workstand:
+    image: bcbc/workstand
+    depends_on:
+      - redis
+      - db
+  redis:
+    image: redis:latest
+  db:
+    image: postgres:latest
+    volumes:
+      - pgdata:/var/lib/postgresql/data/
+
+volumes:
+  pgdata:
+    external: false

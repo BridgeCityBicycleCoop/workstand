@@ -17,6 +17,8 @@
     "tests"
   ],
   "dependencies": {
-    "material-design-lite": "^1.1.3"
+    "material-design-lite": "^1.3.0",
+    "md-date-time-picker": "https://github.com/puranjayjain/md-date-time-picker.git#master",
+    "normalize-css": "normalize.css#^4.1.1"
   }
 }

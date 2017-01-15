@@ -29,7 +29,11 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'haystack',
+    'webpack_loader',
     'compressor',
+    'rest_framework',
+
     'registration',
     'core',
 ]
@@ -120,12 +124,35 @@ STATICFILES_FINDERS = (
 )
 STATICFILES_DIRS = [
     ('vendor', os.path.join(BASE_DIR, '../vendor')),
+    os.path.join(BASE_DIR, '../assets')
 ]
 STATIC_ROOT = 'static'
 STATIC_URL = '/static/'
 
-AUTH_USER_MODEL = 'registration.Member'
+AUTH_USER_MODEL = 'registration.CustomUser'
 
 COMPRESS_PRECOMPILERS = (
     ('text/x-scss', 'django_libsass.SassCompiler'),
 )
+
+WEBPACK_LOADER = {
+    'DEFAULT': {
+        'CACHE': False,
+        'BUNDLE_DIR_NAME': 'bundles/', # must end with slash
+        'STATS_FILE': os.path.join(BASE_DIR, '../webpack-stats.json'),
+        'POLL_INTERVAL': 0.1,
+        'IGNORE': ['.+\.hot-update.js', '.+\.map']
+    }
+}
+
+HAYSTACK_CONNECTIONS = {
+    'default': {
+        'ENGINE': 'haystack.backends.whoosh_backend.WhooshEngine',
+        'PATH': os.path.join(os.path.dirname(__file__), 'whoosh_index'),
+    },
+}
+
+HAYSTACK_SIGNAL_PROCESSOR = 'haystack.signals.RealtimeSignalProcessor'
+
+LOGIN_REDIRECT_URL = 'home'
+LOGIN_URL = 'login'

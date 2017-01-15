@@ -1,0 +1,9 @@
+FROM node:7.3.0
+RUN mkdir /code
+WORKDIR /code
+ADD ./bikeshop_project /code
+RUN npm install
+RUN npm install -g bower
+COPY ./bower.json .
+RUN bower install --allow-root
+EXPOSE 3000:3000

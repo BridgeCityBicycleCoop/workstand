@@ -1,5 +1,0 @@
----
-- name: create webapps log directory
-  action: file dest={{ webapps_dir }}/{{ app_name }}/log state=directory
-- name: create webapps directory
-  action: file dest={{ webapps_dir }} state=directory

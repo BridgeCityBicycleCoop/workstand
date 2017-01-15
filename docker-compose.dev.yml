@@ -1,0 +1,25 @@
+version: "2"
+services:
+  workstand:
+    build:
+      context: .
+    command: python manage.py runserver 0.0.0.0:8000
+    ports:
+      - "8000:8000"
+      - "62260:62260"
+    volumes:
+      - ./bikeshop_project:/code
+  redis:
+    restart: always
+  db:
+    restart: always
+  webpack:
+    build:
+      context: .
+      dockerfile: Dockerfile-webpack
+    command: "npm run watch"
+    ports:
+      - "3000:3000"
+    restart: always
+    volumes_from:
+      - workstand

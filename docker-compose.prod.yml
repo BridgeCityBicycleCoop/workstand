@@ -13,7 +13,7 @@ services:
   workstand:
     build:
       context: .
-      dockerfile: Dockerfile-prod
+      dockerfile: Dockerfile
     image: bcbc/workstand:production
     env_file:
       - workstand.env

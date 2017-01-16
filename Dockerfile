@@ -9,6 +9,8 @@ ADD bikeshop_project /code
 COPY requirements /code/requirements
 RUN pip install -r requirements/production.txt
 RUN npm cache clean
+RUN npm install bower -g
+RUN bower install
 RUN npm install --unsafe-perm
 RUN npm run build-production
 RUN DJANGO_SETTINGS_MODULE=bikeshop.settings.production python manage.py collectstatic --no-input

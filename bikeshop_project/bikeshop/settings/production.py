@@ -36,6 +36,6 @@ LOGGING = {
 WEBPACK_LOADER.update(
     {
         "BUNDLE_DIR_NAME": "assets/dist/",
-        "STATS_FILE": os.path.join(BASE_DIR, "../../webpack-stats-prod.json"),
+        "STATS_FILE": os.path.join(BASE_DIR, "../webpack-stats-prod.json"),
     }
 )

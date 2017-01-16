@@ -9,7 +9,7 @@
   "license": "MIT",
   "homepage": "",
   "private": true,
-  "directory": "vendor",
+  "directory": "bikeshop_project/vendor",
   "ignore": [
     "**/.*",
     "node_modules",

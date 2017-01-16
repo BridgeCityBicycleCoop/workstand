@@ -6,10 +6,14 @@ services:
     image: bcbc/nginx:production
     ports:
       - "80:80"
+      - "443:443"
     links:
       - workstand
     volumes_from:
       - workstand:ro
+    volumes:
+      - certs:/etc/letsencrypt
+
   workstand:
     build:
       context: .
@@ -32,4 +36,6 @@ services:
 
 volumes:
   static:
+    external: false
+  certs:
     external: false

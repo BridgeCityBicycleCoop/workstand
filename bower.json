@@ -9,6 +9,7 @@
   "license": "MIT",
   "homepage": "",
   "private": true,
+  "directory": "vendor",
   "ignore": [
     "**/.*",
     "node_modules",

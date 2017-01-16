@@ -126,7 +126,7 @@ STATICFILES_DIRS = [
     ('vendor', os.path.join(BASE_DIR, 'vendor')),
     os.path.join(BASE_DIR, 'assets')
 ]
-
+STATIC_ROOT = 'STATIC'
 STATIC_URL = '/static/'
 
 AUTH_USER_MODEL = 'registration.CustomUser'

@@ -10,7 +10,6 @@ COPY requirements /code/requirements
 RUN pip install -r requirements/production.txt
 RUN npm cache clean
 RUN npm install --unsafe-perm -g bower
-COPY bower.json /code/bower.json
 RUN bower install --allow-root
 RUN npm install --unsafe-perm
 RUN npm run build-production

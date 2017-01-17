@@ -14,3 +14,4 @@ RUN bower install --allow-root
 RUN npm install --unsafe-perm
 RUN npm run build-production
 RUN DJANGO_SETTINGS_MODULE=bikeshop.settings.production python manage.py collectstatic --no-input
+EXPOSE 8000

@@ -7,13 +7,15 @@ services:
     ports:
       - "80:80"
       - "443:443"
-    links:
-      - workstand
     volumes_from:
       - workstand:ro
     volumes:
       - certs:/etc/letsencrypt
-
+    restart: always
+    networks:
+      - default
+    links:
+      - workstand
   workstand:
     build:
       context: .
@@ -26,9 +28,6 @@ services:
       - DJANGO_SETTINGS_MODULE=bikeshop.settings.production
     volumes:
       - static:/code/static
-    depends_on:
-      - redis
-      - db
   redis:
     restart: always
   db:

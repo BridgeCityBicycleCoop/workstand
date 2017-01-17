@@ -10,16 +10,6 @@ DEBUG = True
 
 ALLOWED_HOSTS = []
 
-DATABASES = {
-    "default": {
-        "ENGINE": "django.db.backends.postgresql",
-        "NAME": "postgres",
-        "USER": "postgres",
-        "HOST": "workstand_db_1",
-        "PORT": "5432",
-    }
-}
-
 if (
     "test" in sys.argv or "test_coverage" in sys.argv
 ):  # Covers regular testing and django-coverage

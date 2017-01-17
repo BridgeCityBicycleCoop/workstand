@@ -1,13 +1,19 @@
 version: "2"
 services:
   workstand:
+    networks:
+      - default
     image: bcbc/workstand
-    depends_on:
+    links:
       - redis
       - db
   redis:
+    networks:
+      - default
     image: redis:latest
   db:
+    networks:
+      - default
     image: postgres:latest
     volumes:
       - pgdata:/var/lib/postgresql/data/
@@ -15,3 +21,7 @@ services:
 volumes:
   pgdata:
     external: false
+
+networks:
+  default:
+    driver: bridge

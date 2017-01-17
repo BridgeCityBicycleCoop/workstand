@@ -126,7 +126,7 @@ STATICFILES_FINDERS = (
     'compressor.finders.CompressorFinder',
 )
 STATICFILES_DIRS = [
-    ('vendor', os.path.join(BASE_DIR, '../vendor')),
+    os.path.join(BASE_DIR, '../vendor'),
     os.path.join(BASE_DIR, '../assets')
 ]
 

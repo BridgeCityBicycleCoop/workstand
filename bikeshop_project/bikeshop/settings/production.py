@@ -36,7 +36,7 @@ WEBPACK_LOADER = {
     "DEFAULT": {
         "CACHE": True,
         "BUNDLE_DIR_NAME": "dist/",  # must end with slash
-        "STATS_FILE": os.path.join(BASE_DIR, "assets/webpack-stats-prod.json"),
+        "STATS_FILE": os.path.join(BASE_DIR, "../webpack-stats-prod.json"),
         "POLL_INTERVAL": 0.1,
         "IGNORE": [".+\.hot-update.js", ".+\.map"],
     }

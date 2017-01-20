@@ -8,11 +8,6 @@ services:
     ports:
       - "8000:8000"
       - "62260:62260"
-    depends_on:
-      - webpack
-    links:
-      - redis
-      - db
     volumes:
       - ./bikeshop_project:/code:rw
     volumes_from:

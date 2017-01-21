@@ -1,6 +1,6 @@
 import React, { PropTypes } from 'react';
-import SelectField from 'material-ui/SelectField';
 import MenuItem from 'material-ui/MenuItem';
+import SelectField from 'material-ui/SelectField';
 
 const sources = ['COS_BIKE_DIVERSION_PILOT', 'UOFS', 'DROP_OFF'];
 
@@ -14,7 +14,7 @@ export const friendly = (s) => {
       return 'Drop Off';
     default:
       return undefined;
-  };
+  }
 };
 
 const Source = ({ source }) => {
@@ -28,7 +28,7 @@ const Source = ({ source }) => {
         floatingLabelText="Source"
         value={source}
         onChange={undefined}
-        autoWidth={true}
+        autoWidth
       >
         <MenuItem value={null} primaryText="" />
         {items}

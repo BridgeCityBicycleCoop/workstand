@@ -9,6 +9,7 @@
     <script src="{% static 'vendor/moment/min/moment.min.js' %}"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/object-observe/0.2.6/object-observe-lite.min.js"></script>
     <script src="{% static 'vendor/draggabilly/dist/draggabilly.pkgd.min.js' %}"></script>
+    <script src="{% static 'vendor/md-date-time-picker/dist/js/scroll-into-view-if-needed.js' %}"></script>
     <script src="{% static 'vendor/md-date-time-picker/dist/js/mdDateTimePicker.min.js' %}"></script>
     <script>
     var dateOfBirth = new mdDateTimePicker.default({
@@ -20,7 +21,7 @@
     });
     Object.observe(dateOfBirth, function(changes) {
         var input = document.getElementById('{{ form.date_of_birth.id_for_label }}');
-        input.value = dateOfBirth.time().format('YYYY-MM-DD');
+        input.value = dateOfBirth.time.format('YYYY-MM-DD');
         input.parentNode.classList.add('is-dirty');
 
         var threshold = moment.duration(18, 'years');

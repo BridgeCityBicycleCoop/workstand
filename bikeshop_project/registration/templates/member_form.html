@@ -97,7 +97,7 @@
         </div>
         <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label {% if form.first_name.errors %}is-invalid{% endif %}">
             {{ form.first_name }}
-            <label class="mdl-textfield__label" for="{{ form.first_name.id_for_label }}">{{ form.first_name.label }}</label>
+            <label class="mdl-textfield__label" for="{{ form.first_name.id_for_label }}">{{ form.first_name.label }}{% if form.first_name.field.required %} <sup>*</sup>{% endif %}</label>
             {% if form.first_name.errors %}
             <span class="mdl-textfield__error">{{ form.first_name.errors }}</span>
             {% else %}
@@ -106,7 +106,7 @@
         </div>
         <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label {% if form.last_name.errors %}is-invalid{% endif %}">
             {{ form.last_name }}
-            <label class="mdl-textfield__label" for="{{ form.last_name.id_for_label }}">{{ form.last_name.label }}</label>
+            <label class="mdl-textfield__label" for="{{ form.last_name.id_for_label }}">{{ form.last_name.label }}{% if form.last_name.field.required %} <sup>*</sup>{% endif %}</label>
             {% if form.last_name.errors %}
             <span class="mdl-textfield__error">{{ form.last_name.errors }}</span>
             {% else %}
@@ -151,7 +151,7 @@
         </div>
         <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label {% if form.post_code.errors %}is-invalid{% endif %}">
             {{ form.post_code }}
-            <label class="mdl-textfield__label" for="{{ form.post_code.id_for_label }}">{{ form.post_code.label }}</label>
+            <label class="mdl-textfield__label" for="{{ form.post_code.id_for_label }}">{{ form.post_code.label }}{% if form.post_code.field.required %} <sup>*</sup>{% endif %}</label>
             {% if form.post_code.errors %}
             <span class="mdl-textfield__error">{{ form.post_code.errors }}</span>
             {% else %}

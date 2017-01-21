@@ -98,10 +98,10 @@ export default class BikeModal extends React.Component {
         <Dialog
           title="Edit Bike"
           actions={actions}
-          modal={true}
+          modal
           open={this.state.open}
         >
-          {(form) ? form : <div>Unable to edit bike.</div>}
+          {form || <div>Unable to edit bike.</div>}
 
         </Dialog>
       </div>

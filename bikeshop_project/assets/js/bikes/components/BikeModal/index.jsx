@@ -1,13 +1,13 @@
-import React from 'react';
+import Checkbox from 'material-ui/Checkbox';
+import DatePicker from 'material-ui/DatePicker';
 import Dialog from 'material-ui/Dialog';
 import FlatButton from 'material-ui/FlatButton';
-import TextField from 'material-ui/TextField';
-import DatePicker from 'material-ui/DatePicker';
-import RaisedButton from 'material-ui/RaisedButton';
 import moment from 'moment-timezone';
+import RaisedButton from 'material-ui/RaisedButton';
+import React from 'react';
+import TextField from 'material-ui/TextField';
 import Size from '../Size';
 import Source from '../Source';
-import Checkbox from 'material-ui/Checkbox';
 
 /**
  * A modal dialog can only be closed by selecting one of the actions.

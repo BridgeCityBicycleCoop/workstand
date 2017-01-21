@@ -93,18 +93,16 @@ export default class BikeModal extends React.Component {
       );
     }
 
-    return (
-      <div>
-        <Dialog
-          title="Edit Bike"
-          actions={actions}
-          modal
-          open={this.state.open}
-        >
-          {form || <div>Unable to edit bike.</div>}
+    return (<div>
+      <Dialog
+        title="Edit Bike"
+        actions={actions}
+        modal
+        open={this.state.open}
+      >
+        {form || <div>Unable to edit bike.</div>}
 
-        </Dialog>
-      </div>
-    );
+      </Dialog>
+    </div>);
   }
 }

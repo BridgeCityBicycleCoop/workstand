@@ -21,7 +21,7 @@
     });
     Object.observe(dateOfBirth, function(changes) {
         var input = document.getElementById('{{ form.date_of_birth.id_for_label }}');
-        input.value = dateOfBirth.time().format('YYYY-MM-DD');
+        input.value = dateOfBirth.time.format('YYYY-MM-DD');
         input.parentNode.classList.add('is-dirty');
 
         var threshold = moment.duration(18, 'years');

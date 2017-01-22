@@ -10,4 +10,5 @@ build:
   env:
     - secure: stCGu2o9rdpGLek5SVL3d5+7XZw1aSbKV1F5c63M+xSDSvteK9B2/Qxjqc0FA5kigXAtpRdZIBp6/TrrIe3fNb6O77ATIZnIC19lAlxY9F80J5em1TkDSX8PRFoz3yuhNm/DpBYzytMjf57IQq4VlxLm3jms8hgCjMG2HeCKe9KqomUJ7hg7HBlPHnR/WqayQxnUnHkVe9MKKXxHjD2kL1Z4PFBM/fc5I5kNiJYhvmeoXPyvT8G6HKK9ZXG8Bw9OF/PtB7xI3/3ElqMEccHj+Ff66/a6rm5sMxbd2aOq8I0LTHXmONs+wsMniwcb1MIiO0Pc9sP9HbU0iGnnBrnmWA==
   post_ci:
-    - docker push hub.docker.com/bcbc/workstand:production
+    - docker commit $SHIPPABLE_CONTAINER_NAME bcbc/workstand:production
+    - docker push bcbc/workstand:production

@@ -150,26 +150,7 @@
 {% endblock %}
 
 {% block scripts %}
-        <script src="{% static 'vendor/moment/min/moment.min.js' %}"></script>
-        <script src="{% static 'vendor/draggabilly/dist/draggabilly.pkgd.min.js' %}"></script>
-        <script src="{% static 'vendor/md-date-time-picker/dist/js/scroll-into-view-if-needed.js' %}"></script>
-        <script src="{% static 'vendor/md-date-time-picker/dist/js/mdDateTimePicker.min.js' %}"></script>
         <script>
-        var renewedAt = new mdDateTimePicker.default({
-            type: 'date',
-            past: moment().subtract(100, 'years'),
-            trigger: document.getElementById('{{  membership_form.renewed_at.id_for_label }}')
-        });
-        document.getElementById('{{ membership_form.renewed_at.id_for_label }}').addEventListener('focus', function() {
-            console.log('Toggle!');
-              renewedAt.toggle();
-        });
-        document.getElementById('{{  membership_form.renewed_at.id_for_label }}').addEventListener('onOk', function () {
-            console.log('onOk');
-            this.parentNode.classList.add('is-dirty');
-            this.value = renewedAt.time.format('YYYY-MM-DD');
-        })
-
         var responsibilities = [
                 document.getElementById('{{ membership_form.safe_space.id_for_label }}'),
                 document.getElementById('{{ membership_form.respect_community.id_for_label }}'),

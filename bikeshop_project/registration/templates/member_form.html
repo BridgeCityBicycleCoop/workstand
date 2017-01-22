@@ -1,15 +1,8 @@
 {% extends 'dashboard.html' %}
 {% load staticfiles %}
 
-{% block styles %}
-    <link rel="stylesheet" href="{% static 'vendor/md-date-time-picker/dist/css/mdDateTimePicker.min.css' %}">
-{% endblock %}
-
 {% block scripts %}
     <script src="{% static 'vendor/moment/min/moment.min.js' %}"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/object-observe/0.2.6/object-observe-lite.min.js"></script>
-    <script src="{% static 'vendor/draggabilly/dist/draggabilly.pkgd.min.js' %}"></script>
-    <script src="{% static 'vendor/md-date-time-picker/dist/js/mdDateTimePicker.min.js' %}"></script>
     <script>
     dateOfBirthInput = document.getElementById('{{ form.date_of_birth.id_for_label }}');
 

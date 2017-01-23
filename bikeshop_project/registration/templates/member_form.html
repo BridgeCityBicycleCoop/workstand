@@ -1,34 +1,21 @@
 {% extends 'dashboard.html' %}
 {% load staticfiles %}
 
-{% block styles %}
-    <link rel="stylesheet" href="{% static 'vendor/md-date-time-picker/dist/css/mdDateTimePicker.min.css' %}">
-{% endblock %}
-
 {% block scripts %}
     <script src="{% static 'vendor/moment/min/moment.min.js' %}"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/object-observe/0.2.6/object-observe-lite.min.js"></script>
-    <script src="{% static 'vendor/draggabilly/dist/draggabilly.pkgd.min.js' %}"></script>
-    <script src="{% static 'vendor/md-date-time-picker/dist/js/scroll-into-view-if-needed.js' %}"></script>
-    <script src="{% static 'vendor/md-date-time-picker/dist/js/mdDateTimePicker.min.js' %}"></script>
     <script>
-    var dateOfBirth = new mdDateTimePicker.default({
-        type: 'date',
-        past: moment().subtract(100, 'years')
-    });
-        document.getElementById('{{ form.date_of_birth.id_for_label }}').addEventListener('focus', function() {
-          dateOfBirth.toggle();
-    });
-    Object.observe(dateOfBirth, function(changes) {
-        var input = document.getElementById('{{ form.date_of_birth.id_for_label }}');
-        input.value = dateOfBirth.time.format('YYYY-MM-DD');
+    dateOfBirthInput = document.getElementById('{{ form.date_of_birth.id_for_label }}');
+
+    dateOfBirthInput.addEventListener('blur', function(event) {
+        var input = event.target;
         input.parentNode.classList.add('is-dirty');
 
         var threshold = moment.duration(18, 'years');
-        var dob = dateOfBirth.time.clone();
+        var dob = moment(input.value, 'YYYY-MM-DD');
 
         if (dob.add(threshold).isAfter(moment())) {
             document.getElementById('{{ form.guardian_name.id_for_label }}').disabled = false;
+            document.getElementById('{{ form.guardian_name.id_for_label }}').required = true;
             document.getElementById('{{ form.guardian_name.id_for_label }}').parentNode.classList.remove('is-disabled');
         } else {
             document.getElementById('{{ form.guardian_name.id_for_label }}').disabled = true;
@@ -232,7 +219,7 @@
 {#            </label>#}
 {#        </div>#}
         <div>
-            <button disabled="true" id="submit" type="submit" class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--colored">Submit</button>
+            <button disabled id="submit" type="submit" class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--colored">Submit</button>
         </div>
         </form>
     </div>

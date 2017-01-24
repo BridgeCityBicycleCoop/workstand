@@ -1,48 +1,50 @@
-const path = require("path");
+const path = require('path');
 const webpack = require('webpack');
 const BundleTracker = require('webpack-bundle-tracker');
 const ExtractTextPlugin = require('extract-text-webpack-plugin');
-const autoprefixer =  require('autoprefixer');
+const autoprefixer = require('autoprefixer');
 
 module.exports = {
-    context: __dirname,
-    devtool: 'inline-source-map',
-    entry: './assets/js/index', // entry point of our app. assets/js/index.js should require other js modules and dependencies it needs
+  context: __dirname,
+  devtool: 'inline-source-map',
+  entry: {
+    signin: './assets/js/index',
+    members: './assets/js/members/index',
+  },
+  output: {
+    path: path.resolve('./assets/bundles/'),
+    filename: '[name]-[hash].js',
+  },
 
-    output: {
-        path: path.resolve('./assets/bundles/'),
-        filename: "[name]-[hash].js"
-    },
+  plugins: [
+    new BundleTracker({ filename: './webpack-stats.json' }),
+    new ExtractTextPlugin('react-toolbox.css', { allChunks: true }),
+    new webpack.NoErrorsPlugin(),
+  ],
 
-    plugins: [
-        new BundleTracker({filename: './webpack-stats.json'}),
-        new ExtractTextPlugin('react-toolbox.css', { allChunks: true }),
-        new webpack.NoErrorsPlugin()
+  module: {
+    loaders: [
+      {
+        test: /\.jsx?$/,
+        exclude: /node_modules/,
+        loader: 'babel-loader',
+        query: {
+          presets: ['es2015', 'stage-0', 'react'],
+        },
+      },
+      {
+        test: /(\.scss|\.css)$/,
+        loader: ExtractTextPlugin.extract('style', 'css?sourceMap&modules&importLoaders=1&localIdentName=[name]__[local]___[hash:base64:5]!postcss!sass?sourceMap!toolbox'),
+      },
     ],
-
-    module: {
-        loaders: [
-            {
-                test: /\.jsx?$/,
-                exclude: /node_modules/,
-                loader: 'babel-loader',
-                query: {
-                    presets: ['es2015', 'stage-0', 'react']
-                }
-            },
-            {
-                test: /(\.scss|\.css)$/,
-                loader: ExtractTextPlugin.extract('style', 'css?sourceMap&modules&importLoaders=1&localIdentName=[name]__[local]___[hash:base64:5]!postcss!sass?sourceMap!toolbox')
-          }
-        ]
-    },
-    resolve: {
-        modulesDirectories: [
-            'node_modules',
-            'bower_components',
-            path.resolve(__dirname, './node_modules')
-        ],
-        extensions: ['', '.js', '.jsx', '.scss']
-    },
-    postcss: [autoprefixer]
-}
+  },
+  resolve: {
+    modulesDirectories: [
+      'node_modules',
+      'bower_components',
+      path.resolve(__dirname, './node_modules'),
+    ],
+    extensions: ['', '.js', '.jsx', '.scss'],
+  },
+  postcss: [autoprefixer],
+};

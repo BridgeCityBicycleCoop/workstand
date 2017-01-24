@@ -6,8 +6,8 @@ RUN mkdir /code
 WORKDIR /code
 RUN mkdir requirements
 ADD bikeshop_project /code
-ADD requirements /code/requirements/base.txt
-ADD requirements /code/requirements/production.txt
+ADD requirements/base.txt /code/requirements/base.txt
+ADD requirements/production.txt /code/requirements/production.txt
 RUN pip install -r requirements/production.txt
 RUN npm cache clean
 ADD ./bikeshop_project/bower.json bower.json

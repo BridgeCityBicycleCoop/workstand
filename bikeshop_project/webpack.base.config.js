@@ -7,7 +7,10 @@ const autoprefixer = require('autoprefixer');
 module.exports = {
     context: __dirname,
 
-    entry: './assets/js/index',
+    entry: {
+      signin: './assets/js/index',
+      members: './assets/js/members/index',
+    },
 
     output: {
         path: path.resolve('./assets/bundles/'),

@@ -40,7 +40,7 @@ config.module.loaders.push(
   {
     test: /(\.scss|\.css)$/,
     loader: ExtractTextPlugin.extract('style', 'css?sourceMap&modules&importLoaders=1&localIdentName=[name]__[local]___[hash:base64:5]!postcss!sass?sourceMap!toolbox'),
-  }
+  },
 );
 
 module.exports = config;

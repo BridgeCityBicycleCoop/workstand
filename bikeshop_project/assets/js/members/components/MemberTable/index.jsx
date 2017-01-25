@@ -3,7 +3,7 @@ import { polyFill } from 'es6-promise';
 import fetch from 'isomorphic-fetch';
 import { Table, TableBody, TableHeader, TableHeaderColumn, TableRow, TableRowColumn } from 'material-ui/Table';
 import FlatButton from 'material-ui/FlatButton';
-import {Toolbar, ToolbarGroup, ToolbarSeparator, ToolbarTitle} from 'material-ui/Toolbar';
+import { Toolbar, ToolbarGroup, ToolbarSeparator, ToolbarTitle } from 'material-ui/Toolbar';
 import TextField from 'material-ui/TextField';
 import RaisedButton from 'material-ui/RaisedButton';
 
@@ -33,6 +33,7 @@ export default class MemberTable extends React.Component {
 
     this.handleUpdate = this.handleUpdate.bind(this);
     this.handleSearch = this.handleSearch.bind(this);
+    this.clearSearch = this.clearSearch.bind(this);
   }
 
   componentDidMount() {
@@ -49,8 +50,14 @@ export default class MemberTable extends React.Component {
   }
 
   handleUpdate(event, value) {
-    const self = this;
-    self.setState({ searchText: value });
+    this.setState({ ...this.state, searchText: value });
+  }
+
+  clearSearch() {
+    this.setState({
+      ...this.state,
+      searchText: '',
+    });
   }
 
   handleSearch() {
@@ -69,13 +76,19 @@ export default class MemberTable extends React.Component {
           self.setState({
             ...this.state,
             error: '',
-            filteredMembers: data.results,
+            filteredMembers: this.state.members.filter((member) => {
+              const ids = data.results.map(m => m.id);
+              console.log(ids);
+
+              if (ids.indexOf(member.id) !== -1) {
+                return member;
+              }
+            }),
           });
         } else {
           self.setState({ ...this.state, error: 'Member not found.' });
         }
       });
-
   }
 
   render() {
@@ -84,16 +97,16 @@ export default class MemberTable extends React.Component {
         <TableRowColumn>{member.first_name}</TableRowColumn>
         <TableRowColumn>{member.last_name}</TableRowColumn>
         <TableRowColumn>{member.email}</TableRowColumn>
-        <TableRowColumn><FlatButton label="Edit" href={`/members/edit/${member.id}`} /></TableRowColumn>
+        <TableRowColumn><FlatButton label="Edit" href={`/members/edit/${member.id}`} primary /></TableRowColumn>
       </TableRow>
       ));
 
-    const filteredMemberRows = this.state.members.map(member => (
+    const filteredMemberRows = this.state.filteredMembers.map(member => (
       <TableRow selectable={false} key={member.id}>
         <TableRowColumn>{member.first_name}</TableRowColumn>
         <TableRowColumn>{member.last_name}</TableRowColumn>
         <TableRowColumn>{member.email}</TableRowColumn>
-        <TableRowColumn><FlatButton label="Edit" href={`/members/edit/${member.id}`} /></TableRowColumn>
+        <TableRowColumn><FlatButton label="Edit" href={`/members/edit/${member.id}`} primary /></TableRowColumn>
       </TableRow>
       ));
 
@@ -108,9 +121,10 @@ export default class MemberTable extends React.Component {
                 hintText="ma@example.com OR name"
                 floatingLabelText="Search for member"
                 onChange={this.handleUpdate}
-                searchText={this.state.searchText}
+                value={this.state.searchText}
               />
-              <RaisedButton label="Serach" primary onClick={this.handleSearch} />
+              <RaisedButton label="Search" primary onClick={this.handleSearch} />
+              <RaisedButton label="Clear" onClick={this.clearSearch} secondary />
             </ToolbarGroup>
           </Toolbar>
           <Table selectable={false}>
@@ -126,7 +140,7 @@ export default class MemberTable extends React.Component {
               {filteredMemberRows.length ?
                 filteredMemberRows : undefined
               }
-              {memberRows.length && filteredMemberRows.length === 0 ?
+              {memberRows.length && !this.state.searchText ?
               memberRows :
               <TableRow>
                 <TableRowColumn>{'Members loading.'}</TableRowColumn>

@@ -1,5 +1,6 @@
 import logging
 
+from django.conf import settings
 from django.contrib import messages
 from django.core.urlresolvers import reverse
 from django.http import HttpResponseRedirect
@@ -18,7 +19,8 @@ logger = logging.getLogger(__name__)
 @method_decorator(login_required, name='dispatch')
 class DashboardView(View):
     def get(self, request):
-        return TemplateResponse(request, 'dashboard.html')
+        return TemplateResponse(request, 'dashboard.html', context={'DEBUG': settings.DEBUG})
+
 
 @method_decorator(login_required, name='dispatch')
 class NewMembershipView(TemplateView):

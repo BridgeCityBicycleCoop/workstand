@@ -18,9 +18,21 @@ from django.conf.urls import include, url
 from django.contrib import admin
 from django.contrib.auth.views import login, logout_then_login
 from django.contrib.staticfiles.urls import staticfiles_urlpatterns
+from rest_framework import routers
+from rest_framework_jwt.views import obtain_jwt_token
 
+import registration
 from core import urls as core_urls
 from registration import urls as member_urls
+
+routeLists = [
+    registration.urls.apiRoutes,
+]
+
+router = routers.DefaultRouter()
+for routeList in routeLists:
+    for route in routeList:
+        router.register(route[0], route[1])
 
 urlpatterns = [
     url(r"^", include(core_urls)),
@@ -28,6 +40,8 @@ urlpatterns = [
     url(r"^logout/", logout_then_login, name="logout"),
     url(r"^members/", include(member_urls)),
     url(r"^admin/", admin.site.urls),
+    url(r"^api/v1/", include(router.urls)),
+    url(r"^api/v1/token-auth/", obtain_jwt_token),
 ]
 
 if getattr(settings, "DEBUG"):

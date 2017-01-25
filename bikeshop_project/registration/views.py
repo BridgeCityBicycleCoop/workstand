@@ -9,12 +9,13 @@ from django.utils.decorators import method_decorator
 from django.views.decorators.csrf import csrf_exempt
 from django.views.generic import TemplateView, View
 from haystack.query import SearchQuerySet
-from rest_framework import serializers
+from rest_framework import viewsets
 from rest_framework.renderers import JSONRenderer
 from rest_framework.serializers import ModelSerializer
 
 from core.models import Visit
 from registration.utils import signin_member, get_signed_in_members
+from .serializers import MemberSerializer
 from .forms import MemberForm
 from .models import Member
 
@@ -73,15 +74,6 @@ class MemberSearchView(View):
         return HttpResponse(data, content_type="application/json")
 
 
-class MemberSerializer(ModelSerializer):
-    first_name = serializers.CharField(allow_blank=True, required=False)
-    last_name = serializers.CharField(allow_blank=True, required=False)
-
-    class Meta:
-        model = Member
-        fields = ("first_name", "last_name", "email", "id")
-
-
 class VisitSerializer(ModelSerializer):
     member = MemberSerializer()
 
@@ -120,3 +112,8 @@ class Members(TemplateView):
     def get(self, request):
         members = Member.objects.all()
         return self.render_to_response(dict(members=members))
+
+
+class MemberViewSet(viewsets.ModelViewSet):
+    queryset = Member.objects.all()
+    serializer_class = MemberSerializer

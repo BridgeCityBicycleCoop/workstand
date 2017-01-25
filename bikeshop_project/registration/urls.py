@@ -1,6 +1,14 @@
 from django.conf.urls import url
 
-from .views import MemberFormView, MemberSearchView, MemberSignIn, Members
+from .views import (
+    MemberFormView,
+    MemberSearchView,
+    MemberSignIn,
+    Members,
+    MemberViewSet,
+)
+
+apiRoutes = ((r"members", MemberViewSet),)
 
 urlpatterns = [
     url(r"^new/$", MemberFormView.as_view(), name="member_new"),

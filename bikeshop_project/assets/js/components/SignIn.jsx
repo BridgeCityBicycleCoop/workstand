@@ -1,6 +1,4 @@
-import ContentAdd from 'material-ui/svg-icons/content/add';
 import fetch from 'isomorphic-fetch';
-import FloatingActionButton from 'material-ui/FloatingActionButton';
 import moment from 'moment';
 import { polyFill } from 'es6-promise';
 import React from 'react';
@@ -150,9 +148,6 @@ export default class SignIn extends React.Component {
         </div>
         <div className="mdl-grid">
           <SignedInList members={this.state.signedIn} />
-          <FloatingActionButton href="/members/new/">
-            <ContentAdd />
-          </FloatingActionButton>
         </div>
       </div>
     );

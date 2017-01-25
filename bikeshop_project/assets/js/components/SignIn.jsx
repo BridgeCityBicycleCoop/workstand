@@ -1,12 +1,15 @@
+import ContentAdd from 'material-ui/svg-icons/content/add';
 import fetch from 'isomorphic-fetch';
+import FloatingActionButton from 'material-ui/FloatingActionButton';
 import moment from 'moment';
 import { polyFill } from 'es6-promise';
-import RaisedButton from 'material-ui/RaisedButton';
 import React from 'react';
+import RaisedButton from 'material-ui/RaisedButton';
 
 import Member from './Member';
 import Purpose from './Purpose';
 import SignedInList from './SignedInList';
+
 
 export default class SignIn extends React.Component {
   constructor(props) {
@@ -132,6 +135,7 @@ export default class SignIn extends React.Component {
               searchText={this.state.searchText}
             />
           </div>
+
           <div className="mdl-cell mdl-cell--4-col">
             <Purpose
               handleChange={this.handlePurposeChoice}
@@ -139,7 +143,6 @@ export default class SignIn extends React.Component {
             />
           </div>
         </div>
-
         <div className="mdl-grid">
           <div className="mdl-cell mdl-cell--2-col mdl-cell--10-offset">
             <RaisedButton onClick={this.signIn} label="Sign-in" />
@@ -147,6 +150,9 @@ export default class SignIn extends React.Component {
         </div>
         <div className="mdl-grid">
           <SignedInList members={this.state.signedIn} />
+          <FloatingActionButton href="/members/new/">
+            <ContentAdd />
+          </FloatingActionButton>
         </div>
       </div>
     );

@@ -1,22 +1,7 @@
 {% extends 'dashboard.html' %}
+{% load render_bundle from webpack_loader %}
 
 {% block content %}
-    <div class="mdl-cell mdl-cell--6-col">
-        <ul class="demo-list-three mdl-list">
-            {% for member in members %}
-          <li class="mdl-list__item mdl-list__item--three-line">
-            <span class="mdl-list__item-primary-content">
-              <i class="material-icons mdl-list__item-avatar">person</i>
-              <span>{{ member.full_name }}</span>
-              <span class="mdl-list__item-text-body">
-                {{ member.email }}
-              </span>
-            </span>
-            <span class="mdl-list__item-secondary-content">
-              <a class="mdl-list__item-secondary-action" href="{% url 'member_edit' member_id=member.id %}"><i class="material-icons">edit</i></a>
-            </span>
-          </li>
-            {% endfor %}
-        </ul>
-    </div>
+    <div id="root"></div>
+    {% render_bundle 'members' %}
 {% endblock %}

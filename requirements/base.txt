@@ -11,3 +11,4 @@ djangorestframework
 django-webpack-loader
 requests
 PyYAML
+djangorestframework-jwt==1.9.0

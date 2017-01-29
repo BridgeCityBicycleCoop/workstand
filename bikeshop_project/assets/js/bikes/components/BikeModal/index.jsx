@@ -40,7 +40,7 @@ export default class BikeModal extends React.Component {
         marginBottom: 16,
       },
       bottom: {
-        alignItems: 'flex-end'
+        alignItems: 'flex-end',
       },
     };
 
@@ -99,7 +99,8 @@ export default class BikeModal extends React.Component {
           </div>
           <div className="mdl-grid">
             <div className="mdl-cell mdl-cell--6-col">
-              <TextField floatingLabelText="Serial number" hintText="ab90cd23" value={serial_number} fullWidth required />
+              <TextField floatingLabelText="Serial number" hintText="ab90cd23" value={serial_number}
+                         fullWidth required />
             </div>
             <div className="mdl-cell mdl-cell--6-col">
               <TextField floatingLabelText="Created at" value={createdAtFormatted} fullWidth readOnly disabled />

@@ -155,7 +155,7 @@ class BikeForm extends React.Component {
               label="Stolen"
               labelPosition="left"
               style={styles.checkbox}
-              value={stolen}
+              checked={stolen}
               disabled
             />
           </div>
@@ -173,6 +173,7 @@ class BikeForm extends React.Component {
           <div className="mdl-cell mdl-cell--4-col">
             <div style={styles.block}>
               <Checkbox
+                checked={this.state.bike.stripped}
                 name="stripped"
                 label="Stripped"
                 labelPosition="left"

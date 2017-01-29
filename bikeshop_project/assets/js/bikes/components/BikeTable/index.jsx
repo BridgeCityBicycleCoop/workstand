@@ -1,6 +1,4 @@
 import React from 'react';
-import { polyFill } from 'es6-promise';
-import moment from 'moment-timezone';
 import fetch from 'isomorphic-fetch';
 import { Table, TableBody, TableHeader, TableHeaderColumn, TableRow, TableRowColumn } from 'material-ui/Table';
 import FlatButton from 'material-ui/FlatButton';

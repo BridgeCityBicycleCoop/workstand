@@ -21,7 +21,6 @@ from django.contrib.staticfiles.urls import staticfiles_urlpatterns
 from rest_framework import routers
 from rest_framework_jwt.views import obtain_jwt_token
 
-import registration
 import bike
 import registration
 from bike import urls as bike_urls
@@ -30,15 +29,6 @@ from registration import urls as member_urls
 
 routeLists = [
     bike.urls.apiRoutes,
-    registration.urls.apiRoutes,
-]
-
-router = routers.DefaultRouter()
-for routeList in routeLists:
-    for route in routeList:
-        router.register(route[0], route[1])
-
-routeLists = [
     registration.urls.apiRoutes,
 ]
 

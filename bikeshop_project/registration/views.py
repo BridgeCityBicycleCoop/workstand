@@ -69,7 +69,7 @@ class MemberSearchView(View):
 
 
 class VisitSerializer(ModelSerializer):
-    member = MemberSignInSerializer()
+    member = MemberSerializer()
 
     class Meta:
         model = Visit

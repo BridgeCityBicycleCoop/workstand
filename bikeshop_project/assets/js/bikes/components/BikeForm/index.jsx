@@ -1,10 +1,13 @@
 import Checkbox from 'material-ui/Checkbox';
+import fetch from 'isomorphic-fetch';
 import FlatButton from 'material-ui/FlatButton';
 import moment from 'moment-timezone';
+import RaisedButton from 'material-ui/RaisedButton';
 import React from 'react';
 import TextField from 'material-ui/TextField';
 import Source from '../Source';
 import Size from '../Size';
+import Cookies from 'js-cookie';
 
 const styles = {
   block: {
@@ -28,6 +31,7 @@ class BikeForm extends React.Component {
     this.handleChange = this.handleChange.bind(this);
     this.handleSizeChange = this.handleSizeChange.bind(this);
     this.handleSourceChange = this.handleSourceChange.bind(this);
+    this.handleSave = this.handleSave.bind(this);
   }
 
   handleChange(event, value) {
@@ -42,20 +46,36 @@ class BikeForm extends React.Component {
     this.setState({ bike: { ...this.state.bike, source: value } });
   }
 
+  handleSave() {
+    const id = this.state.bike.id;
+    const data = JSON.stringify(this.state.bike);
+    const csrfToken = Cookies.get('csrftoken');
+    const sessionId = Cookies.get('sessionid');
+
+    fetch(`/api/v1/bikes/${id}/`, {
+      credentials: 'same-origin',
+      method: 'PUT',
+      headers: {
+        'Content-Type': 'application/json',
+        'X-CSRFToken': csrfToken,
+      },
+      body: data,
+    }).then((response) => {
+      if (response.status >= 400) {
+        throw new Error('Bad response from server');
+      }
+      console.log(response.json());
+    });
+  }
+
   render() {
     const timezone = moment.tz.guess();
     const {
-      price,
       claimed_at,
       claimed_by,
-      colour,
       cpic_searched_at,
       created_at,
-      size,
-      serial_number,
-      source,
       stolen,
-      stripped,
     } = this.state.bike;
     const createdAtFormatted = (moment(created_at).isValid()) ? moment(created_at).tz(timezone).fromNow() : '';
     const claimedAtFormatted = (moment(claimed_at).isValid()) ? moment(claimed_at).tz(timezone).fromNow() : '';
@@ -166,7 +186,7 @@ class BikeForm extends React.Component {
         <div className="mdl-grid" style={styles.bottom}>
           <div className="mdl-cell mdl-cell--8-col">
             <Source
-              source={source}
+              source={this.state.bike.source}
               onChange={this.handleSourceChange}
             />
           </div>
@@ -182,6 +202,10 @@ class BikeForm extends React.Component {
               />
             </div>
           </div>
+        </div>
+        <div className="mdl-grid">
+          <div className="mdl-cell right"></div>
+          <RaisedButton label="Save" onTouchTap={this.handleSave} />
         </div>
       </div>
     );

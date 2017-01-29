@@ -1,7 +1,8 @@
-import React from 'react';
-import fetch from 'isomorphic-fetch';
 import { Table, TableBody, TableHeader, TableHeaderColumn, TableRow, TableRowColumn } from 'material-ui/Table';
+import Cookies from 'js-cookie';
+import fetch from 'isomorphic-fetch';
 import FlatButton from 'material-ui/FlatButton';
+import React from 'react';
 import { friendlySize } from '../Size';
 import BikeModal from '../BikeModal';
 
@@ -34,7 +35,10 @@ export default class BikeTable extends React.Component {
   }
 
   componentDidMount() {
-    fetch('/api/v1/bikes/')
+
+    fetch('/api/v1/bikes/', {
+      credentials: 'same-origin',
+    })
       .then(checkStatus)
       .then(parseJSON)
       .then((data) => {

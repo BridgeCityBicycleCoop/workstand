@@ -49,6 +49,7 @@ export default class BikeTable extends React.Component {
   handleEditBike(bike) {
     console.log('Bike edit!');
     this.setState({
+      ...this.state,
       bikeModal: {
         open: true,
         bike,
@@ -88,8 +89,8 @@ export default class BikeTable extends React.Component {
             <TableBody displayRowCheckbox={false}>
               {bikeRows.length ?
               bikeRows :
-              <TableRow>
-                <TableRowColumn>{'No members currently signed in.'}</TableRowColumn>
+              <TableRow >
+                <TableRowColumn key="none">{'No bikes found.'}</TableRowColumn>
               </TableRow>
             }
             </TableBody>

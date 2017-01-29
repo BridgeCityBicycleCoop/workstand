@@ -26,7 +26,7 @@ class DashboardView(View):
 class NewMembershipView(TemplateView):
     template_name = 'membership_form.html'
 
-    def get(self, request, member_id):
+    def get(self, request, member_id, **kwargs):
         membership_form = MembershipForm(initial=dict(member=member_id))
         payment_form = PaymentForm()
         return self.render_to_response(dict(membership_form=membership_form, payment_form=payment_form))

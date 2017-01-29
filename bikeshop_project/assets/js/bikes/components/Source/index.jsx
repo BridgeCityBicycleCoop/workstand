@@ -19,7 +19,7 @@ export const friendly = (s) => {
 
 const Source = ({ source, onChange }) => {
   const items = sources.map(s =>
-    <MenuItem value={s} primaryText={friendly(s)} />,
+    <MenuItem key={s} value={s} primaryText={friendly(s)} />,
   );
 
   return (

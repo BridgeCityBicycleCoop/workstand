@@ -27,7 +27,7 @@ const styles = {
 
 const Size = ({ size, onChange }) => {
   const items = sizes.map(s =>
-    <MenuItem name="size" value={s} primaryText={friendlySize(s)} />,
+    <MenuItem key={s} name="size" value={s} primaryText={friendlySize(s)} />,
   );
 
   return (

@@ -28,7 +28,7 @@ const Source = ({ source }) => {
         floatingLabelText="Source"
         value={source}
         onChange={undefined}
-        autoWidth
+        fullWidth
       >
         <MenuItem value={null} primaryText="" />
         {items}

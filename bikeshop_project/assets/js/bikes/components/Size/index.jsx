@@ -21,17 +21,22 @@ export const friendlySize = (size) => {
   }
 };
 
+const styles = {
+  float: 'left'
+}
+
 const Size = ({ size }) => {
   const items = sizes.map(s =>
     <MenuItem value={s} primaryText={friendlySize(s)} />,
   );
 
   return (
-    <div>
+    <div style={styles}>
       <SelectField
         floatingLabelText="Size"
         value={size}
         onChange={undefined}
+        fullWidth
       >
         <MenuItem value={null} primaryText="" />
         {items}

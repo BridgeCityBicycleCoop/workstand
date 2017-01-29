@@ -1,13 +1,12 @@
 import Checkbox from 'material-ui/Checkbox';
-import DatePicker from 'material-ui/DatePicker';
 import Dialog from 'material-ui/Dialog';
 import FlatButton from 'material-ui/FlatButton';
 import moment from 'moment-timezone';
-import RaisedButton from 'material-ui/RaisedButton';
 import React from 'react';
 import TextField from 'material-ui/TextField';
-import Size from '../Size';
+
 import Source from '../Source';
+import Size from '../Size';
 
 /**
  * A modal dialog can only be closed by selecting one of the actions.
@@ -35,6 +34,9 @@ export default class BikeModal extends React.Component {
       },
       checkbox: {
         marginBottom: 16,
+      },
+      bottom: {
+        alignItems: 'flex-end'
       },
     };
 
@@ -68,26 +70,73 @@ export default class BikeModal extends React.Component {
         size,
         serial_number,
         source,
+        stolen,
         stripped } = this.state.bike;
-      const createdAtFormatted = moment(created_at).tz(timezone).fromNow();
+      const createdAtFormatted = (moment(created_at).isValid()) ? moment(created_at).tz(timezone).fromNow() : '';
+      const claimedAtFormatted = (moment(claimed_at).isValid()) ? moment(claimed_at).tz(timezone).fromNow() : '';
+      const cpicSearchedAtFormatted = (moment(cpic_searched_at).isValid()) ? moment(cpic_searched_at).tz(timezone)
+          .fromNow() : '';
 
       form = (
         <div>
-          <TextField label={'Blah'} value={make} /><TextField label="Price" value={price} /><br />
-          <TextField label="Claimed on" value={claimed_at} /><TextField label="Claimed by" value={claimed_by} /><br />
-          <TextField label="Colour" value={colour} /><br />
-          <TextField label="CPIC Searched on" value={cpic_searched_at} /><br />
-          <TextField label="Created at" value={createdAtFormatted} readOnly disabled /><br />
-          <Size size={size} />
-          <TextField label="Serial number" value={serial_number} />
-          <Source source={source} />
-          <div style={styles.block}>
-            <Checkbox
-              label="Stripped"
-              labelPosition="left"
-              style={styles.checkbox}
-              value={stripped}
-            />
+          <div className="mdl-grid">
+            <div className="mdl-cell mdl-cell--3-col">
+              <TextField floatingLabelText="Make" hintText="Norco" value={make} fullWidth required />
+            </div>
+            <div className="mdl-cell mdl-cell--3-col">
+              <TextField floatingLabelText="Price" hintText="35.60" value={price} fullWidth />
+            </div>
+            <div className="mdl-cell mdl-cell--3-col">
+              <TextField floatingLabelText="Colour" hintText="orange" value={colour} fullWidth required />
+            </div>
+            <div className="mdl-cell mdl-cell--3-col">
+              <Size size={size} />
+            </div>
+          </div>
+          <div className="mdl-grid">
+            <div className="mdl-cell mdl-cell--6-col">
+              <TextField floatingLabelText="Serial number" hintText="ab90cd23" value={serial_number} fullWidth required />
+            </div>
+            <div className="mdl-cell mdl-cell--6-col">
+              <TextField floatingLabelText="Created at" value={createdAtFormatted} fullWidth readOnly disabled />
+            </div>
+          </div>
+          <div className="mdl-grid">
+            <div className="mdl-cell mdl-cell--6-col">
+              <TextField floatingLabelText="Claimed on" value={claimedAtFormatted} fullWidth disabled />
+            </div>
+            <div className="mdl-cell mdl-cell--6-col">
+              <TextField floatingLabelText="Claimed by" value={claimed_by} fullWidth />
+            </div>
+          </div>
+          <div className="content-grid mdl-grid" style={styles.bottom}>
+            <div className="mdl-cell mdl-cell--6-col">
+              <TextField floatingLabelText="CPIC searched" value={cpicSearchedAtFormatted} disabled />
+            </div>
+            <div className="mdl-cell mdl-cell--6-col">
+              <Checkbox
+                label="Stolen"
+                labelPosition="left"
+                style={styles.checkbox}
+                value={stolen}
+                disabled
+              />
+            </div>
+          </div>
+          <div className="mdl-grid" style={styles.bottom}>
+            <div className="mdl-cell mdl-cell--8-col">
+              <Source source={source} />
+            </div>
+            <div className="mdl-cell mdl-cell--4-col">
+              <div style={styles.block}>
+                <Checkbox
+                  label="Stripped"
+                  labelPosition="left"
+                  style={styles.checkbox}
+                  value={stripped}
+                />
+              </div>
+            </div>
           </div>
         </div>
       );

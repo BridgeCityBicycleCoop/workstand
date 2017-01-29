@@ -35,6 +35,7 @@ class Bike(models.Model):
 
     size_choices = (
         (CHILD, 'child'),
+        (SMALL, 'small'),
         (MEDIUM, 'medium'),
         (LARGE, 'large'),
         (EXTRA_LARGE, 'extra large'),

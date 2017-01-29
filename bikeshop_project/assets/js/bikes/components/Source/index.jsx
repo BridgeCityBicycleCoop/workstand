@@ -17,7 +17,7 @@ export const friendly = (s) => {
   }
 };
 
-const Source = ({ source }) => {
+const Source = ({ source, onChange }) => {
   const items = sources.map(s =>
     <MenuItem value={s} primaryText={friendly(s)} />,
   );
@@ -27,7 +27,7 @@ const Source = ({ source }) => {
       <SelectField
         floatingLabelText="Source"
         value={source}
-        onChange={undefined}
+        onChange={onChange}
         fullWidth
       >
         <MenuItem value={null} primaryText="" />
@@ -39,6 +39,7 @@ const Source = ({ source }) => {
 
 Source.propTypes = {
   source: PropTypes.string,
+  onChange: PropTypes.function
 };
 
 export default Source;

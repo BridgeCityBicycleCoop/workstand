@@ -78,8 +78,9 @@ class Bike(models.Model):
         return self.stolen is False and self.cpic_searched_at is not None and self.serial_number is not None
 
     def can_claim(self):
-        return self.claimed_by is None or not (self.claimed_by is not None and self.last_worked_on > timezone.now() - timedelta(
-            weeks=4)) or self.last_worked_on is None
+        return self.claimed_by is None or not (
+            self.claimed_by is not None and self.last_worked_on > timezone.now() - timedelta(
+                weeks=4)) or self.last_worked_on is None
 
     def can_purchase(self):
         if self.claimed_by:
@@ -122,3 +123,10 @@ class Bike(models.Model):
     @transition(field=state, source=[BikeState.ASSESSED, BikeState.RECEIVED], conditions=[can_transfer_to_police])
     def transfer_to_police(self):
         pass
+
+    @property
+    def available_states(self):
+        states = [state_transition.name
+                  for state_transition in self.get_available_state_transitions()]
+
+        return states

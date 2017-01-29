@@ -10,3 +10,4 @@ class BikeSerializer(serializers.HyperlinkedModelSerializer):
 
     created_at = serializers.ReadOnlyField()
     state = serializers.ReadOnlyField()
+    available_states = serializers.ReadOnlyField()

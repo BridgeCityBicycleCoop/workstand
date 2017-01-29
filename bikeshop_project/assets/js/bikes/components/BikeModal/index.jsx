@@ -43,9 +43,16 @@ export default class BikeModal extends React.Component {
       />,
     ];
 
+    const title = this.state.bike && this.state.bike.stolen ?
+      (<div>
+        <h3>Edit Bike</h3>
+        <h4>STOLEN</h4>
+      </div>) :
+      <h3>Edit Bike</h3>;
+
     return (<div>
       <Dialog
-        title="Edit Bike"
+        title={title}
         actions={actions}
         modal
         open={this.state.open}

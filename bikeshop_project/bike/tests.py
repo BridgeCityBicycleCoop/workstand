@@ -1,4 +1,7 @@
 from decimal import Decimal
+
+from channels import Channel
+from channels.tests import ChannelTestCase
 from django.test import TestCase
 from model_mommy import timezone
 
@@ -12,7 +15,7 @@ from .models import Bike, BikeState
 from unittest.mock import patch
 
 
-class TestGet(TestCase):
+class TestBikeApi(TestCase):
     def setUp(self):
         self.user = mommy.make('registration.CustomUser', is_admin=True, is_superuser=True)
 
@@ -76,7 +79,6 @@ class TestGet(TestCase):
         result = client.put(f'/api/v1/bikes/{bike.id}/assessed/')
 
         self.assertEqual(result.status_code, status.HTTP_400_BAD_REQUEST)
-
 
     def test_assessed_cannot_transition(self):
         data = {
@@ -347,6 +349,18 @@ class TestGet(TestCase):
 
         self.assertEqual(result.status_code, status.HTTP_200_OK)
 
+    @patch('bike.consumers.check_cpic')
+    def test_check_cpic(self, check_cpic_mock):
+        bike = mommy.make(model=Bike, cpic_searched_at=None, stolen=None)
+        client = APIClient()
+        client.force_authenticate(user=self.user, token='blah')
+        data = {'serial_number': '123abc'}
+        result = client.put(f'/api/v1/bikes/{bike.id}/check/', data=data)
+
+        self.assertEqual(result.status_code, status.HTTP_200_OK)
+        self.assertEqual(result.data, {'status': 'pending'})
+        check_cpic_mock.assert_called_once()
+
 
 class TestBikeSignals(TestCase):
     @patch('bike.consumers._is_stolen')
@@ -372,3 +386,24 @@ class TestBikeSignals(TestCase):
 
         self.assertFalse(updated_bike.stolen)
         self.assertIsNotNone(updated_bike.cpic_searched_at)
+
+
+class TestBikeCheckCpic(ChannelTestCase):
+    @patch('bike.consumers._is_stolen')
+    def test_start_check(self, is_stolen_mock):
+        is_stolen_mock.return_value = False
+        bike = mommy.make(Bike)
+        message = {'bike_id': bike.id, 'serial_number': bike.serial_number}
+
+        Channel('check-cpic').send(message)
+        check_cpic(self.get_next_message('check-cpic', require=True))
+
+        result = self.get_next_message('check-cpic', require=True)
+
+        updated_bike = Bike.objects.get(id=bike.id)
+
+        self.assertFalse(updated_bike.stolen)
+        self.assertIsNotNone(updated_bike.cpic_searched_at)
+        self.assertFalse(result['stolen'])
+        self.assertEqual(result['bike_id'], message['bike_id'])
+        self.assertEqual(result['serial_number'], message['serial_number'])

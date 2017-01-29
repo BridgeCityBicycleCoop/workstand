@@ -1,3 +1,5 @@
+import logging
+from channels import Channel
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import get_object_or_404
 from django.utils.decorators import method_decorator
@@ -14,6 +16,8 @@ from bike.serializers import BikeSerializer
 from rest_framework import status
 
 from registration.models import Member
+
+logger = logging.getLogger('bikeshop')
 
 
 @method_decorator(login_required, name='dispatch')
@@ -107,3 +111,10 @@ class BikeViewSet(viewsets.ModelViewSet):
 
         serializer = BikeSerializer(bike, context={'request': request})
         return Response(serializer.data, status=status.HTTP_200_OK)
+
+    @detail_route(methods=['put'])
+    def check(self, request, pk):
+        message = {'bike_id': pk, 'serial_number': request.data.get('serial_number')}
+        Channel('check-cpic').send(message)
+
+        return Response({'status': 'pending'})

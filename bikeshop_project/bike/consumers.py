@@ -4,17 +4,18 @@ from typing import Dict, Union, Optional
 
 import requests
 from bs4 import BeautifulSoup
+from channels import Channel
 from django.core.exceptions import ObjectDoesNotExist
 from django.utils import timezone
 
 from bike.models import Bike
 
-logger = logging.getLogger('cpic')
+logger = logging.getLogger('bikeshop')
 
 
 def _is_stolen(serial: str) -> Optional[bool]:
     url = 'http://app.cpic-cipc.ca/English/searchFormResultsbikes.cfm'
-    data = {'ser': message.get('serial_number'),
+    data = {'ser': serial,
             'toc': 1,
             'Submit': 'Begin Search'}
 
@@ -55,6 +56,7 @@ def check_cpic(message: Dict[str, Union[str, int]]) -> None:
         bike.stolen = False
 
     bike.save()
+    response = {'stolen': stolen}
+    response.update(message)
 
-
-
+    Channel('check-cpic').send(response)

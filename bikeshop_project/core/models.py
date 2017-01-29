@@ -62,7 +62,7 @@ class Visit(models.Model):
         (DONATE, 'donate'),
         (STAFF, 'staff'),
     )
-    
+
     member = models.ForeignKey(
         'registration.Member',
         on_delete=models.CASCADE

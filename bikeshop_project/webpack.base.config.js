@@ -1,38 +1,33 @@
-var path = require("path")
-var webpack = require('webpack')
-var BundleTracker = require('webpack-bundle-tracker')
-
+const path = require('path');
 const autoprefixer = require('autoprefixer');
 
 module.exports = {
-    context: __dirname,
+  context: __dirname,
 
-    entry: {
-      signin: './assets/js/index',
-      members: './assets/js/members/index',
-    },
+  entry: {
+    signin: './assets/js/index',
+    members: './assets/js/members/index',
+  },
 
-    output: {
-        path: path.resolve('./assets/bundles/'),
-        filename: "[name]-[hash].js"
-    },
+  output: {
+    path: path.resolve('./assets/bundles/'),
+    filename: '[name]-[hash].js',
+  },
 
-    plugins: [
-        
-    ], // add all common plugins here
+  plugins: [
 
-    module: {
-        loaders: [
-            
-        ]
-    },
+  ], // add all common plugins here
 
-    resolve: {
-        modulesDirectories: [
-            'node_modules',
-            'bower_components'
-        ],
-        extensions: ['', '.js', '.jsx', '.scss']
-    },
-    postcss: [autoprefixer]
-}
+  module: {
+    loaders: [],
+  },
+
+  resolve: {
+    modulesDirectories: [
+      'node_modules',
+      'bower_components',
+    ],
+    extensions: ['', '.js', '.jsx', '.scss'],
+  },
+  postcss: [autoprefixer],
+};

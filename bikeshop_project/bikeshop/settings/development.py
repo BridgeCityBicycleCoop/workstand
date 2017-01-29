@@ -1,5 +1,6 @@
+import os
 import sys
-from .base import *
+from .base import *  # noqa
 
 
 # SECURITY WARNING: keep the secret key used in production secret!
@@ -10,8 +11,9 @@ DEBUG = True
 
 ALLOWED_HOSTS = []
 
-if 'test' in sys.argv or 'test_coverage' in sys.argv: #Covers regular testing and django-coverage
-    DATABASES['default']['ENGINE'] = 'django.db.backends.sqlite3'
+# Covers regular testing and django-coverage
+if 'test' in sys.argv or 'test_coverage' in sys.argv:
+    DATABASES['default']['ENGINE'] = 'django.db.backends.sqlite3'  # noqa
 
 LOGGING = {
     'version': 1,
@@ -39,21 +41,15 @@ LOGGING = {
     },
 }
 
-INSTALLED_APPS += [
+INSTALLED_APPS += [  # noqa
     'corsheaders',
-    # 'debug_toolbar'
 ]
 
-MIDDLEWARE_CLASSES.insert(0, 'django.middleware.common.CommonMiddleware')
+MIDDLEWARE_CLASSES.insert(0, 'django.middleware.common.CommonMiddleware')  # noqa
 
 # MIDDLEWARE_CLASSES += [
 #     'debug_toolbar.middleware.DebugToolbarMiddleware'
 # ]
-
-# Don't worry about IP addresses, just show the toolbar.
-DEBUG_TOOLBAR_CONFIG = {
-    'SHOW_TOOLBAR_CALLBACK': lambda *args: True
-}
 
 CORS_ORIGIN_ALLOW_ALL = True
 

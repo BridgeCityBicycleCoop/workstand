@@ -58,7 +58,8 @@ class MemberFormView(View):
 class MemberSearchView(View):
     def get(self, request, query):
         sqs = SearchQuerySet().models(Member).autocomplete(text=query)[:5]
-        results = [dict(name=result.object.get_full_name(), email=result.object.email, id=result.object.id) for result in sqs]
+        results = [dict(name=result.object.get_full_name(), email=result.object.email, id=result.object.id)
+                   for result in sqs]
 
         data = json.dumps(dict(results=results))
 

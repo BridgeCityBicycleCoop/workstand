@@ -1,5 +1,6 @@
 const path = require('path');
 const autoprefixer = require('autoprefixer');
+require('babel-polyfill');
 
 module.exports = {
   context: __dirname,
@@ -7,6 +8,7 @@ module.exports = {
   entry: {
     signin: './assets/js/index',
     members: './assets/js/members/index',
+    babelPolyfill: 'babel-polyfill',
   },
 
   output: {

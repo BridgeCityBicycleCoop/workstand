@@ -60,6 +60,7 @@
 {% endblock %}
 
 {% block scripts %}
+    {% render_bundle 'babelPolyfill' %}
     {% if DEBUG %}
         {% render_bundle 'webpack' %}
     {% endif %}

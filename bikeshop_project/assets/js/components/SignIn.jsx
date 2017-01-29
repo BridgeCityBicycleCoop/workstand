@@ -1,6 +1,5 @@
 import fetch from 'isomorphic-fetch';
 import moment from 'moment';
-import { polyFill } from 'es6-promise';
 import React from 'react';
 import RaisedButton from 'material-ui/RaisedButton';
 

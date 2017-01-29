@@ -2,7 +2,7 @@ import Checkbox from 'material-ui/Checkbox';
 import Dialog from 'material-ui/Dialog';
 import FlatButton from 'material-ui/FlatButton';
 import moment from 'moment-timezone';
-import React from 'react';
+import React, { PropTypes } from 'react';
 import TextField from 'material-ui/TextField';
 
 import Source from '../Source';
@@ -12,6 +12,10 @@ import Size from '../Size';
  * A modal dialog can only be closed by selecting one of the actions.
  */
 export default class BikeModal extends React.Component {
+  static propTypes = {
+    open: PropTypes.boolean,
+  }
+
   constructor(props) {
     super(props);
 

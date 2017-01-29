@@ -8,7 +8,7 @@ import BikeForm from '../BikeForm';
  */
 export default class BikeModal extends React.Component {
   static propTypes = {
-    open: PropTypes.boolean,
+    open: PropTypes.bool,
   }
 
   constructor(props) {

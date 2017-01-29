@@ -1,6 +1,5 @@
 import logging
-from django.forms import (BooleanField, CharField, CheckboxInput, RadioSelect, ModelForm, TextInput, HiddenInput,
-                          ChoiceField)
+from django.forms import BooleanField, CharField, CheckboxInput, RadioSelect, ModelForm, TextInput, HiddenInput
 
 from registration.models import Member
 

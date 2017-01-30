@@ -1,13 +1,13 @@
 import Checkbox from 'material-ui/Checkbox';
-import fetch from 'isomorphic-fetch';
+import Cookies from 'js-cookie';
 import FlatButton from 'material-ui/FlatButton';
-import moment from 'moment-timezone';
 import RaisedButton from 'material-ui/RaisedButton';
 import React from 'react';
 import TextField from 'material-ui/TextField';
+import fetch from 'isomorphic-fetch';
+import moment from 'moment-timezone';
 import Source from '../Source';
 import Size from '../Size';
-import Cookies from 'js-cookie';
 
 const styles = {
   block: {
@@ -65,7 +65,8 @@ class BikeForm extends React.Component {
       if (response.status >= 400) {
         throw new Error('Bad response from server');
       }
-      console.log(response.json());
+    }).catch((error) => {
+      console.error(error);
     });
   }
 
@@ -226,8 +227,9 @@ class BikeForm extends React.Component {
           </div>
         </div>
         <div className="mdl-grid">
-          <div className="mdl-cell right"></div>
-          <RaisedButton label="Save" onTouchTap={this.handleSave} />
+          <div className="mdl-cell right">
+            <RaisedButton label="Save" onTouchTap={this.handleSave} />
+          </div>
         </div>
       </div>
     );

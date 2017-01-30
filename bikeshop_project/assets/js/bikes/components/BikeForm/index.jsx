@@ -32,6 +32,7 @@ class BikeForm extends React.Component {
     this.handleSizeChange = this.handleSizeChange.bind(this);
     this.handleSourceChange = this.handleSourceChange.bind(this);
     this.handleSave = this.handleSave.bind(this);
+    this.handleCpicCheck = this.handleCpicCheck.bind(this);
   }
 
   handleChange(event, value) {
@@ -46,11 +47,32 @@ class BikeForm extends React.Component {
     this.setState({ bike: { ...this.state.bike, source: value } });
   }
 
+  handleCpicCheck() {
+    const id = this.state.bike.id;
+    const serialNumber = this.state.bike.serial_number;
+    const data = JSON.stringify({ serial_number: serialNumber });
+    const csrfToken = Cookies.get('csrftoken');
+
+    fetch(`/api/v1/bikes/${id}/check/`, {
+      credentials: 'same-origin',
+      method: 'PUT',
+      headers: {
+        'Content-Type': 'application/json',
+        'X-CSRFToken': csrfToken,
+      },
+      body: data,
+    }).then((response) => {
+      if (response.status >= 400) {
+        throw new Error('Bad response from server');
+      }
+      console.log(response.json());
+    });
+  }
+
   handleSave() {
     const id = this.state.bike.id;
     const data = JSON.stringify(this.state.bike);
     const csrfToken = Cookies.get('csrftoken');
-    const sessionId = Cookies.get('sessionid');
 
     fetch(`/api/v1/bikes/${id}/`, {
       credentials: 'same-origin',
@@ -167,7 +189,7 @@ class BikeForm extends React.Component {
         </div>
         <div className="content-grid mdl-grid" style={styles.bottom}>
           <div className="mdl-cell mdl-cell--6-col">
-            <TextField floatingLabelText="CPIC searched" value={cpicSearchedAtFormatted} disabled />
+            <TextField floatingLabelText="CPIC searched" value={cpicSearchedAtFormatted} />
           </div>
           <div className="mdl-cell mdl-cell--4-col">
             <Checkbox
@@ -180,7 +202,7 @@ class BikeForm extends React.Component {
             />
           </div>
           <div className="mdl-cell mdl-cell--2-col">
-            <FlatButton label="Check" primary />
+            <FlatButton label="Check" onTouchTap={this.handleCpicCheck} disabled={!!cpic_searched_at} primary />
           </div>
         </div>
         <div className="mdl-grid" style={styles.bottom}>

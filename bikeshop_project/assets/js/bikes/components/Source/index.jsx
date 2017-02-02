@@ -28,7 +28,7 @@ const Source = ({ source, onChange }) => {
         floatingLabelText="Donation source"
         value={source}
         onChange={onChange}
-        autoWidth
+        fullWidth
       >
         {items}
       </SelectField>

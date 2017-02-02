@@ -9,6 +9,7 @@ import BikeForm from '../BikeForm';
 export default class BikeModal extends React.Component {
   static propTypes = {
     open: PropTypes.bool,
+    bike: PropTypes.object,
     editing: PropTypes.bool,
   }
 

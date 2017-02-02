@@ -48,7 +48,7 @@ const Size = ({ size, onChange }) => {
 
 Size.propTypes = {
   size: PropTypes.string,
-  onChange: PropTypes.function,
+  onChange: PropTypes.func,
 };
 
 export default Size;

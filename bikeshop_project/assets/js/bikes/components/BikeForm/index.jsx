@@ -1,8 +1,8 @@
+import React, { PropTypes } from 'react';
 import Checkbox from 'material-ui/Checkbox';
 import Cookies from 'js-cookie';
 import FlatButton from 'material-ui/FlatButton';
 import RaisedButton from 'material-ui/RaisedButton';
-import React from 'react';
 import TextField from 'material-ui/TextField';
 import fetch from 'isomorphic-fetch';
 import moment from 'moment-timezone';
@@ -22,6 +22,10 @@ const styles = {
 };
 
 class BikeForm extends React.Component {
+  static propTypes = {
+    bike: PropTypes.object,
+    editing: PropTypes.bool,
+  }
   constructor({ bike, editing = false }) {
     super();
     if (editing) {
@@ -117,7 +121,7 @@ class BikeForm extends React.Component {
               name="make"
               floatingLabelText="Make"
               hintText="Norco"
-              value={this.state.bike.make}
+              value={this.state.bike.make || undefined}
               onChange={this.handleChange}
               fullWidth
               required
@@ -128,7 +132,7 @@ class BikeForm extends React.Component {
               name="price"
               floatingLabelText="Price"
               hintText="35.60"
-              value={this.state.bike.price}
+              value={this.state.bike.price || undefined}
               onChange={this.handleChange}
               fullWidth
             />
@@ -138,7 +142,7 @@ class BikeForm extends React.Component {
               name="colour"
               floatingLabelText="Colour"
               hintText="orange"
-              value={this.state.bike.colour}
+              value={this.state.bike.colour || undefined}
               onChange={this.handleChange}
               fullWidth
               required
@@ -157,7 +161,7 @@ class BikeForm extends React.Component {
               name="serial_number"
               floatingLabelText="Serial number"
               hintText="ab90cd23"
-              value={this.state.bike.serial_number}
+              value={this.state.bike.serial_number || undefined}
               onChange={this.handleChange}
               fullWidth
               required
@@ -188,10 +192,10 @@ class BikeForm extends React.Component {
             <div className="mdl-cell mdl-cell--6-col">
               <TextField
                 floatingLabelText="Claimed by"
-                value={claimed_by}
+                value={claimed_by || undefined}
                 fullWidth
                 disabled
-                readonly
+                readOnly
               />
             </div>
           </div>

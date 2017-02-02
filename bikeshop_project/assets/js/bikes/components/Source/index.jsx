@@ -38,7 +38,7 @@ const Source = ({ source, onChange }) => {
 
 Source.propTypes = {
   source: PropTypes.string,
-  onChange: PropTypes.function
+  onChange: PropTypes.func,
 };
 
 export default Source;

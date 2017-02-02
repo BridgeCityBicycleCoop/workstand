@@ -49,7 +49,6 @@ export default class BikeTable extends React.Component {
       .then(parseJSON)
       .then((data) => {
         this.setState({ bikes: data });
-        console.log('request succeeded with JSON response', data);
       })
       .catch((error) => {
         console.log('request failed', error);

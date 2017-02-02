@@ -9,6 +9,7 @@ import BikeForm from '../BikeForm';
 export default class BikeModal extends React.Component {
   static propTypes = {
     open: PropTypes.bool,
+    editing: PropTypes.bool,
   }
 
   constructor(props) {
@@ -17,11 +18,17 @@ export default class BikeModal extends React.Component {
     this.state = {
       open: props.open,
       bike: undefined,
+      editing: props.editing,
     };
   }
 
-  componentWillReceiveProps(newProps) {
-    this.setState({ open: newProps.open || false, bike: newProps.bike || false });
+  componentWillReceiveProps = (newProps) => {
+    this.setState({
+      ...this.state,
+      open: newProps.open || false,
+      bike: newProps.bike || undefined,
+      editing: newProps.editing || false,
+    });
   }
 
   handleClose = () => {
@@ -45,7 +52,7 @@ export default class BikeModal extends React.Component {
 
     const title = this.state.bike && this.state.bike.stolen ?
       (<div>
-        <h3>Edit Bike</h3>
+        <h3>{this.props.editing ? 'Edit Bike' : 'Add Bike'}</h3>
         <h4>STOLEN</h4>
       </div>) :
       <h3>Edit Bike</h3>;
@@ -58,7 +65,7 @@ export default class BikeModal extends React.Component {
         open={this.state.open}
         autoScrollBodyContent
       >
-        { this.state.bike ? <BikeForm bike={this.state.bike} /> : <div>Unable to edit bike.</div>}
+        { this.state.bike ? <BikeForm bike={this.state.bike} editing={this.state.editing} /> : <div>Unable to edit bike.</div>}
       </Dialog>
     </div>);
   }

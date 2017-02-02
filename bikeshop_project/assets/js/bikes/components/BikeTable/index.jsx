@@ -2,6 +2,8 @@ import { Table, TableBody, TableHeader, TableHeaderColumn, TableRow, TableRowCol
 import Cookies from 'js-cookie';
 import fetch from 'isomorphic-fetch';
 import FlatButton from 'material-ui/FlatButton';
+import FloatingActionButton from 'material-ui/FloatingActionButton';
+import ContentAdd from 'material-ui/svg-icons/content/add';
 import React from 'react';
 import { friendlySize } from '../Size';
 import BikeModal from '../BikeModal';
@@ -28,6 +30,7 @@ export default class BikeTable extends React.Component {
       bikeModal: {
         open: false,
         bike: undefined,
+        editing: false,
       },
     };
 
@@ -35,7 +38,6 @@ export default class BikeTable extends React.Component {
   }
 
   componentDidMount() {
-
     fetch('/api/v1/bikes/', {
       credentials: 'same-origin',
     })
@@ -51,12 +53,23 @@ export default class BikeTable extends React.Component {
   }
 
   handleEditBike(bike) {
-    console.log('Bike edit!');
     this.setState({
       ...this.state,
       bikeModal: {
         open: true,
         bike,
+        editing: true,
+      },
+    });
+  }
+
+  handleAddBike = () => {
+    this.setState({
+      ...this.state,
+      bikeModal: {
+        open: true,
+        bike: {},
+        editing: false,
       },
     });
   }
@@ -78,6 +91,9 @@ export default class BikeTable extends React.Component {
       <div className="mdl-grid">
         <div className="mdl-cell mdl-cell--12-col">
           <h3>Bikes</h3>
+          <FloatingActionButton onTouchTap={this.handleAddBike}>
+            <ContentAdd />
+          </FloatingActionButton>
           <Table selectable={false}>
             <TableHeader adjustForCheckbox={false} displaySelectAll={false}>
               <TableRow>
@@ -99,7 +115,11 @@ export default class BikeTable extends React.Component {
             }
             </TableBody>
           </Table>
-          <BikeModal bike={this.state.bikeModal.bike} open={this.state.bikeModal.open} />
+          <BikeModal
+            bike={this.state.bikeModal.bike}
+            open={this.state.bikeModal.open}
+            editing={this.state.bikeModal.editing}
+          />
         </div>
       </div>
     );

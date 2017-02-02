@@ -25,12 +25,11 @@ const Source = ({ source, onChange }) => {
   return (
     <div>
       <SelectField
-        floatingLabelText="Source"
+        floatingLabelText="Donation source"
         value={source}
         onChange={onChange}
-        fullWidth
+        autoWidth
       >
-        <MenuItem value={null} primaryText="" />
         {items}
       </SelectField>
     </div>

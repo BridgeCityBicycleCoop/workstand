@@ -33,27 +33,21 @@ class BikeForm extends React.Component {
         bike: {},
       };
     }
-
-    this.handleChange = this.handleChange.bind(this);
-    this.handleSizeChange = this.handleSizeChange.bind(this);
-    this.handleSourceChange = this.handleSourceChange.bind(this);
-    this.handleSave = this.handleSave.bind(this);
-    this.handleCpicCheck = this.handleCpicCheck.bind(this);
   }
 
-  handleChange(event, value) {
+  handleChange = (event, value) => {
     this.setState({ bike: { ...this.state.bike, [event.target.name]: value } });
   }
 
-  handleSizeChange(event, index, value) {
+  handleSizeChange = (event, index, value) => {
     this.setState({ bike: { ...this.state.bike, size: value } });
   }
 
-  handleSourceChange(event, index, value) {
+  handleSourceChange = (event, index, value) => {
     this.setState({ bike: { ...this.state.bike, source: value } });
   }
 
-  handleCpicCheck() {
+  handleCpicCheck = () => {
     const id = this.state.bike.id;
     const serialNumber = this.state.bike.serial_number;
     const data = JSON.stringify({ serial_number: serialNumber });
@@ -76,7 +70,7 @@ class BikeForm extends React.Component {
     });
   }
 
-  handleSave() {
+  handleSave = () => {
     const id = this.state.bike.id;
     const data = JSON.stringify(this.state.bike);
     const csrfToken = Cookies.get('csrftoken');
@@ -100,7 +94,7 @@ class BikeForm extends React.Component {
     });
   }
 
-  render() {
+  render = () => {
     const timezone = moment.tz.guess();
     const {
       claimed_at,

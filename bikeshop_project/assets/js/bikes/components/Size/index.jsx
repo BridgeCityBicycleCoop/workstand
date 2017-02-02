@@ -37,7 +37,7 @@ const Size = ({ size, onChange }) => {
         name="size"
         value={size}
         onChange={onChange}
-        fullWidth
+        autoWidth
       >
         <MenuItem value={null} primaryText="" />
         {items}

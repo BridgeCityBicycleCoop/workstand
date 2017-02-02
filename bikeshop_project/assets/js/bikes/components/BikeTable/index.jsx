@@ -38,6 +38,10 @@ export default class BikeTable extends React.Component {
   }
 
   componentDidMount() {
+    this.getBikes();
+  }
+
+  getBikes = () => {
     fetch('/api/v1/bikes/', {
       credentials: 'same-origin',
     })
@@ -119,6 +123,7 @@ export default class BikeTable extends React.Component {
             bike={this.state.bikeModal.bike}
             open={this.state.bikeModal.open}
             editing={this.state.bikeModal.editing}
+            getBikes={this.getBikes}
           />
         </div>
       </div>

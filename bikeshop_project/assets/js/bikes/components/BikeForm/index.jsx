@@ -95,6 +95,8 @@ class BikeForm extends React.Component {
         throw new Error('Bad response from server');
       }
       console.log(response.json());
+    }).then(() => {
+      this.props.getBikes();
     });
   }
 

@@ -65,7 +65,10 @@ export default class BikeModal extends React.Component {
         open={this.state.open}
         autoScrollBodyContent
       >
-        { this.state.bike ? <BikeForm bike={this.state.bike} editing={this.state.editing} /> : <div>Unable to edit bike.</div>}
+        { this.state.bike ?
+          <BikeForm bike={this.state.bike} editing={this.state.editing} getBikes={this.props.getBikes} /> :
+          <div>Unable to edit bike.</div>
+        }
       </Dialog>
     </div>);
   }

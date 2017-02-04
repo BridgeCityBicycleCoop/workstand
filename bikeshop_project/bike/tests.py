@@ -21,6 +21,7 @@ class TestBikeApi(TestCase):
 
     def test_endpoint_exists(self):
         client = APIClient()
+        client.force_authenticate(user=self.user, token='blah')
         result = client.get('/api/v1/bikes/')
 
         self.assertEqual(result.status_code, status.HTTP_200_OK)
@@ -28,6 +29,7 @@ class TestBikeApi(TestCase):
     def test_returns_bikes(self):
         mommy.make('bike.bike', 10)
         client = APIClient()
+        client.force_authenticate(user=self.user, token='blah')
         result = client.get('/api/v1/bikes/')
 
         self.assertEqual(result.status_code, status.HTTP_200_OK)

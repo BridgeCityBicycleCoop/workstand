@@ -80,7 +80,7 @@ class TestBikeApi(TestCase):
 
         self.assertEqual(result.status_code, status.HTTP_400_BAD_REQUEST)
 
-    def test_assessed_cannot_transition(self):
+    def test_assessed_still_cannot_transition(self):
         data = {
             "colour": "black",
             "make": "Miyata",
@@ -201,7 +201,8 @@ class TestBikeApi(TestCase):
         bike = Bike.objects.create(**data)
         client = APIClient()
         client.force_authenticate(user=self.user, token='blah')
-        result = client.put('/api/v1/bikes/{bike_id}/claim/'.format(bike_id=bike.id), data={'member': member.id}, format='json')
+        result = client.put('/api/v1/bikes/{bike_id}/claim/'.format(bike_id=bike.id), data={'member': member.id},
+                            format='json')
 
         self.assertEqual(result.status_code, status.HTTP_400_BAD_REQUEST)
 
@@ -301,7 +302,8 @@ class TestBikeApi(TestCase):
         bike = Bike.objects.create(**data)
         client = APIClient()
         client.force_authenticate(user=self.user, token='blah')
-        result = client.put('/api/v1/bikes/{bike_id}/purchase/'.format(bike_id=bike.id), data={'member': member.id}, format='json')
+        result = client.put('/api/v1/bikes/{bike_id}/purchase/'.format(bike_id=bike.id), data={'member': member.id},
+                            format='json')
 
         self.assertEqual(result.status_code, status.HTTP_400_BAD_REQUEST)
 
@@ -338,7 +340,6 @@ class TestBikeApi(TestCase):
             "size": Bike.SMALL,
             "price": Decimal('68.00'),
             "state": BikeState.ASSESSED,
-            "stolen": False,
             "cpic_searched_at": timezone.now(),
             "stolen": True
         }

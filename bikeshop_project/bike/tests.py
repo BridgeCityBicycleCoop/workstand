@@ -17,7 +17,7 @@ from unittest.mock import patch
 
 class TestBikeApi(TestCase):
     def setUp(self):
-        self.user = mommy.make('registration.CustomUser', is_admin=True, is_superuser=True)
+        self.user = mommy.make('registration.CustomUser', is_admin=True)
 
     def test_endpoint_exists(self):
         client = APIClient()

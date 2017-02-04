@@ -46,12 +46,16 @@ def check_cpic(message: Dict[str, Union[str, int]]) -> None:
     stolen = _is_stolen(message['serial_number'])
 
     if stolen:
+        logging.info(f'check_epic: CPIC records found the bike with serial number: '
+                     f'{message["serial_number"]} is stolen')
         bike.cpic_searched_at = timezone.now()
         bike.stolen = True
     elif stolen is None:
         logger.error(f'check_epic: Unable to check CPIC records with serial number: {message["serial_number"]}.')
         return
     else:
+        logging.info(f'check_epic: CPIC records found the bike with serial number: '
+                     f'{message["serial_number"]} is clear.')
         bike.cpic_searched_at = timezone.now()
         bike.stolen = False
 

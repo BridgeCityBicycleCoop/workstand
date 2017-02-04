@@ -217,7 +217,7 @@ class BikeForm extends React.Component {
               />
             </div>
             <div className="mdl-cell mdl-cell--2-col">
-              <FlatButton label="Check" onTouchTap={this.handleCpicCheck} disabled={!!cpic_searched_at} primary />
+              <FlatButton label="Check" onTouchTap={this.handleCpicCheck} disabled={moment(cpic_searched_at).isValid()} primary />
             </div>
           </div>
         }

@@ -44,7 +44,6 @@ class TestBikeApi(TestCase):
             "serial_number": "12345676",
             "source": Bike.COS_BIKE_DIVERSION_PILOT,
             "donated_by": "Greg",
-            "donated_at": "2017-01-01",
           }
         result = client.post('/api/v1/bikes/', data=data)
 
@@ -54,7 +53,6 @@ class TestBikeApi(TestCase):
         self.assertEqual(result.data['serial_number'], data['serial_number'])
         self.assertEqual(result.data['source'], data['source'])
         self.assertEqual(result.data['donated_by'], data['donated_by'])
-        self.assertEqual(result.data['donated_at'], data['donated_at'])
 
     def test_update_partial_created_at(self):
         bike = mommy.make('bike.Bike')

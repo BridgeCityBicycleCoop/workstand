@@ -25,6 +25,7 @@ class BikeForm extends React.Component {
   static propTypes = {
     bike: PropTypes.object,
     editing: PropTypes.bool,
+    handleClose: PropTypes.func,
   }
   constructor({ bike, editing = false }) {
     super();
@@ -244,8 +245,9 @@ class BikeForm extends React.Component {
           }
         </div>
         <div className="mdl-grid">
-          <div className="mdl-cell right">
-            <RaisedButton label="Save" onTouchTap={this.handleSave} />
+          <div style={{ textAlign: 'right' }} className="mdl-cell mdl-cell--12-col">
+            <RaisedButton label="Cancel" onTouchTap={this.props.handleClose} secondary />
+            <RaisedButton label="Save" onTouchTap={this.props.handleSave} default />
           </div>
         </div>
       </div>

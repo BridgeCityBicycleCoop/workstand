@@ -37,20 +37,6 @@ export default class BikeModal extends React.Component {
   };
 
   render() {
-    const actions = [
-      <FlatButton
-        label="Cancel"
-        primary
-        onTouchTap={this.handleClose}
-      />,
-      <FlatButton
-        label="Submit"
-        primary
-        disabled
-        onTouchTap={this.handleClose}
-      />,
-    ];
-
     const title = this.state.bike && this.state.bike.stolen ?
       (<div>
         <h3>{this.props.editing ? 'Edit Bike' : 'Add Bike'}</h3>
@@ -61,8 +47,6 @@ export default class BikeModal extends React.Component {
     return (<div>
       <Dialog
         title={title}
-        actions={actions}
-        modal
         open={this.state.open}
         autoScrollBodyContent
       >
@@ -71,6 +55,7 @@ export default class BikeModal extends React.Component {
             bike={this.state.bike}
             editing={this.state.editing}
             getBikes={this.props.getBikes}
+            handleClose={this.handleClose}
           /> :
           <div>Unable to edit bike.</div>
         }

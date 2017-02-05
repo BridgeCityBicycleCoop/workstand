@@ -35,7 +35,7 @@ class TestBikeApi(TestCase):
         self.assertEqual(result.status_code, status.HTTP_200_OK)
         self.assertEqual(len(result.data), 10)
 
-    def test_create_new_bike(self):
+    def test_create_new_bike(self,):
         client = APIClient()
         client.force_authenticate(user=self.user, token='blah')
         data = {
@@ -48,11 +48,15 @@ class TestBikeApi(TestCase):
         result = client.post('/api/v1/bikes/', data=data)
 
         self.assertEqual(result.status_code, status.HTTP_201_CREATED)
+        self.assertTrue(result.data['id'])
         self.assertEqual(result.data['colour'], data['colour'])
         self.assertEqual(result.data['make'], data['make'])
         self.assertEqual(result.data['serial_number'], data['serial_number'])
         self.assertEqual(result.data['source'], data['source'])
         self.assertEqual(result.data['donated_by'], data['donated_by'])
+        bike = Bike.objects.get(serial_number='12345676')
+        self.assertEqual(bike.id, result.data['id'])
+        self.assertEqual(bike.serial_number, result.data['serial_number'])
 
     def test_update_partial_created_at(self):
         bike = mommy.make('bike.Bike')
@@ -349,19 +353,6 @@ class TestBikeApi(TestCase):
         result = client.put(f'/api/v1/bikes/{bike.id}/stolen/')
 
         self.assertEqual(result.status_code, status.HTTP_200_OK)
-
-    # I am not sure I can say at this point whether check_cpic will be called
-    # @patch('bike.consumers.check_cpic')
-    # def test_check_cpic(self, check_cpic_mock):
-    #     bike = mommy.make(model=Bike, cpic_searched_at=None, stolen=None)
-    #     client = APIClient()
-    #     client.force_authenticate(user=self.user, token='blah')
-    #     data = {'serial_number': '123abc'}
-    #     result = client.put(f'/api/v1/bikes/{bike.id}/check/', data=data)
-    #
-    #     self.assertEqual(result.status_code, status.HTTP_200_OK)
-    #     self.assertEqual(result.data, {'status': 'pending'})
-    #     check_cpic_mock.assert_called_once()
 
 
 class TestBikeSignals(TestCase):

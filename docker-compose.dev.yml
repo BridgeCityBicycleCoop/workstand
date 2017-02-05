@@ -9,9 +9,11 @@ services:
       - "8000:8000"
       - "62260:62260"
     volumes:
-      - ./bikeshop_project:/code:rw
-    volumes_from:
-      - webpack
+      - ./bikeshop_project:/code
+    environment:
+      - PYTHONUNBUFFERED=0
+    restart:
+      - always
   redis:
     restart: always
   db:

@@ -7,13 +7,11 @@ services:
     command: python manage.py runserver 0.0.0.0:8000
     ports:
       - "8000:8000"
-      - "62260:62260"
     volumes:
       - ./bikeshop_project:/code
     environment:
       - PYTHONUNBUFFERED=0
-    restart:
-      - always
+    restart: always
   redis:
     restart: always
   db:

@@ -9,7 +9,7 @@ const config = require('./webpack.base.config.js');
 // Use webpack dev server
 config.entry = {
   webpack: [
-    'webpack-dev-server/client?http://webpack.docker:3000',
+    'webpack-dev-server/client?http://localhost:3000',
     'webpack/hot/only-dev-server',
   ],
   signin: './assets/js/index',
@@ -18,7 +18,7 @@ config.entry = {
 };
 
 // override django's STATIC_URL for webpack bundles
-config.output.publicPath = 'http://webpack.docker:3000/assets/bundles/';
+config.output.publicPath = 'http://localhost:3000/assets/bundles/';
 
 config.devtool = 'eval-source-map';
 

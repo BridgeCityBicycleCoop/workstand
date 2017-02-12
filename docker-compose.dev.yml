@@ -9,7 +9,7 @@ services:
       - "8000:8000"
       - "62260:62260"
     volumes:
-      - ./bikeshop_project:/code
+      - ./bikeshop_project:/code:rw
   redis:
     restart: always
   db:

@@ -1,4 +1,4 @@
-from django.forms import ModelForm, EmailInput, TextInput, DateInput, CheckboxInput, BooleanField
+from django.forms import ModelForm, EmailInput, TextInput, DateInput, CheckboxInput, BooleanField, Textarea
 from django.utils import timezone
 from registration.models import Member
 
@@ -12,7 +12,8 @@ class MemberForm(ModelForm):
 
         exclude = ('waiver',)
         fields = ['email', 'email_consent', 'first_name', 'last_name', 'preferred_name', 'date_of_birth',
-                  'guardian_name', 'phone', 'street', 'city', 'province', 'country', 'post_code', 'waiver']
+                  'guardian_name', 'phone', 'street', 'city', 'province', 'country', 'post_code', 'waiver',
+                  'banned', 'suspended', 'notes']
         widgets = {
             'email': EmailInput(attrs={'class': 'mdl-textfield__input'}),
             'email_consent': CheckboxInput(attrs={'class': 'mdl-checkbox__input'}),
@@ -28,6 +29,9 @@ class MemberForm(ModelForm):
             'country': TextInput(attrs={'class': 'mdl-textfield__input'}),
             'post_code': TextInput(attrs={'class': 'mdl-textfield__input',
                                           'pattern': '[A-Za-z][0-9][A-Za-z] [0-9][A-Za-z][0-9]'}),
+            'notes': Textarea(attrs={'class': 'mdl-textfield__input'}),
+            'suspended': CheckboxInput(attrs={'class': 'mdl-checkbox__input'}),
+            'banned': CheckboxInput(attrs={'class': 'mdl-checkbox__input'}),
         }
 
         labels = {

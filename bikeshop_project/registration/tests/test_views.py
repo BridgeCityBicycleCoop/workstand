@@ -103,6 +103,10 @@ class TestMemberSignIn(TestCase):
 
         self.assertEqual(response.status_code, 201)
         self.assertIsInstance(response, JsonResponse)
+        data = json.loads(response.content.decode())
+        results = data["results"]
+        self.assertTrue("banned" in results)
+        self.assertTrue("suspended" in results)
         self.assertTrue(visit)
 
     def test_post_no_member(self):
@@ -139,3 +143,5 @@ class TestMemberSignIn(TestCase):
         data = json.loads(data_string)
 
         self.assertTrue(len(data), 3)
+        self.assertTrue("banned" in data[0]["member"])
+        self.assertTrue("suspended" in data[0]["member"])

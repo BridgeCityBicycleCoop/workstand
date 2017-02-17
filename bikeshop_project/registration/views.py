@@ -91,8 +91,15 @@ class MemberSignIn(View):
     def post(self, request):
         member = get_object_or_404(Member, id=request.POST.get("id"))
         visit = signin_member(member, request.POST.get("purpose"))
-        data = json.dumps(
-            dict(results=dict(id=member.id, created_at=visit.created_at.isoformat()))
+        data = dict(
+            results=dict(
+                id=member.id,
+                first_name=member.first_name,
+                last_name=member.last_name,
+                suspended=member.suspended,
+                banned=member.banned,
+                created_at=visit.created_at.isoformat(),
+            )
         )
 
         return JsonResponse(data=data, safe=False, status=201)
@@ -100,9 +107,8 @@ class MemberSignIn(View):
     def get(self, request):
         visits = get_signed_in_members().prefetch_related()
         serializer = VisitSerializer(visits, many=True)
-        results_json = JSONRenderer().render(serializer.data)
 
-        return JsonResponse(data=results_json.decode(), safe=False, status=200)
+        return JsonResponse(data=serializer.data, safe=False, status=200)
 
 
 @method_decorator(login_required, name="dispatch")

@@ -4,6 +4,7 @@ WORKDIR /code
 ADD ./bikeshop_project/package.json package.json
 RUN npm install
 RUN npm install -g bower
+ADD ./bikeshop_project/.bowerrc .bowerrc
 ADD ./bikeshop_project/bower.json bower.json
 RUN bower install --allow-root
 EXPOSE 3000:3000

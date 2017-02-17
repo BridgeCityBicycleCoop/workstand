@@ -5,6 +5,7 @@ from django.forms import (
     DateInput,
     CheckboxInput,
     BooleanField,
+    Textarea,
 )
 from django.utils import timezone
 from registration.models import Member
@@ -36,6 +37,9 @@ class MemberForm(ModelForm):
             "country",
             "post_code",
             "waiver",
+            "banned",
+            "suspended",
+            "notes",
         ]
         widgets = {
             "email": EmailInput(attrs={"class": "mdl-textfield__input"}),
@@ -60,6 +64,9 @@ class MemberForm(ModelForm):
                     "pattern": "[A-Za-z][0-9][A-Za-z] [0-9][A-Za-z][0-9]",
                 }
             ),
+            "notes": Textarea(attrs={"class": "mdl-textfield__input"}),
+            "suspended": CheckboxInput(attrs={"class": "mdl-checkbox__input"}),
+            "banned": CheckboxInput(attrs={"class": "mdl-checkbox__input"}),
         }
 
         labels = {

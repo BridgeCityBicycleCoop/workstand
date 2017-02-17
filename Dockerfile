@@ -7,8 +7,10 @@ WORKDIR /code
 RUN mkdir requirements
 ADD bikeshop_project /code
 ADD requirements/base.txt /code/requirements/base.txt
+ADD requirements/testing.txt /code/requirements/testing.txt
 ADD requirements/production.txt /code/requirements/production.txt
 RUN pip install -r requirements/production.txt
+RUN python manage.py test
 RUN npm cache clean
 ADD ./bikeshop_project/bower.json bower.json
 RUN npm install --unsafe-perm -g bower

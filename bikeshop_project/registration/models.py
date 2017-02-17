@@ -93,6 +93,9 @@ class Member(models.Model):
     post_code = models.CharField(max_length=20, null=True, blank=False)
     waiver = models.DateTimeField(null=True, blank=True)
     is_active = models.BooleanField(default=True)
+    notes = models.TextField(null=True, blank=True)
+    suspended = models.BooleanField(default=False)
+    banned = models.BooleanField(default=False)
 
     def get_full_name(self):
         # The user is identified by their email address

@@ -4,10 +4,12 @@ services:
 before_install:
   - docker build -t bcbc/workstand:production .
 after_success:
-  - docker login -u="$DOCKER_USERNAME" -p="$DOCKER_PASSWORD";
-  - export REPO=bcbc/workstand
-  - export TAG=`if [ "$TRAVIS_BRANCH" == "master" ]; then echo "production"; else echo $TRAVIS_BRANCH ; fi`
-  - docker build -f Dockerfile -t $REPO:$COMMIT .
-  - docker tag $REPO:$COMMIT $REPO:$TAG
-  - docker tag $REPO:$COMMIT $REPO:travis-$TRAVIS_BUILD_NUMBER
-  - docker push $REPO
+
+after_success:
+  - if [ "$TRAVIS_BRANCH" == "master" ]; then
+    docker login -u="$DOCKER_USERNAME" -p="$DOCKER_PASSWORD";
+    docker push bcbc/workstand:production;
+    fi
+notifications:
+  slack:
+    secure: n2tF/UW/3cnLgqxU0iq6M6mXoYitXgv4x8Iqv9uFuO6AXJktKADVbSeHVmeDVJu7vlyexytpN7BfJ2W0rbMB5Q+yef3TmWhc5P0MWRR3J+QwbLXdqBIP2tku69OK2aUEcxPvoJZLtDKdfNTt9vtQurGC9kbJ+MKmU0Sm+MFrrxrM4D7/74rynbhppMnwcwouVgzdfmJOt0gc0ySZlWqOacUSOVZxhpJ6aqABkFHWbIzO9LHXBwFLJU3oa8poFg51AYx2cuy7PjHfMtEt2i5bHXPR0NkVm4UMbtmkLvvmHLErS1tAHUgWnLAKAL8i7j8hsKWjBc/+0Pwz7t4j5M79+XcF78dS7VQOzmrP/TdyWfsN4rZeUvl+b+owZKLv1uLG6kQhRI332fzCwtK+VejtBtjdoC9nq1KTOIHa6y10aswqGgfsPL4+6UOke/LZsgb9fqfiB44TYkn0dgfh1J/3P+hNtLOsm1Q2IZQvDU97CqdavfAlye4uKC/WlnY3fXeISEMeE57ZAu8Tz4IKrAIbg7mt7qFTmNqxUIvzfWO5ZaMQZhncRfIMajAUigXr9XjRkewo9cxF2cuDwllTVeY5MTrq8hTqlr0g/N5njS72KkLAzaXKUmzyTpfndrGKH5K2XiSGlpgOZ6ao/FOKr3TmzNV5fiOsLEr9Y2+Q3bgknOE=

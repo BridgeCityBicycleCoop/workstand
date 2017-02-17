@@ -7,6 +7,7 @@ WORKDIR /code
 RUN mkdir requirements
 ADD bikeshop_project /code
 ADD requirements/base.txt /code/requirements/base.txt
+ADD requirements/testing.txt /code/requirements/testing.txt
 ADD requirements/production.txt /code/requirements/production.txt
 RUN pip install -r requirements/production.txt
 RUN npm cache clean
@@ -16,5 +17,6 @@ RUN bower install --allow-root
 ADD ./bikeshop_project/package.json package.json
 RUN npm install --unsafe-perm
 RUN npm run build-production
-RUN DJANGO_SETTINGS_MODULE=bikeshop.settings.production python manage.py collectstatic --no-input
+RUN DJANGO_SETTINGS_MODULE=bikeshop.settings.production python manage.py test
+CMD 'bash -c "PYTHONUNBUFFERED=TRUE python manage.py migrate --no-input && python manage.py collectstatic --no-input && python manage.py rebuild_index --noinput && gunicorn --log-file=- -b 0.0.0.0:8000 bikeshop.wsgi:application"'
 EXPOSE 8000

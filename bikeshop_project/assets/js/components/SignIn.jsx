@@ -29,11 +29,14 @@ export default class SignIn extends React.Component {
   componentDidMount() {
     fetch('/members/signin/')
             .then(response => response.json())
-            .then((data) => {
-              const visits = JSON.parse(data);
+            .then((visits) => {
               this.setState({ signedIn: visits.map(visit => ({
                 id: visit.member.id,
+                banned: visit.member.banned,
+                suspended: visit.member.suspended,
                 purpose: visit.purpose,
+                first_name: visit.member.first_name,
+                last_name: visit.member.last_name,
                 text: `${visit.member.first_name} ${visit.member.last_name}`,
                 value: `${visit.member.first_name} ${visit.member.last_name} <${visit.member.email}>`,
                 at: moment(visit.created_at),
@@ -68,14 +71,11 @@ export default class SignIn extends React.Component {
               return response.json();
             }
           })
-          .then((data) => {
-            const signedIn = this.state.signedIn;
-            const parsedData = JSON.parse(data);
-
-            signedIn.push({ ...member, purpose, at: moment(parsedData.results.created_at) });
+          .then((parsedData) => {
             this.setState({
               ...this.state,
-              signedIn,
+              signedIn: [...this.state.signedIn,
+                { ...parsedData.results, purpose, at: moment(parsedData.results.created_at) }],
               signOn: { purpose: 'FIX', member: undefined },
               searchText: '',
               members: [],

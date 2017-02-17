@@ -5,6 +5,33 @@ import React, { PropTypes } from 'react';
 import { Table, TableBody, TableHeader, TableHeaderColumn, TableRow, TableRowColumn } from 'material-ui/Table';
 import moment from 'moment';
 
+const styles = {
+  suspended: {
+    display: 'block',
+    padding: '10px',
+    background: 'yellow',
+    borderRadius: '5px',
+    textAlign: 'center',
+    color: 'black',
+  },
+  good: {
+    display: 'block',
+    padding: '10px',
+    background: 'green',
+    borderRadius: '5px',
+    textAlign: 'center',
+    color: 'white',
+  },
+  banned: {
+    display: 'block',
+    padding: '10px',
+    background: 'red',
+    borderRadius: '5px',
+    textAlign: 'center',
+    color: 'white',
+  },
+};
+
 export default class SignedInList extends React.Component {
   static propTypes = {
     members: PropTypes.arrayOf(PropTypes.shape({
@@ -40,14 +67,25 @@ export default class SignedInList extends React.Component {
 
   render() {
     const memberRows = this.sortMembers(this.props.members)
-        .map(member => (
-          <TableRow selectable={false} key={member.id}>
-            <TableRowColumn>{member.text}</TableRowColumn>
-            <TableRowColumn>{member.purpose}</TableRowColumn>
-            <TableRowColumn>{member.at.fromNow()}</TableRowColumn>
-            <TableRowColumn><a href={`/members/edit/${member.id}/`}>Profile</a></TableRowColumn>
-          </TableRow>
-        ));
+        .map((member) => {
+          let memberStatus = <span style={styles.good} className="good">good</span>;
+
+          if (member.banned) {
+            memberStatus = <span style={styles.banned} className="banned">banned</span>;
+          } else if (member.suspended) {
+            memberStatus = <span style={styles.suspended} className="suspended">suspended</span>;
+          }
+
+          return (
+            <TableRow selectable={false} key={member.id}>
+              <TableRowColumn>{member.first_name} {member.last_name}</TableRowColumn>
+              <TableRowColumn>{member.purpose}</TableRowColumn>
+              <TableRowColumn>{member.at.fromNow()}</TableRowColumn>
+              <TableRowColumn>{memberStatus}</TableRowColumn>
+              <TableRowColumn><a href={`/members/edit/${member.id}/`}>Profile</a></TableRowColumn>
+            </TableRow>
+          );
+        });
 
     return (
       <div className="mdl-cell mdl-cell--12-col">
@@ -57,11 +95,12 @@ export default class SignedInList extends React.Component {
         </FloatingActionButton>
         <Table selectable={false}>
           <TableHeader adjustForCheckbox={false} displaySelectAll={false}>
-            <TableRow>
+            <TableRow key="blah">
               <TableHeaderColumn>Name</TableHeaderColumn>
               <TableHeaderColumn>Purpose</TableHeaderColumn>
               <TableHeaderColumn>Signed-in At</TableHeaderColumn>
-              <TableHeaderColumn/>
+              <TableHeaderColumn>Member Status</TableHeaderColumn>
+              <TableHeaderColumn />
             </TableRow>
           </TableHeader>
           <TableBody displayRowCheckbox={false}>

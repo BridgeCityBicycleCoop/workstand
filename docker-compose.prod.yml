@@ -23,7 +23,7 @@ services:
     image: bcbc/workstand:production
     env_file:
       - workstand.env
-    command: gunicorn --log-file=- -b 0.0.0.0:8000 bikeshop.wsgi:application
+    command: 'bash -c "PYTHONUNBUFFERED=TRUE python manage.py migrate --no-input && python manage.py collectstatic --no-input && python manage.py rebuild_index --noinput && gunicorn --log-file=- -b 0.0.0.0:8000 bikeshop.wsgi:application"'
     environment:
       - DJANGO_SETTINGS_MODULE=bikeshop.settings.production
     volumes:

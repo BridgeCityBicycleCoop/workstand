@@ -4,6 +4,10 @@ services:
 before_install:
   - docker build -t bcbc/workstand:production .
 after_success:
-  - bash -c 'echo $TRAVIS_BRANCH'
   - docker login -u="$DOCKER_USERNAME" -p="$DOCKER_PASSWORD";
-  - docker push bcbc/workstand:production;
+  - export REPO=bcbc/workstand
+  - export TAG=`if [ "$TRAVIS_BRANCH" == "master" ]; then echo "production"; else echo $TRAVIS_BRANCH ; fi`
+  - docker build -f Dockerfile -t $REPO:$COMMIT .
+  - docker tag $REPO:$COMMIT $REPO:$TAG
+  - docker tag $REPO:$COMMIT $REPO:travis-$TRAVIS_BUILD_NUMBER
+  - docker push $REPO

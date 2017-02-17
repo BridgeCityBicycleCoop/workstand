@@ -1,6 +1,4 @@
 import csv
-import json
-import sys
 import os
 
 import requests
@@ -10,7 +8,6 @@ import dateutil.parser
 
 from core.models import Membership, Payment
 from registration.models import Member
-
 
 
 def email_generator():

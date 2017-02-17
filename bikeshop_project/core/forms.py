@@ -7,7 +7,6 @@ from django.forms import (
     ModelForm,
     TextInput,
     HiddenInput,
-    ChoiceField,
 )
 
 from registration.models import Member

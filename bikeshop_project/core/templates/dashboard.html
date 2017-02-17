@@ -58,3 +58,10 @@
     <div id="root"></div>
     {% render_bundle 'signin' %}
 {% endblock %}
+
+{% block scripts %}
+    {% render_bundle 'babelPolyfill' %}
+    {% if DEBUG %}
+        {% render_bundle 'webpack' %}
+    {% endif %}
+{% endblock %}

@@ -1,3 +1,5 @@
+import ContentAdd from 'material-ui/svg-icons/content/add';
+import FloatingActionButton from 'material-ui/FloatingActionButton';
 import _ from 'lodash';
 import React, { PropTypes } from 'react';
 import { Table, TableBody, TableHeader, TableHeaderColumn, TableRow, TableRowColumn } from 'material-ui/Table';
@@ -50,6 +52,9 @@ export default class SignedInList extends React.Component {
     return (
       <div className="mdl-cell mdl-cell--12-col">
         <h3>Members signed in</h3>
+        <FloatingActionButton href="/members/new/">
+          <ContentAdd />
+        </FloatingActionButton>
         <Table selectable={false}>
           <TableHeader adjustForCheckbox={false} displaySelectAll={false}>
             <TableRow>

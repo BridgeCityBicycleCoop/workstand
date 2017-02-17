@@ -8,10 +8,8 @@ from django.test import Client, TestCase
 
 from core.models import Visit
 from model_mommy import mommy
-from copy import copy
 
 from ..models import CustomUser, Member
-from ..views import MemberFormView
 
 logger = logging.getLogger("bikeshop")
 
@@ -37,7 +35,7 @@ class TestMemberFormView(TestCase):
             "last_name": "Last",
             "post_code": "H0H0H0",
         }
-        response = c.post(url, data=member_data)
+        c.post(url, data=member_data)
         new_member = Member.objects.get(first_name="First", last_name="Last")
         self.assertTrue(new_member)
 

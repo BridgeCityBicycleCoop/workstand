@@ -1,5 +1,6 @@
 import logging
 
+from django.conf import settings
 from django.contrib import messages
 from django.core.urlresolvers import reverse
 from django.http import HttpResponseRedirect
@@ -18,14 +19,16 @@ logger = logging.getLogger(__name__)
 @method_decorator(login_required, name="dispatch")
 class DashboardView(View):
     def get(self, request):
-        return TemplateResponse(request, "dashboard.html")
+        return TemplateResponse(
+            request, "dashboard.html", context={"DEBUG": settings.DEBUG}
+        )
 
 
 @method_decorator(login_required, name="dispatch")
 class NewMembershipView(TemplateView):
     template_name = "membership_form.html"
 
-    def get(self, request, member_id):
+    def get(self, request, member_id, **kwargs):
         membership_form = MembershipForm(initial=dict(member=member_id))
         payment_form = PaymentForm()
         return self.render_to_response(

@@ -1,4 +1,5 @@
-from .base import *
+import os
+from .base import *  # noqa
 
 
 # SECURITY WARNING: keep the secret key used in production secret!
@@ -36,7 +37,7 @@ WEBPACK_LOADER = {
     "DEFAULT": {
         "CACHE": True,
         "BUNDLE_DIR_NAME": "dist/",  # must end with slash
-        "STATS_FILE": os.path.join(BASE_DIR, "../webpack-stats-prod.json"),
+        "STATS_FILE": os.path.join(BASE_DIR, "../webpack-stats-prod.json"),  # noqa
         "POLL_INTERVAL": 0.1,
         "IGNORE": [".+\.hot-update.js", ".+\.map"],
     }

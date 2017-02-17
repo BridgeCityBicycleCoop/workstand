@@ -6,6 +6,6 @@ admin.site.register([Membership, Payment])
 
 
 @admin.register(Visit)
-class VistAdmin(admin.ModelAdmin):
+class VisitAdmin(admin.ModelAdmin):
     ordering = ("created_at",)
     list_display = ("member", "purpose", "created_at")

@@ -3,8 +3,6 @@ from django.forms import (
     EmailInput,
     TextInput,
     DateInput,
-    CheckboxSelectMultiple,
-    CharField,
     CheckboxInput,
     BooleanField,
 )

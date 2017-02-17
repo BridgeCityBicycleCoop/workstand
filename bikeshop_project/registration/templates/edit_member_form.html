@@ -30,15 +30,7 @@
     <div class="mdl-grid">
         <div class="mdl-cell mdl-cell--12-col">
         <h1>{{ form.instance.first_name }} {{ form.instance.last_name }}</h1>
-        <p>
-            The Bridge City Bicycle Co-operative (herein referred to as The BCBC and The Community) is a nonprofit,
-            community bicycle repair education and resource co-operative. We offer our members nonjudgmental repair
-            space, tools and instruction during business hours (hours on website) by donation, and educational
-            workshops. We also offer reconditioned/recycled low cost bikes and parts for sale.
-            The BCBC is operated by volunteers; a medley of professionals, students, bike enthusiasts, activists,
-            and other community members who share a love for cycling in Saskatoon. Membership is open to all
-            individuals and costs $20 per year. A receipt will be issued to you once your membership fee has been paid.
-        </p>
+
         <form method="post">
         {% csrf_token %}
 

@@ -3,6 +3,7 @@ services:
   - docker
 before_install:
   - docker build -t bcbc/workstand:production .
+  - docker-compose -f docker-compose.yml -f docker-compose.prod.yml run workstand python manage.py test
 branches:
   only:
   - master

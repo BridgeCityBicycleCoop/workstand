@@ -9,6 +9,8 @@ services:
       - "8000:8000"
     volumes:
       - ./bikeshop_project:/code
+    volumes_from:
+      - webpack
     environment:
       - PYTHONUNBUFFERED=0
     restart: always

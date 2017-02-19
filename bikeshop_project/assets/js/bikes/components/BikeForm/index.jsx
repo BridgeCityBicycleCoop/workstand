@@ -247,7 +247,7 @@ class BikeForm extends React.Component {
         <div className="mdl-grid">
           <div style={{ textAlign: 'right' }} className="mdl-cell mdl-cell--12-col">
             <RaisedButton label="Cancel" onTouchTap={this.props.handleClose} secondary />
-            <RaisedButton label="Save" onTouchTap={this.props.handleSave} default />
+            <RaisedButton label="Save" onTouchTap={this.handleSave} default />
           </div>
         </div>
       </div>

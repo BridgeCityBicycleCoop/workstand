@@ -143,3 +143,14 @@ class TestMemberSignIn(TestCase):
         self.assertTrue(len(data), 3)
         self.assertTrue('banned' in data[0]['member'])
         self.assertTrue('suspended' in data[0]['member'])
+
+    def test_signin_visit(self):
+        """
+        Sign-in with 'BUILD' works.
+        """
+        url = reverse('member_signin')
+        c = Client()
+        c.force_login(self.user)
+
+        response = c.post(url, data={'id': self.members[0].id, 'purpose': 'BUILD'})
+        self.assertEqual(response.status_code, 201)

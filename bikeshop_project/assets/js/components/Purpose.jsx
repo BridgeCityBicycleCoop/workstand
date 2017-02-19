@@ -10,6 +10,7 @@ const Purpose = ({ initialValue, handleChange }) => (
   >
     <MenuItem value={'VOLUNTEER'} primaryText="Volunteer" />
     <MenuItem value={'FIX'} primaryText="Fix" />
+    <MenuItem value={'BUILD'} primaryText="Build" />
     <MenuItem value={'WORKSHOP'} primaryText="Workshop" />
     <MenuItem value={'DONATE'} primaryText="Donate" />
     <MenuItem value={'STAFF'} primaryText="Staff" />

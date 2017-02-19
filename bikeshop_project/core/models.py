@@ -49,6 +49,7 @@ class Payment(models.Model):
 class Visit(models.Model):
     VOLUNTEER = "VOLUNTEER"
     FIX = "FIX"
+    BUILD = "BUILD"
     WORKSHOP = "WORKSHOP"
     VISIT = "VISIT"
     DONATE = "DONATE"
@@ -56,7 +57,8 @@ class Visit(models.Model):
 
     visit_choices = (
         (VOLUNTEER, "volunteer"),
-        (FIX, "fix bike"),  # fix
+        (FIX, "fix bike"),
+        (BUILD, "build bike"),
         (WORKSHOP, "workshop"),
         (VISIT, "visit"),
         (DONATE, "donate"),

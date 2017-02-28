@@ -1,7 +1,6 @@
 const webpack = require('webpack');
 const BundleTracker = require('webpack-bundle-tracker');
 const ExtractTextPlugin = require('extract-text-webpack-plugin');
-require('babel-polyfill');
 
 const config = require('./webpack.base.config.js');
 
@@ -13,7 +12,6 @@ config.entry = {
   ],
   signin: './assets/js/index',
   members: './assets/js/members/index',
-  babelPolyfill: 'babel-polyfill',
   bikes: './assets/js/bikes/index',
 };
 
@@ -38,6 +36,7 @@ config.module.loaders.push(
     loader: 'babel-loader',
     query: {
       presets: ['latest', 'react', 'stage-3'],
+      plugins: ['transform-runtime'],
     },
   },
   {

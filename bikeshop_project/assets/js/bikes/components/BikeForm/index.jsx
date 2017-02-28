@@ -75,7 +75,7 @@ class BikeForm extends React.Component {
     });
   }
 
-  handleSave = () => {
+  handleSave() {
     const id = this.state.bike.id;
     const data = JSON.stringify(this.state.bike);
     const csrfToken = Cookies.get('csrftoken');
@@ -99,7 +99,7 @@ class BikeForm extends React.Component {
     });
   }
 
-  render = () => {
+  render() {
     const timezone = moment.tz.guess();
     const {
       claimed_at,
@@ -255,4 +255,8 @@ class BikeForm extends React.Component {
   }
 }
 
+BikeForm.propTypes = {
+  editing: PropTypes.bool,
+  handleClose: PropTypes.func,
+}
 export default BikeForm;

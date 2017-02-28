@@ -30,13 +30,15 @@ config.plugins = config.plugins.concat([
   new ExtractTextPlugin('react-toolbox.css', { allChunks: true }),
 ]);
 
-// Add a loader for JSX files with react-hot enabled
+// Add a loader for JSX files
 config.module.loaders.push(
   {
     test: /\.jsx?$/,
     exclude: /node_modules/,
-    loaders: ['react-hot', 'babel-loader'],
-
+    loader: 'babel-loader',
+    query: {
+      presets: ['latest', 'react', 'stage-3'],
+    },
   },
   {
     test: /(\.scss|\.css)$/,

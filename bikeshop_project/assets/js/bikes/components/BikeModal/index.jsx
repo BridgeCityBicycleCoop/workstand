@@ -6,13 +6,7 @@ import BikeForm from '../BikeForm';
 /**
  * A modal dialog can only be closed by selecting one of the actions.
  */
-export default class BikeModal extends React.Component {
-  static propTypes = {
-    open: PropTypes.bool,
-    bike: PropTypes.object,
-    editing: PropTypes.bool,
-  }
-
+class BikeModal extends React.Component {
   constructor(props) {
     super(props);
 
@@ -23,7 +17,7 @@ export default class BikeModal extends React.Component {
     };
   }
 
-  componentWillReceiveProps = (newProps) => {
+  componentWillReceiveProps(newProps) {
     this.setState({
       ...this.state,
       open: newProps.open || false,
@@ -32,7 +26,7 @@ export default class BikeModal extends React.Component {
     });
   }
 
-  handleClose = () => {
+  handleClose() {
     this.setState({ open: false });
   };
 
@@ -63,3 +57,9 @@ export default class BikeModal extends React.Component {
     </div>);
   }
 }
+
+export default BikeModal.propTypes = {
+  open: PropTypes.bool,
+  bike: PropTypes.object,
+  editing: PropTypes.bool,
+};

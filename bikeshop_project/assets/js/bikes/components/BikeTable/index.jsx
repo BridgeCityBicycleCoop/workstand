@@ -42,19 +42,6 @@ export default class BikeTable extends React.Component {
   }
 
   getBikes = () => {
-    fetch('/api/v1/bikes/', {
-      credentials: 'same-origin',
-    })
-      .then(checkStatus)
-      .then(parseJSON)
-      .then((data) => {
-        this.setState({ bikes: data });
-      })
-      .catch((error) => {
-        console.log('request failed', error);
-      });
-  }
-
   handleEditBike(bike) {
     this.setState({
       ...this.state,
@@ -66,7 +53,7 @@ export default class BikeTable extends React.Component {
     });
   }
 
-  handleAddBike = () => {
+  handleAddBike() {
     this.setState({
       ...this.state,
       bikeModal: {

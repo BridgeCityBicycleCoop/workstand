@@ -32,15 +32,7 @@ const styles = {
   },
 };
 
-export default class SignedInList extends React.Component {
-  static propTypes = {
-    members: PropTypes.arrayOf(PropTypes.shape({
-      id: PropTypes.number,
-      purpose: PropTypes.string,
-      at: PropTypes.instanceOf(moment),
-    })),
-  }
-
+class SignedInList extends React.Component {
   constructor(props) {
     super(props);
     this.state = { tick: 0 };
@@ -117,3 +109,11 @@ export default class SignedInList extends React.Component {
     );
   }
 }
+
+export default SignedInList.propTypes = {
+  members: PropTypes.arrayOf(PropTypes.shape({
+    id: PropTypes.number,
+    purpose: PropTypes.string,
+    at: PropTypes.instanceOf(moment),
+  })),
+};

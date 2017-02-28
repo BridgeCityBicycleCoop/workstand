@@ -22,7 +22,6 @@ config.devtool = 'eval-source-map';
 
 // Add HotModuleReplacementPlugin and BundleTracker plugins
 config.plugins = config.plugins.concat([
-  new webpack.HotModuleReplacementPlugin(),
   new webpack.NoErrorsPlugin(),
   new BundleTracker({ filename: './webpack-stats.json' }),
   new ExtractTextPlugin('react-toolbox.css', { allChunks: true }),

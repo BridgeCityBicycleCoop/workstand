@@ -1,4 +1,7 @@
 import sys
+
+import rollbar
+
 from .base import *  # noqa
 
 
@@ -51,3 +54,14 @@ WEBPACK_LOADER = {
 # Covers regular testing and django-coverage
 if 'test' in sys.argv or 'test_coverage' in sys.argv:
     DATABASES['default']['ENGINE'] = 'django.db.backends.sqlite3'  # noqa
+
+MIDDLEWARE_CLASSES += ['rollbar.contrib.django.middleware.RollbarNotifierMiddleware']
+
+ROLLBAR = {
+    'access_token': '91808a727b9a4679a89720132071391a',
+    'environment': 'production',
+    'root': BASE_DIR,
+}
+
+rollbar.init(**ROLLBAR)
+

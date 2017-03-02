@@ -1,3 +1,4 @@
 -r base.txt
 -r testing.txt
 gunicorn==19.4.5
+rollbar==0.13.11

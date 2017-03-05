@@ -11,7 +11,7 @@ function* fetchBikes(action) {
     yield put({ type: setBikesIsFetching.toString(), payload: true });
     const bikes = yield call(Api.fetchBikes);
     yield put({ type: setBikes.toString(), payload: normalize(bikes, schema.bikes) });
-    yield put({ type: setBikesFetched, payload: true });
+    yield put({ type: setBikesFetched.toString(), payload: true });
   } catch (e) {
     yield put({ type: 'BIKES_FETCH_FAILED', message: e.message });
     throw e;

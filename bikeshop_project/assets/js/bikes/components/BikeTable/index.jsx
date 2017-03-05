@@ -68,7 +68,7 @@ class BikeTableComponent extends React.Component {
 
   render() {
     if (this.props.bikes.fetched) {
-      const bikeRows = renderBikes(Object.values(this.props.bikes.entities['bikes'] || []));
+      const bikeRows = renderBikes(Object.values(this.props.bikes.entities));
       return (
         <div className="mdl-grid">
           <div className="mdl-cell mdl-cell--12-col">
@@ -107,7 +107,7 @@ class BikeTableComponent extends React.Component {
 }
 
 const mapStateToProps = state => ({
-  bikes: state.bikes.bikes,
+  bikes: state.bikes,
 });
 
 const mapDispatchToProps = dispatch => ({

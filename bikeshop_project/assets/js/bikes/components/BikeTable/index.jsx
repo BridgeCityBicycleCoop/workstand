@@ -1,27 +1,30 @@
+import { connect } from 'react-redux'
 import { Table, TableBody, TableHeader, TableHeaderColumn, TableRow, TableRowColumn } from 'material-ui/Table';
-import Cookies from 'js-cookie';
-import fetch from 'isomorphic-fetch';
 import FlatButton from 'material-ui/FlatButton';
 import FloatingActionButton from 'material-ui/FloatingActionButton';
 import ContentAdd from 'material-ui/svg-icons/content/add';
 import React from 'react';
 import { friendlySize } from '../Size';
 import BikeModal from '../BikeModal';
+import { fetchBikes, setBike } from '../../actions';
 
-function checkStatus(response) {
-  if (response.status >= 200 && response.status < 300) {
-    return response;
-  }
-  const error = new Error(response.statusText);
-  error.response = response;
-  throw error;
+const renderBikes = (bikes) => {
+  console.log(bikes);
+  const bikeRows = bikes.map(bike => (
+    <TableRow selectable={false} key={bike.id}>
+      <TableRowColumn>{friendlySize(bike.size)}</TableRowColumn>
+      <TableRowColumn>{bike.colour}</TableRowColumn>
+      <TableRowColumn>{bike.make}</TableRowColumn>
+      <TableRowColumn>{bike.serial_number}</TableRowColumn>
+      <TableRowColumn>{bike.state}</TableRowColumn>
+      <TableRowColumn>{bike.claimed_by}</TableRowColumn>
+      <TableRowColumn><FlatButton label="Edit" primary  /></TableRowColumn>
+    </TableRow>
+    ));
+  return bikeRows;
 }
 
-function parseJSON(response) {
-  return response.json();
-}
-
-export default class BikeTable extends React.Component {
+class BikeTableComponent extends React.Component {
   constructor(props) {
     super(props);
 
@@ -38,10 +41,9 @@ export default class BikeTable extends React.Component {
   }
 
   componentDidMount() {
-    this.getBikes();
+    this.props.fetchBikes();
   }
 
-  getBikes = () => {
   handleEditBike(bike) {
     this.setState({
       ...this.state,
@@ -65,54 +67,57 @@ export default class BikeTable extends React.Component {
   }
 
   render() {
-    const bikeRows = this.state.bikes.map(bike => (
-      <TableRow selectable={false} key={bike.id}>
-        <TableRowColumn>{friendlySize(bike.size)}</TableRowColumn>
-        <TableRowColumn>{bike.colour}</TableRowColumn>
-        <TableRowColumn>{bike.make}</TableRowColumn>
-        <TableRowColumn>{bike.serial_number}</TableRowColumn>
-        <TableRowColumn>{bike.state}</TableRowColumn>
-        <TableRowColumn>{bike.claimed_by}</TableRowColumn>
-        <TableRowColumn><FlatButton label="Edit" primary onTouchTap={this.handleEditBike.bind(null, bike)} /></TableRowColumn>
-      </TableRow>
-      ));
-
-    return (
-      <div className="mdl-grid">
-        <div className="mdl-cell mdl-cell--12-col">
-          <h3>Bikes</h3>
-          <FloatingActionButton onTouchTap={this.handleAddBike}>
-            <ContentAdd />
-          </FloatingActionButton>
-          <Table selectable={false}>
-            <TableHeader adjustForCheckbox={false} displaySelectAll={false}>
-              <TableRow>
-                <TableHeaderColumn>Size</TableHeaderColumn>
-                <TableHeaderColumn>Colour</TableHeaderColumn>
-                <TableHeaderColumn>Make</TableHeaderColumn>
-                <TableHeaderColumn>Serial number</TableHeaderColumn>
-                <TableHeaderColumn>State</TableHeaderColumn>
-                <TableHeaderColumn>Claimed by</TableHeaderColumn>
-                <TableRowColumn />
-              </TableRow>
-            </TableHeader>
-            <TableBody displayRowCheckbox={false}>
-              {bikeRows.length ?
-              bikeRows :
-              <TableRow >
-                <TableRowColumn key="none">{'No bikes found.'}</TableRowColumn>
-              </TableRow>
-            }
-            </TableBody>
-          </Table>
-          <BikeModal
-            bike={this.state.bikeModal.bike}
-            open={this.state.bikeModal.open}
-            editing={this.state.bikeModal.editing}
-            getBikes={this.getBikes}
-          />
+    if (this.props.bikes.fetched) {
+      const bikeRows = renderBikes(Object.values(this.props.bikes.entities['bikes'] || []));
+      return (
+        <div className="mdl-grid">
+          <div className="mdl-cell mdl-cell--12-col">
+            <h3>Bikes</h3>
+            <FloatingActionButton onTouchTap={this.handleAddBike}>
+              <ContentAdd />
+            </FloatingActionButton>
+            <Table selectable={false}>
+              <TableHeader adjustForCheckbox={false} displaySelectAll={false}>
+                <TableRow>
+                  <TableHeaderColumn>Size</TableHeaderColumn>
+                  <TableHeaderColumn>Colour</TableHeaderColumn>
+                  <TableHeaderColumn>Make</TableHeaderColumn>
+                  <TableHeaderColumn>Serial number</TableHeaderColumn>
+                  <TableHeaderColumn>State</TableHeaderColumn>
+                  <TableHeaderColumn>Claimed by</TableHeaderColumn>
+                  <TableRowColumn />
+                </TableRow>
+              </TableHeader>
+              <TableBody displayRowCheckbox={false}>
+                {bikeRows.length ?
+                  bikeRows :
+                  <TableRow >
+                    <TableRowColumn key="none">{'No bikes found.'}</TableRowColumn>
+                  </TableRow>
+                }
+              </TableBody>
+            </Table>
+          </div>
         </div>
-      </div>
-    );
+      );
+    }
+
+    return null;
   }
 }
+
+const mapStateToProps = state => ({
+  bikes: state.bikes.bikes,
+});
+
+const mapDispatchToProps = dispatch => ({
+  fetchBikes: () => {
+    dispatch(fetchBikes());
+  },
+  setBike: (id) => {
+    dispatch(setBike(id));
+  },
+});
+
+const BikeTable = connect(mapStateToProps, mapDispatchToProps)(BikeTableComponent);
+export default BikeTable;

@@ -58,8 +58,10 @@ class BikeModal extends React.Component {
   }
 }
 
-export default BikeModal.propTypes = {
+BikeModal.propTypes = {
   open: PropTypes.bool,
   bike: PropTypes.object,
   editing: PropTypes.bool,
 };
+
+export default BikeModal;

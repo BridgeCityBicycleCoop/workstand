@@ -25,6 +25,7 @@ const Source = ({ source, onChange }) => {
   return (
     <div>
       <SelectField
+        name="donation_source"
         floatingLabelText="Donation source"
         value={source}
         onChange={onChange}

@@ -1,6 +1,7 @@
 import React, { PropTypes } from 'react';
-import SelectField from 'material-ui/SelectField';
+import { Field } from 'redux-form';
 import MenuItem from 'material-ui/MenuItem';
+import SelectField from 'material-ui/SelectField';
 
 const sizes = ['C', 'S', 'M', 'L', 'XL'];
 
@@ -23,26 +24,33 @@ export const friendlySize = (size) => {
 
 const styles = {
   float: 'left',
-}
+};
 
-const Size = ({ size, onChange }) => {
+const renderSelectField = ({ input, label, meta: { touched, error }, children, ...custom })  => (
+  <SelectField
+    errorText={touched && error}
+    {...input}
+    onChange={(event, index, value) => input.onChange(value)}
+    children={children}
+    {...custom}
+  />
+);
+
+const Size = () => {
   const items = sizes.map(s =>
     <MenuItem key={s} name="size" value={s} primaryText={friendlySize(s)} />,
   );
 
   return (
-    <div style={styles}>
-      <SelectField
-        floatingLabelText="Size"
-        name="size"
-        value={size}
-        onChange={onChange}
-        autoWidth
-      >
-        <MenuItem value={null} primaryText="" />
-        {items}
-      </SelectField>
-    </div>
+    <Field
+      name="size"
+      component={renderSelectField}
+      floatingLabelText="Size"
+      fullWidth
+    >
+      <MenuItem value={null} primaryText="" />
+      {items}
+    </Field>
   );
 };
 

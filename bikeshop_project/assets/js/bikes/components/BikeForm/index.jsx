@@ -1,8 +1,12 @@
 import React, { PropTypes } from 'react';
+import { Field, reduxForm } from 'redux-form';
+import { connect } from 'react-redux';
 import Checkbox from 'material-ui/Checkbox';
 import Cookies from 'js-cookie';
 import FlatButton from 'material-ui/FlatButton';
+import MenuItem from 'material-ui/MenuItem';
 import RaisedButton from 'material-ui/RaisedButton';
+import SelectField from 'material-ui/SelectField';
 import TextField from 'material-ui/TextField';
 import fetch from 'isomorphic-fetch';
 import moment from 'moment-timezone';
@@ -21,12 +25,68 @@ const styles = {
   },
 };
 
-class BikeForm extends React.Component {
-  static propTypes = {
-    bike: PropTypes.object,
-    editing: PropTypes.bool,
-    handleClose: PropTypes.func,
+const sources = ['COS_BIKE_DIVERSION_PILOT', 'UOFS', 'DROP_OFF'];
+
+const friendly = (s) => {
+  switch (s) {
+    case 'COS_BIKE_DIVERSION_PILOT':
+      return 'City of Saskatoon Bike Diversion Pilot';
+    case 'UOFS':
+      return 'University of Saskatchewan';
+    case 'DROP_OFF':
+      return 'Drop Off';
+    default:
+      return undefined;
   }
+};
+
+const sourceMenuItems = sources.map(s =>
+  <MenuItem key={s} value={s} primaryText={friendly(s)} />,
+);
+
+const renderTextField = ({ input, meta: { touched, error }, ...custom }) => (
+  <TextField
+    errorText={touched && error}
+    {...input}
+    {...custom}
+  />
+);
+
+const renderCheckbox = ({ input, meta, label, ...custom }) => (
+  <Checkbox
+    label={label}
+    checked={!!input.value}
+    onCheck={input.onChange}
+    {...custom}
+  />
+);
+
+const renderSelectField = ({ input, label, meta: { touched, error }, children, ...custom }) => (
+  <SelectField
+    errorText={touched && error}
+    {...input}
+    onChange={(event, index, value) => input.onChange(value)}
+    children={children}
+    {...custom}
+  />
+);
+
+const validate = (values) => {
+  console.log(values);
+  const errors = {};
+  const requiredFields = ['make', 'colour', 'size', 'serial_number', 'donation_source'];
+
+  requiredFields.forEach((field) => {
+    if (!values[field]) {
+      errors[field] = 'Required';
+    }
+  });
+  return errors;
+};
+
+const handleSubmit = data => false;
+
+class BikeForm extends React.Component {
   constructor({ bike, editing = false }) {
     super();
     if (editing) {
@@ -40,19 +100,19 @@ class BikeForm extends React.Component {
     }
   }
 
-  handleChange = (event, value) => {
+  handleChange(event, value) {
     this.setState({ bike: { ...this.state.bike, [event.target.name]: value } });
   }
 
-  handleSizeChange = (event, index, value) => {
+  handleSizeChange(event, index, value) {
     this.setState({ bike: { ...this.state.bike, size: value } });
   }
 
-  handleSourceChange = (event, index, value) => {
+  handleSourceChange(event, index, value) {
     this.setState({ bike: { ...this.state.bike, source: value } });
   }
 
-  handleCpicCheck = () => {
+  handleCpicCheck() {
     const id = this.state.bike.id;
     const serialNumber = this.state.bike.serial_number;
     const data = JSON.stringify({ serial_number: serialNumber });
@@ -107,6 +167,7 @@ class BikeForm extends React.Component {
       cpic_searched_at,
       created_at,
       stolen,
+      checked,
     } = this.props.bike;
     const editing = this.props.editing;
     const createdAtFormatted = (moment(created_at).isValid()) ? moment(created_at).tz(timezone).fromNow() : '';
@@ -116,147 +177,163 @@ class BikeForm extends React.Component {
 
     return (
       <div>
-        <div className="mdl-grid">
-          <div className="mdl-cell mdl-cell--3-col">
-            <TextField
-              name="make"
-              floatingLabelText="Make"
-              hintText="Norco"
-              value={this.state.bike.make || undefined}
-              onChange={this.handleChange}
-              fullWidth
-              required
-            />
-          </div>
-          <div className="mdl-cell mdl-cell--3-col">
-            <TextField
-              name="price"
-              floatingLabelText="Price"
-              hintText="35.60"
-              value={this.state.bike.price || undefined}
-              onChange={this.handleChange}
-              fullWidth
-            />
-          </div>
-          <div className="mdl-cell mdl-cell--3-col">
-            <TextField
-              name="colour"
-              floatingLabelText="Colour"
-              hintText="orange"
-              value={this.state.bike.colour || undefined}
-              onChange={this.handleChange}
-              fullWidth
-              required
-            />
-          </div>
-          <div className="mdl-cell mdl-cell--3-col">
-            <Size
-              onChange={this.handleSizeChange}
-              size={this.state.bike.size}
-            />
-          </div>
-        </div>
-        <div className="mdl-grid">
-          <div className="mdl-cell mdl-cell--6-col">
-            <TextField
-              name="serial_number"
-              floatingLabelText="Serial number"
-              hintText="ab90cd23"
-              value={this.state.bike.serial_number || undefined}
-              onChange={this.handleChange}
-              fullWidth
-              required
-            />
-          </div>
-          {editing &&
-            <div className="mdl-cell mdl-cell--6-col">
-              <TextField
-                floatingLabelText="Created at"
-                value={createdAtFormatted}
+        <form onSubmit={handleSubmit}>
+          <div className="mdl-grid">
+            <div className="mdl-cell mdl-cell--3-col">
+              <Field
+                name="make"
+                component={renderTextField}
+                floatingLabelText="Make"
+                hintText="Norco"
                 fullWidth
-                readOnly
-                disabled
               />
             </div>
-          }
-        </div>
-        {editing &&
+            <div className="mdl-cell mdl-cell--3-col">
+              <Field
+                name="price"
+                component={renderTextField}
+                floatingLabelText="Price"
+                hintText="35.60"
+                fullWidth
+              />
+            </div>
+            <div className="mdl-cell mdl-cell--3-col">
+              <Field
+                name="colour"
+                component={renderTextField}
+                floatingLabelText="Colour"
+                hintText="orange"
+                fullWidth
+              />
+            </div>
+            <div className="mdl-cell mdl-cell--3-col">
+              <Size />
+            </div>
+          </div>
           <div className="mdl-grid">
             <div className="mdl-cell mdl-cell--6-col">
-              <TextField
-                floatingLabelText="Claimed on"
-                value={claimedAtFormatted}
+              <Field
+                name="serial_number"
+                component={renderTextField}
+                floatingLabelText="Serial number"
+                hintText="ab90cd23"
                 fullWidth
-                disabled
               />
             </div>
-            <div className="mdl-cell mdl-cell--6-col">
-              <TextField
-                floatingLabelText="Claimed by"
-                value={claimed_by || undefined}
-                fullWidth
-                disabled
-                readOnly
-              />
-            </div>
-          </div>
-        }
-
-        {editing &&
-          <div className="content-grid mdl-grid" style={styles.bottom}>
-            <div className="mdl-cell mdl-cell--6-col">
-              <TextField floatingLabelText="CPIC searched" value={cpicSearchedAtFormatted} disabled />
-            </div>
-            <div className="mdl-cell mdl-cell--4-col">
-              <Checkbox
-                name="stolen"
-                label="Stolen"
-                labelPosition="left"
-                style={styles.checkbox}
-                checked={stolen}
-                disabled
-              />
-            </div>
-            <div className="mdl-cell mdl-cell--2-col">
-              <FlatButton label="Check" onTouchTap={this.handleCpicCheck} disabled={moment(cpic_searched_at).isValid()} primary />
-            </div>
-          </div>
-        }
-        <div className="mdl-grid" style={styles.bottom}>
-          <div className="mdl-cell mdl-cell--8-col">
-            <Source
-              source={this.state.bike.source}
-              onChange={this.handleSourceChange}
-            />
+            {editing &&
+              <div className="mdl-cell mdl-cell--6-col">
+                <Field
+                  name="created_at"
+                  component={renderTextField}
+                  floatingLabelText="Created at"
+                  value={createdAtFormatted}
+                  fullWidth
+                  readOnly
+                  disabled
+                />
+              </div>
+            }
           </div>
           {editing &&
-            <div className="mdl-cell mdl-cell--4-col">
-              <div style={styles.block}>
-                <Checkbox
-                  checked={this.state.bike.stripped}
-                  name="stripped"
-                  label="Stripped"
-                  labelPosition="left"
-                  style={styles.checkbox}
-                  onCheck={this.handleChange}
+            <div className="mdl-grid">
+              <div className="mdl-cell mdl-cell--6-col">
+                <Field
+                  name="claimed_at"
+                  component={renderTextField}
+                  floatingLabelText="Claimed on"
+                  value={claimedAtFormatted}
+                  fullWidth
+                  disabled
+                />
+              </div>
+              <div className="mdl-cell mdl-cell--6-col">
+                <Field
+                  name="claimed_by"
+                  component={renderTextField}
+                  floatingLabelText="Claimed by"
+                  fullWidth
+                  disabled
+                  readOnly
                 />
               </div>
             </div>
           }
-        </div>
-        <div className="mdl-grid">
-          <div style={{ textAlign: 'right' }} className="mdl-cell mdl-cell--12-col">
-            <RaisedButton label="Cancel" onTouchTap={this.props.handleClose} secondary />
-            <RaisedButton label="Save" onTouchTap={this.handleSave} default />
+
+          {editing &&
+            <div className="content-grid mdl-grid" style={styles.bottom}>
+              <div className="mdl-cell mdl-cell--6-col">
+                <TextField floatingLabelText="CPIC searched" value={cpicSearchedAtFormatted} disabled />
+              </div>
+              <div className="mdl-cell mdl-cell--4-col">
+                <Field
+                  name="stolen"
+                  component={renderCheckbox}
+                  label="Stolen"
+                  labelPosition="left"
+                  style={styles.checkbox}
+                  checked={stolen}
+                  disabled
+                  readOnly
+                />
+              </div>
+              <div className="mdl-cell mdl-cell--2-col">
+                <FlatButton label="Check" onTouchTap={this.handleCpicCheck} disabled={moment(cpic_searched_at).isValid()} primary />
+              </div>
+            </div>
+          }
+          <div className="mdl-grid" style={styles.bottom}>
+            <div className="mdl-cell mdl-cell--8-col">
+              <Field
+                name="donation_source"
+                component={renderSelectField}
+                floatingLabelText="Donation source"
+                fullWidth
+              >
+                {sourceMenuItems}
+              </Field>
+            </div>
+            {editing &&
+              <div className="mdl-cell mdl-cell--4-col">
+                <div style={styles.block}>
+                  <Field
+                    checked={checked}
+                    name="stripped"
+                    label="Stripped"
+                    labelPosition="left"
+                    style={styles.checkbox}
+                    component={renderCheckbox}
+                  />
+                </div>
+              </div>
+            }
           </div>
-        </div>
+          <div className="mdl-grid">
+            <div style={{ textAlign: 'right' }} className="mdl-cell mdl-cell--12-col">
+              <RaisedButton style={{ marginRight: '8px' }} label="Cancel" onTouchTap={this.props.handleClose} secondary />
+              <RaisedButton type="submit" label="Save" default disabled={this.props.pristine || this.props.submitting || this.props.invalid} />
+            </div>
+          </div>
+        </form>
       </div>
     );
   }
 }
 
+BikeForm = reduxForm({
+  form: 'BikeForm',  // a unique identifier for this form
+  validate,
+})(BikeForm);
+
+BikeForm = connect(
+  state => ({
+    initialValues: state.bike,  // pull initial values from account reducer
+  }),
+)(BikeForm);
+
 BikeForm.propTypes = {
   editing: PropTypes.bool,
   handleClose: PropTypes.func,
 }
+
 export default BikeForm;
+

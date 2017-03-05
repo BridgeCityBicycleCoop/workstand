@@ -1,5 +1,5 @@
 import { call, put, takeEvery, takeLatest } from 'redux-saga/effects';
-import { fetchBikes as fetchBikesAction, setBikes, setBikesIsFetching, setBikesFetched } from './actions';
+import { fetchBikes as fetchBikesAction, setBikes, setBikesIsFetching, setBikesFetched, setBikesFetchFailed } from './actions';
 import { normalize } from 'normalizr';
 import * as schema from './schema';
 import Api from './services';
@@ -13,7 +13,7 @@ function* fetchBikes(action) {
     yield put({ type: setBikes.toString(), payload: normalize(bikes, schema.bikes) });
     yield put({ type: setBikesFetched.toString(), payload: true });
   } catch (e) {
-    yield put({ type: 'BIKES_FETCH_FAILED', message: e.message });
+    yield put({ type: setBikesFetchFailed.toString(), payload: e.message });
     throw e;
   } finally {
     yield put({ type: setBikesIsFetching.toString(), payload: false });

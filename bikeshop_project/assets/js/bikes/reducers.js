@@ -1,4 +1,4 @@
-import { setBikes, setBikesFetched, setBikesIsFetching } from './actions';
+import { setBikes, setBikesFetched, setBikesIsFetching, setBikesFetchFailed } from './actions';
 import { handleActions } from 'redux-actions';
 
 export default handleActions({
@@ -14,4 +14,10 @@ export default handleActions({
     ...state,
     fetched: action.payload,
   }),
-}, { entities: {}, isFetching: false, fetched: false });
+  [setBikesFetchFailed]: (state, action) => ({
+    ...state,
+    fetchFailed: {
+      message: action.payload
+    }
+  }),
+}, { entities: {}, isFetching: false, fetched: false, fetchFailed: undefined });

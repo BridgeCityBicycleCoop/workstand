@@ -9,59 +9,41 @@ import BikeForm from '../BikeForm';
 class BikeModal extends React.Component {
   constructor(props) {
     super(props);
-
-    this.state = {
-      open: props.open,
-      bike: undefined,
-      editing: props.editing,
-    };
   }
-
-  componentWillReceiveProps(newProps) {
-    this.setState({
-      ...this.state,
-      open: newProps.open || false,
-      bike: newProps.bike || undefined,
-      editing: newProps.editing || false,
-    });
-  }
-
-  handleClose() {
-    this.setState({ open: false });
-  };
 
   render() {
-    const title = this.state.bike && this.state.bike.stolen ?
-      (<div>
-        <h3>{this.props.editing ? 'Edit Bike' : 'Add Bike'}</h3>
-        <h4>STOLEN</h4>
-      </div>) :
-      <h3>Edit Bike</h3>;
+    if (this.props.bike) {
+      const title = (
+        <div>
+          <h3>{this.props.bike ? 'Edit Bike' : 'Add Bike'}</h3>
+        </div>
+    );
 
-    return (<div>
-      <Dialog
-        title={title}
-        open={this.state.open}
-        autoScrollBodyContent
-      >
-        { this.state.bike ?
-          <BikeForm
-            bike={this.state.bike}
-            editing={this.state.editing}
-            getBikes={this.props.getBikes}
-            handleClose={this.handleClose}
-          /> :
-          <div>Unable to edit bike.</div>
+      return (<div>
+        <Dialog
+          title={title}
+          open={this.props.open}
+          autoScrollBodyContent
+        >
+          { this.props.bike ?
+            <BikeForm
+              enableReinitialize
+              bike={this.props.bike}
+              bikes={this.props.bikes}
+            /> :
+            <div>Unable to edit bike.</div>
         }
-      </Dialog>
-    </div>);
+        </Dialog>
+      </div>);
+    }
+
+    return null;
   }
 }
 
 BikeModal.propTypes = {
   open: PropTypes.bool,
   bike: PropTypes.object,
-  editing: PropTypes.bool,
 };
 
 export default BikeModal;

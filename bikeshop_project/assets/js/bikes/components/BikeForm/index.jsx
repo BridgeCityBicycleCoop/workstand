@@ -326,7 +326,7 @@ BikeForm = reduxForm({
 
 BikeForm = connect(
   state => ({
-    initialValues: state.bike,  // pull initial values from account reducer
+    initialValues: state.bikes.entities['1'],  // pull initial values from account reducer
   }),
 )(BikeForm);
 
@@ -334,6 +334,8 @@ BikeForm.propTypes = {
   editing: PropTypes.bool,
   handleClose: PropTypes.func,
 }
+
+
 
 export default BikeForm;
 

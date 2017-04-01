@@ -21,6 +21,20 @@ const Api = {
       .then(data => data)
       .catch((error) => {
         console.log('request failed', error);
+        throw error;
+      });
+  },
+  saveBike(id) {
+    return fetch(`/api/v1/bike/${id}`, {
+      credentials: 'same-origin',
+      method: 'PUT',
+    })
+      .then(checkStatus)
+      .then(parseJson)
+      .then(data => data)
+      .catch((error) => {
+        console.log('request failed', error);
+        throw error;
       });
   },
 };

@@ -8,8 +8,37 @@ import { friendlySize } from '../Size';
 import BikeModal from '../BikeModal';
 import { fetchBikes, setBike } from '../../actions';
 
-const renderBikes = (bikes) => {
-  console.log(bikes);
+class BikeTableComponent extends React.Component {
+  constructor(props) {
+    super(props);
+
+    this.state = {
+      bikeModal: {
+        open: false,
+        bike: undefined,
+      },
+    };
+
+    this.handleOpen = this.handleOpen.bind(this);
+    this.renderBikes = this.renderBikes.bind(this);
+  }
+
+  componentDidMount() {
+    this.props.fetchBikes();
+  }
+
+  handleOpen(id) {
+    this.setState({
+      ...this.state,
+      bikeModal: {
+        ...this.state.bikeModal,
+        open: true,
+        bike: id,
+      },
+    });
+  }
+
+  renderBikes(bikes) {
   const bikeRows = bikes.map(bike => (
     <TableRow selectable={false} key={bike.id}>
       <TableRowColumn>{friendlySize(bike.size)}</TableRowColumn>
@@ -18,57 +47,16 @@ const renderBikes = (bikes) => {
       <TableRowColumn>{bike.serial_number}</TableRowColumn>
       <TableRowColumn>{bike.state}</TableRowColumn>
       <TableRowColumn>{bike.claimed_by}</TableRowColumn>
-      <TableRowColumn><FlatButton label="Edit" primary  /></TableRowColumn>
+      <TableRowColumn><FlatButton label="Edit" primary onTouchTap={(e) => this.handleOpen(bike.id)} /></TableRowColumn>
     </TableRow>
     ));
+
   return bikeRows;
 }
 
-class BikeTableComponent extends React.Component {
-  constructor(props) {
-    super(props);
-
-    this.state = {
-      bikes: [],
-      bikeModal: {
-        open: false,
-        bike: undefined,
-        editing: false,
-      },
-    };
-
-    this.handleEditBike = this.handleEditBike.bind(this);
-  }
-
-  componentDidMount() {
-    this.props.fetchBikes();
-  }
-
-  handleEditBike(bike) {
-    this.setState({
-      ...this.state,
-      bikeModal: {
-        open: true,
-        bike,
-        editing: true,
-      },
-    });
-  }
-
-  handleAddBike() {
-    this.setState({
-      ...this.state,
-      bikeModal: {
-        open: true,
-        bike: {},
-        editing: false,
-      },
-    });
-  }
-
   render() {
     if (this.props.bikes.fetched) {
-      const bikeRows = renderBikes(Object.values(this.props.bikes.entities));
+      const bikeRows = this.renderBikes(Object.values(this.props.bikes.entities));
       return (
         <div className="mdl-grid">
           <div className="mdl-cell mdl-cell--12-col">
@@ -98,6 +86,11 @@ class BikeTableComponent extends React.Component {
               </TableBody>
             </Table>
           </div>
+          <BikeModal
+            open={this.state.bikeModal.open}
+            bike={this.state.bikeModal.bike}
+            bikes={this.props.bikes.entities}
+          />
         </div>
       );
     }
@@ -113,9 +106,6 @@ const mapStateToProps = state => ({
 const mapDispatchToProps = dispatch => ({
   fetchBikes: () => {
     dispatch(fetchBikes());
-  },
-  setBike: (id) => {
-    dispatch(setBike(id));
   },
 });
 

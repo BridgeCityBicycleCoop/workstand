@@ -1,5 +1,6 @@
 import { call, put, takeEvery, takeLatest } from 'redux-saga/effects';
-import { fetchBikes as fetchBikesAction, setBikes, setBikesIsFetching, setBikesFetched, setBikesFetchFailed } from './actions';
+import { fetchBikes as fetchBikesAction, setBikes, setBikesIsFetching, setBikesFetched,
+         setBikesFetchFailed, setBikeSaved, setBikeSaveFailed, setBikeIsSaving } from './actions';
 import { normalize } from 'normalizr';
 import * as schema from './schema';
 import Api from './services';
@@ -23,5 +24,14 @@ function* fetchBikes(action) {
 function* watchFetchBikes() {
   yield takeEvery(fetchBikesAction.toString(), fetchBikes);
 }
+
+// function *saveBike(action) {
+//   try {
+//     yield put({ type: setBikeIsSaving.toString(), payload: true });
+//     const bike = yield call(Api.saveBike(action.payload));
+//     yield put({ type: setBikes.toString(), payload: normalize([state])})
+//     yield put({ type: setBikeSaved, payload: true})
+//   }
+// }
 
 export default watchFetchBikes;

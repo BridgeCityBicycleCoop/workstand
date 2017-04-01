@@ -17,7 +17,7 @@ export default handleActions({
   [setBikesFetchFailed]: (state, action) => ({
     ...state,
     fetchFailed: {
-      message: action.payload
-    }
+      message: action.payload,
+    },
   }),
 }, { entities: {}, isFetching: false, fetched: false, fetchFailed: undefined });

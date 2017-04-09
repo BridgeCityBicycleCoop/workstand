@@ -8,3 +8,5 @@ export const setBikesFetchFailed = createAction('set bikes.fetchFailed');
 export const setBikeSaved = createAction('set bike.saved');
 export const setBikeIsSaving = createAction('set bike.isSaving');
 export const setBikeSaveFailed = createAction('set bike.isSaving');
+export const editBike = createAction('edit bike');
+export const createBike = createAction('create bike');

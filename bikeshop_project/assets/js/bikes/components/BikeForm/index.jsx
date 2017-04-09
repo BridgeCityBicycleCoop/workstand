@@ -1,5 +1,5 @@
 import React, { PropTypes } from 'react';
-import { Field, reduxForm } from 'redux-form';
+import { Field, formValueSelector, reduxForm } from 'redux-form';
 import { connect } from 'react-redux';
 import Checkbox from 'material-ui/Checkbox';
 import Cookies from 'js-cookie';
@@ -87,9 +87,9 @@ const validate = (values) => {
 const handleSubmit = data => false;
 
 class BikeForm extends React.Component {
-  constructor({ bike, editing = false }) {
+  constructor({ bike, create }) {
     super();
-    if (editing) {
+    if (!create) {
       this.state = {
         bike,
       };
@@ -139,11 +139,11 @@ class BikeForm extends React.Component {
     const id = this.state.bike.id;
     const data = JSON.stringify(this.state.bike);
     const csrfToken = Cookies.get('csrftoken');
-    const url = this.props.editing ? `/api/v1/bikes/${id}/` : '/api/v1/bikes/';
+    const url = this.props.create ? `/api/v1/bikes/${id}/` : '/api/v1/bikes/';
 
     fetch(url, {
       credentials: 'same-origin',
-      method: this.props.editing ? 'PUT' : 'POST',
+      method: this.props.create ? 'PUT' : 'POST',
       headers: {
         'Content-Type': 'application/json',
         'X-CSRFToken': csrfToken,
@@ -160,20 +160,20 @@ class BikeForm extends React.Component {
   }
 
   render() {
-    const timezone = moment.tz.guess();
-    const {
-      claimed_at,
-      claimed_by,
-      cpic_searched_at,
-      created_at,
-      stolen,
-      checked,
-    } = this.props.bike;
-    const editing = this.props.editing;
-    const createdAtFormatted = (moment(created_at).isValid()) ? moment(created_at).tz(timezone).fromNow() : '';
-    const claimedAtFormatted = (moment(claimed_at).isValid()) ? moment(claimed_at).tz(timezone).fromNow() : '';
-    const cpicSearchedAtFormatted = (moment(cpic_searched_at).isValid()) ? moment(cpic_searched_at).tz(timezone)
-        .fromNow() : '';
+    // const timezone = moment.tz.guess();
+    // const {
+    //   claimed_at,
+    //   claimed_by,
+    //   cpic_searched_at,
+    //   created_at,
+    //   stolen,
+    //   checked,
+    // } = this.props.bike || {};
+    const create = this.props.create;
+    // const createdAtFormatted = (moment(created_at).isValid()) ? moment(created_at).tz(timezone).fromNow() : '';
+    // const claimedAtFormatted = (moment(claimed_at).isValid()) ? moment(claimed_at).tz(timezone).fromNow() : '';
+    // const cpicSearchedAtFormatted = (moment(cpic_searched_at).isValid()) ? moment(cpic_searched_at).tz(timezone)
+    //     .fromNow() : '';
 
     return (
       <div>
@@ -220,13 +220,12 @@ class BikeForm extends React.Component {
                 fullWidth
               />
             </div>
-            {editing &&
+            {!create &&
               <div className="mdl-cell mdl-cell--6-col">
                 <Field
                   name="created_at"
                   component={renderTextField}
                   floatingLabelText="Created at"
-                  value={createdAtFormatted}
                   fullWidth
                   readOnly
                   disabled
@@ -234,14 +233,13 @@ class BikeForm extends React.Component {
               </div>
             }
           </div>
-          {editing &&
+          {!create &&
             <div className="mdl-grid">
               <div className="mdl-cell mdl-cell--6-col">
                 <Field
                   name="claimed_at"
                   component={renderTextField}
                   floatingLabelText="Claimed on"
-                  value={claimedAtFormatted}
                   fullWidth
                   disabled
                 />
@@ -259,10 +257,15 @@ class BikeForm extends React.Component {
             </div>
           }
 
-          {editing &&
+          {!create &&
             <div className="content-grid mdl-grid" style={styles.bottom}>
               <div className="mdl-cell mdl-cell--6-col">
-                <TextField floatingLabelText="CPIC searched" value={cpicSearchedAtFormatted} disabled />
+                <Field
+                  name="cpic_searched_at"
+                  component={renderTextField}
+                  floatingLabelText="CPIC searched"
+                  disabled
+                />
               </div>
               <div className="mdl-cell mdl-cell--4-col">
                 <Field
@@ -271,13 +274,12 @@ class BikeForm extends React.Component {
                   label="Stolen"
                   labelPosition="left"
                   style={styles.checkbox}
-                  checked={stolen}
                   disabled
                   readOnly
                 />
               </div>
               <div className="mdl-cell mdl-cell--2-col">
-                <FlatButton label="Check" onTouchTap={this.handleCpicCheck} disabled={moment(cpic_searched_at).isValid()} primary />
+                <FlatButton label="Check" onTouchTap={this.handleCpicCheck} disabled={this.props.cpic_searched} primary />
               </div>
             </div>
           }
@@ -292,11 +294,10 @@ class BikeForm extends React.Component {
                 {sourceMenuItems}
               </Field>
             </div>
-            {editing &&
+            {!create &&
               <div className="mdl-cell mdl-cell--4-col">
                 <div style={styles.block}>
                   <Field
-                    checked={checked}
                     name="stripped"
                     label="Stripped"
                     labelPosition="left"
@@ -324,14 +325,18 @@ BikeForm = reduxForm({
   validate,
 })(BikeForm);
 
+const selector = formValueSelector('BikeForm')
+
 BikeForm = connect(
   state => ({
-    initialValues: state.bikes.entities['1'],  // pull initial values from account reducer
+    initialValues: state.bikes.form.bike,  // pull initial values from account reducer
+    create: state.bikes.form.create,
+    cpic_searched: selector(state.bikes.form.bike, 'cpic_searched_at'),
   }),
 )(BikeForm);
 
 BikeForm.propTypes = {
-  editing: PropTypes.bool,
+  create: PropTypes.bool,
   handleClose: PropTypes.func,
 }
 

@@ -279,7 +279,7 @@ class BikeForm extends React.Component {
                 />
               </div>
               <div className="mdl-cell mdl-cell--2-col">
-                <FlatButton label="Check" onTouchTap={this.handleCpicCheck} disabled={this.props.cpic_searched} primary />
+                <FlatButton label="Check" onTouchTap={this.handleCpicCheck} disabled={!!this.props.cpic_searched} primary />
               </div>
             </div>
           }
@@ -331,7 +331,7 @@ BikeForm = connect(
   state => ({
     initialValues: state.bikes.form.bike,  // pull initial values from account reducer
     create: state.bikes.form.create,
-    cpic_searched: selector(state.bikes.form.bike, 'cpic_searched_at'),
+    cpic_searched: selector(state, 'cpic_searched_at'),
   }),
 )(BikeForm);
 

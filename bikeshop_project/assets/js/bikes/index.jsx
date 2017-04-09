@@ -9,7 +9,7 @@ import bikesReducer from './reducers';
 import createSagaMiddleware from 'redux-saga'
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
 import BikeTable from './components/BikeTable';
-import watchFetchBikes from './sagas';
+import rootSaga from './sagas';
 
 
 // Needed for onTouchTap
@@ -30,7 +30,7 @@ const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
 
 const store = createStore(combinedReducers, composeEnhancers(applyMiddleware(sagaMiddleware)));
 
-sagaMiddleware.run(watchFetchBikes);
+sagaMiddleware.run(rootSaga);
 
 
 class App extends React.Component {

@@ -15,11 +15,11 @@ class BikeTableComponent extends React.Component {
     this.state = {
       bikeModal: {
         open: false,
-        bike: undefined,
       },
     };
 
     this.handleOpen = this.handleOpen.bind(this);
+    this.handleClose = this.handleClose.bind(this);
     this.renderBikes = this.renderBikes.bind(this);
   }
 
@@ -37,6 +37,16 @@ class BikeTableComponent extends React.Component {
     });
    this.props.editBike(bike);
   }
+
+  handleClose() {
+    this.setState({
+      ...this.state,
+      bikeModal: {
+        ...this.state.bikeModal,
+        open: false,
+      },
+    });
+}
 
   renderBikes(bikes) {
   const bikeRows = bikes.map(bike => (
@@ -88,6 +98,7 @@ class BikeTableComponent extends React.Component {
           </div>
           <BikeModal
             open={this.state.bikeModal.open}
+            handleClose={this.handleClose}
           />
         </div>
       );

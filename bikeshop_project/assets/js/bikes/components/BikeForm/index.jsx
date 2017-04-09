@@ -12,6 +12,7 @@ import fetch from 'isomorphic-fetch';
 import moment from 'moment-timezone';
 import Source from '../Source';
 import Size from '../Size';
+import { saveBike } from '../../actions';
 
 const styles = {
   block: {
@@ -84,7 +85,10 @@ const validate = (values) => {
   return errors;
 };
 
-const handleSubmit = data => false;
+const handleSubmit = (data, dispatch) => {
+  console.log(data);
+  dispatch(saveBike(data));
+};
 
 class BikeForm extends React.Component {
   constructor({ bike, create }) {
@@ -98,18 +102,6 @@ class BikeForm extends React.Component {
         bike: {},
       };
     }
-  }
-
-  handleChange(event, value) {
-    this.setState({ bike: { ...this.state.bike, [event.target.name]: value } });
-  }
-
-  handleSizeChange(event, index, value) {
-    this.setState({ bike: { ...this.state.bike, size: value } });
-  }
-
-  handleSourceChange(event, index, value) {
-    this.setState({ bike: { ...this.state.bike, source: value } });
   }
 
   handleCpicCheck() {
@@ -160,24 +152,11 @@ class BikeForm extends React.Component {
   }
 
   render() {
-    // const timezone = moment.tz.guess();
-    // const {
-    //   claimed_at,
-    //   claimed_by,
-    //   cpic_searched_at,
-    //   created_at,
-    //   stolen,
-    //   checked,
-    // } = this.props.bike || {};
-    const create = this.props.create;
-    // const createdAtFormatted = (moment(created_at).isValid()) ? moment(created_at).tz(timezone).fromNow() : '';
-    // const claimedAtFormatted = (moment(claimed_at).isValid()) ? moment(claimed_at).tz(timezone).fromNow() : '';
-    // const cpicSearchedAtFormatted = (moment(cpic_searched_at).isValid()) ? moment(cpic_searched_at).tz(timezone)
-    //     .fromNow() : '';
+    const { create } = this.props;
 
     return (
       <div>
-        <form onSubmit={handleSubmit}>
+        <form onSubmit={this.props.handleSubmit}>
           <div className="mdl-grid">
             <div className="mdl-cell mdl-cell--3-col">
               <Field
@@ -286,7 +265,7 @@ class BikeForm extends React.Component {
           <div className="mdl-grid" style={styles.bottom}>
             <div className="mdl-cell mdl-cell--8-col">
               <Field
-                name="donation_source"
+                name="source"
                 component={renderSelectField}
                 floatingLabelText="Donation source"
                 fullWidth
@@ -310,7 +289,7 @@ class BikeForm extends React.Component {
           </div>
           <div className="mdl-grid">
             <div style={{ textAlign: 'right' }} className="mdl-cell mdl-cell--12-col">
-              <RaisedButton style={{ marginRight: '8px' }} label="Cancel" onTouchTap={this.props.handleClose} secondary />
+              <RaisedButton style={{ marginRight: '8px' }} label="Cancel" onTouchTap={this.props.handleModalClose} secondary />
               <RaisedButton type="submit" label="Save" default disabled={this.props.pristine || this.props.submitting || this.props.invalid} />
             </div>
           </div>
@@ -323,6 +302,7 @@ class BikeForm extends React.Component {
 BikeForm = reduxForm({
   form: 'BikeForm',  // a unique identifier for this form
   validate,
+  onSubmit: handleSubmit,
 })(BikeForm);
 
 const selector = formValueSelector('BikeForm')

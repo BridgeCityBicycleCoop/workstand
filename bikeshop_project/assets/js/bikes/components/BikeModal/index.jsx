@@ -6,6 +6,7 @@ import BikeForm from '../BikeForm';
 /**
  * A modal dialog can only be closed by selecting one of the actions.
  */
+
 class BikeModal extends React.Component {
   constructor(props) {
     super(props);
@@ -16,9 +17,11 @@ class BikeModal extends React.Component {
       <Dialog
         title='Bike'
         open={this.props.open}
+        modal={false}
         autoScrollBodyContent
       >
           <BikeForm
+            handleModalClose={this.props.handleClose}
             enableReinitialize
           />
       }

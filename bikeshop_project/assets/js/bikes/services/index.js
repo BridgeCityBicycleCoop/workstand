@@ -1,4 +1,8 @@
 import fetch from 'isomorphic-fetch';
+import Cookies from 'js-cookie';
+
+const csrfToken = Cookies.get('csrftoken')
+const headers = new Headers({ 'X-CSRFToken': csrfToken, 'Content-Type': 'application/json' });
 
 const checkStatus = (response) => {
   if (response.status >= 200 && response.status < 300) {
@@ -24,10 +28,12 @@ const Api = {
         throw error;
       });
   },
-  saveBike(id) {
-    return fetch(`/api/v1/bike/${id}`, {
+  saveBike(data) {
+    return fetch(`/api/v1/bikes/${data.id}/`, {
       credentials: 'same-origin',
       method: 'PUT',
+      headers,
+      body: JSON.stringify(data),
     })
       .then(checkStatus)
       .then(parseJson)

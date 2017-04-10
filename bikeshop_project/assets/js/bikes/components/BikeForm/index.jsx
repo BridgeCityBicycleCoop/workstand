@@ -1,17 +1,10 @@
 import React, { PropTypes } from 'react';
 import { Field, formValueSelector, reduxForm } from 'redux-form';
 import { connect } from 'react-redux';
-import Checkbox from 'material-ui/Checkbox';
-import Cookies from 'js-cookie';
 import FlatButton from 'material-ui/FlatButton';
-import MenuItem from 'material-ui/MenuItem';
 import RaisedButton from 'material-ui/RaisedButton';
-import SelectField from 'material-ui/SelectField';
-import TextField from 'material-ui/TextField';
-import fetch from 'isomorphic-fetch';
-import moment from 'moment-timezone';
-import Source from '../Source';
 import Size from '../Size';
+import { renderCheckbox, renderSelectField, renderTextField } from './utils';
 import { updateBike, saveBike, checkCpic } from '../../actions';
 
 const styles = {
@@ -26,51 +19,7 @@ const styles = {
   },
 };
 
-const sources = ['COS_BIKE_DIVERSION_PILOT', 'UOFS', 'DROP_OFF'];
 
-const friendly = (s) => {
-  switch (s) {
-    case 'COS_BIKE_DIVERSION_PILOT':
-      return 'City of Saskatoon Bike Diversion Pilot';
-    case 'UOFS':
-      return 'University of Saskatchewan';
-    case 'DROP_OFF':
-      return 'Drop Off';
-    default:
-      return undefined;
-  }
-};
-
-const sourceMenuItems = sources.map(s =>
-  <MenuItem key={s} value={s} primaryText={friendly(s)} />,
-);
-
-const renderTextField = ({ input, meta: { touched, error }, ...custom }) => (
-  <TextField
-    errorText={touched && error}
-    {...input}
-    {...custom}
-  />
-);
-
-const renderCheckbox = ({ input, meta, label, ...custom }) => (
-  <Checkbox
-    label={label}
-    checked={!!input.value}
-    onCheck={input.onChange}
-    {...custom}
-  />
-);
-
-const renderSelectField = ({ input, label, meta: { touched, error }, children, ...custom }) => (
-  <SelectField
-    errorText={touched && error}
-    {...input}
-    onChange={(event, index, value) => input.onChange(value)}
-    children={children}
-    {...custom}
-  />
-);
 
 const validate = (values) => {
   const errors = {};

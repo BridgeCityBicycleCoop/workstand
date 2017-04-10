@@ -1,4 +1,4 @@
-import { setBikes, setBikesFetched, setBikesIsFetching, setBikesFetchFailed, createBike, editBike } from './actions';
+import { setBikes, setBikesFetched, setBikesIsFetching, setBikesFetchFailed, createBike, editBike, mergeBike } from './actions';
 import { handleActions } from 'redux-actions';
 
 export default handleActions({
@@ -34,4 +34,8 @@ export default handleActions({
       create: true,
     },
   }),
+  [mergeBike]: (state, action) => ({
+    ...state,
+    entities: { ...state.entities, ...action.payload.entities.bikes },
+  })
 }, { entities: {}, form: { bike: null, create: undefined }, isFetching: false, fetched: false, fetchFailed: undefined });

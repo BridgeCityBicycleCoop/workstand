@@ -11,3 +11,4 @@ export const setBikeSaveFailed = createAction('set bike.isSaving');
 export const editBike = createAction('edit bike');
 export const createBike = createAction('create bike');
 export const saveBike = createAction('save bike');
+export const mergeBike = createAction('merge bike');

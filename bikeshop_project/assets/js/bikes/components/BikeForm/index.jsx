@@ -4,7 +4,7 @@ import { connect } from 'react-redux';
 import FlatButton from 'material-ui/FlatButton';
 import RaisedButton from 'material-ui/RaisedButton';
 import Size from '../Size';
-import { renderCheckbox, renderSelectField, renderTextField } from './utils';
+import { renderCheckbox, renderSelectField, renderTextField, sourceMenuItems } from './utils';
 import { updateBike, saveBike, checkCpic } from '../../actions';
 
 const styles = {
@@ -18,8 +18,6 @@ const styles = {
     alignItems: 'flex-end',
   },
 };
-
-
 
 const validate = (values) => {
   const errors = {};

@@ -19,7 +19,7 @@ const friendly = (s) => {
   }
 };
 
-const sourceMenuItems = sources.map(s =>
+export const sourceMenuItems = sources.map(s =>
   <MenuItem key={s} value={s} primaryText={friendly(s)} />,
 );
 

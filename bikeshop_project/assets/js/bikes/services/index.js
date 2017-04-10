@@ -58,6 +58,23 @@ const Api = {
         throw error;
       });
   },
+  cpicBike(id) {
+    fetch(`/api/v1/bikes/${id}/check/`, {
+      credentials: 'same-origin',
+      method: 'PUT',
+      headers: {
+        'Content-Type': 'application/json',
+        'X-CSRFToken': csrfToken,
+      },
+    })
+      .then(checkStatus)
+      .then(parseJson)
+      .then(data => data)
+      .catch((error) => {
+        console.log('request failed', error);
+        throw error;
+      });
+  }
 };
 
 export default Api;

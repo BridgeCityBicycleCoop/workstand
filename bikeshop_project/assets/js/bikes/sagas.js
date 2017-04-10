@@ -1,7 +1,7 @@
 import { call, put, takeEvery } from 'redux-saga/effects';
 import { fetchBikes as fetchBikesAction, setBikes, setBikesIsFetching, setBikesFetched,
          setBikesFetchFailed, setBikeSaved, setBikeSaveFailed, setBikeIsSaving, updateBike as updateBikeAction,
-         mergeBike, saveBike as saveBikeAction } from './actions';
+         mergeBike, saveBike as saveBikeAction, checkCpic as checkCpicAction } from './actions';
 import { normalize } from 'normalizr';
 import * as schema from './schema';
 import Api from './services';
@@ -62,10 +62,23 @@ function* watchSaveBike() {
   yield takeEvery(saveBikeAction.toString(), saveBike)
 }
 
+function* checkCpic(action) {
+  try {
+    yield call(Api.cpicBike, action.payload);
+  } catch (e) {
+    throw(e);
+  }
+}
+
+function* watchCheckCpic() {
+  yield takeEvery(checkCpicAction.toString(), checkCpic)
+}
+
 export default function* rootSaga() {
   yield [
     watchFetchBikes(),
     watchUpdateBike(),
     watchSaveBike(),
+    watchCheckCpic(),
   ];
 };

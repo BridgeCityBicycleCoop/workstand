@@ -13,3 +13,4 @@ export const createBike = createAction('create bike');
 export const updateBike = createAction('update bike');
 export const mergeBike = createAction('merge bike');
 export const saveBike = createAction('save bike');
+export const checkCpic = createAction('check cpic');

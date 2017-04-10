@@ -12,7 +12,7 @@ import fetch from 'isomorphic-fetch';
 import moment from 'moment-timezone';
 import Source from '../Source';
 import Size from '../Size';
-import { updateBike, saveBike } from '../../actions';
+import { updateBike, saveBike, checkCpic } from '../../actions';
 
 const styles = {
   block: {
@@ -73,7 +73,6 @@ const renderSelectField = ({ input, label, meta: { touched, error }, children, .
 );
 
 const validate = (values) => {
-  console.log(values);
   const errors = {};
   const requiredFields = ['make', 'colour', 'size', 'serial_number', 'donation_source'];
 
@@ -96,66 +95,6 @@ const handleSubmit = (data, dispatch, props) => {
 };
 
 class BikeForm extends React.Component {
-  constructor({ bike, create }) {
-    super();
-    if (!create) {
-      this.state = {
-        bike,
-      };
-    } else {
-      this.state = {
-        bike: {},
-      };
-    }
-  }
-
-  handleCpicCheck() {
-    const id = this.state.bike.id;
-    const serialNumber = this.state.bike.serial_number;
-    const data = JSON.stringify({ serial_number: serialNumber });
-    const csrfToken = Cookies.get('csrftoken');
-
-    fetch(`/api/v1/bikes/${id}/check/`, {
-      credentials: 'same-origin',
-      method: 'PUT',
-      headers: {
-        'Content-Type': 'application/json',
-        'X-CSRFToken': csrfToken,
-      },
-      body: data,
-    }).then((response) => {
-      if (response.status >= 400) {
-        throw new Error('Bad response from server');
-      }
-    }).catch((error) => {
-      console.error(error);
-    });
-  }
-
-  handleSave() {
-    const id = this.state.bike.id;
-    const data = JSON.stringify(this.state.bike);
-    const csrfToken = Cookies.get('csrftoken');
-    const url = this.props.create ? `/api/v1/bikes/${id}/` : '/api/v1/bikes/';
-
-    fetch(url, {
-      credentials: 'same-origin',
-      method: this.props.create ? 'PUT' : 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-        'X-CSRFToken': csrfToken,
-      },
-      body: data,
-    }).then((response) => {
-      if (response.status >= 400) {
-        throw new Error('Bad response from server');
-      }
-      console.log(response.json());
-    }).then(() => {
-      this.props.getBikes();
-    });
-  }
-
   render() {
     const { create } = this.props;
 
@@ -263,7 +202,7 @@ class BikeForm extends React.Component {
                 />
               </div>
               <div className="mdl-cell mdl-cell--2-col">
-                <FlatButton label="Check" onTouchTap={this.handleCpicCheck} disabled={!!this.props.cpic_searched} primary />
+                <FlatButton label="Check" onTouchTap={() => this.props.checkCpic(this.props.id)} disabled={!!this.props.cpic_searched} primary />
               </div>
             </div>
           }
@@ -317,6 +256,10 @@ BikeForm = connect(
     initialValues: state.bikes.form.bike,  // pull initial values from account reducer
     create: state.bikes.form.create,
     cpic_searched: selector(state, 'cpic_searched_at'),
+    id: selector(state, 'id'),
+  }),
+  dispatch => ({
+    checkCpic: id => dispatch(checkCpic(id)),
   }),
 )(BikeForm);
 

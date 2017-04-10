@@ -6,7 +6,7 @@ import ContentAdd from 'material-ui/svg-icons/content/add';
 import React from 'react';
 import { friendlySize } from '../Size';
 import BikeModal from '../BikeModal';
-import { fetchBikes, setBike, editBike } from '../../actions';
+import { fetchBikes, setBike, editBike, createBike } from '../../actions';
 
 class BikeTableComponent extends React.Component {
   constructor(props) {
@@ -18,7 +18,8 @@ class BikeTableComponent extends React.Component {
       },
     };
 
-    this.handleOpen = this.handleOpen.bind(this);
+    this.handleOpenEdit = this.handleOpenEdit.bind(this);
+    this.handleOpenCreate = this.handleOpenCreate.bind(this);
     this.handleClose = this.handleClose.bind(this);
     this.renderBikes = this.renderBikes.bind(this);
   }
@@ -27,7 +28,7 @@ class BikeTableComponent extends React.Component {
     this.props.fetchBikes();
   }
 
-  handleOpen(bike) {
+  handleOpenEdit(bike) {
     this.setState({
       ...this.state,
       bikeModal: {
@@ -36,6 +37,17 @@ class BikeTableComponent extends React.Component {
       },
     });
    this.props.editBike(bike);
+  }
+
+  handleOpenCreate() {
+    this.setState({
+      ...this.state,
+      bikeModal: {
+        ...this.state.bikeModal,
+        open: true,
+      },
+    });
+   this.props.createBike();
   }
 
   handleClose() {
@@ -57,7 +69,7 @@ class BikeTableComponent extends React.Component {
       <TableRowColumn>{bike.serial_number}</TableRowColumn>
       <TableRowColumn>{bike.state}</TableRowColumn>
       <TableRowColumn>{bike.claimed_by}</TableRowColumn>
-      <TableRowColumn><FlatButton label="Edit" primary onTouchTap={(e) => this.handleOpen(bike)} /></TableRowColumn>
+      <TableRowColumn><FlatButton label="Edit" primary onTouchTap={(e) => this.handleOpenEdit(bike)} /></TableRowColumn>
     </TableRow>
     ));
 
@@ -71,7 +83,7 @@ class BikeTableComponent extends React.Component {
         <div className="mdl-grid">
           <div className="mdl-cell mdl-cell--12-col">
             <h3>Bikes</h3>
-            <FloatingActionButton onTouchTap={this.handleAddBike}>
+            <FloatingActionButton onTouchTap={this.handleOpenCreate}>
               <ContentAdd />
             </FloatingActionButton>
             <Table selectable={false}>
@@ -118,6 +130,9 @@ const mapDispatchToProps = dispatch => ({
   },
   editBike: (bike) => {
     dispatch(editBike(bike));
+  },
+  createBike: () => {
+    dispatch(createBike())
   }
 });
 

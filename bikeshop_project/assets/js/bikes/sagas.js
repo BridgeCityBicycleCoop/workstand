@@ -1,7 +1,8 @@
-import { call, put, takeEvery, takeLatest } from 'redux-saga/effects';
+import { call, put, takeEvery } from 'redux-saga/effects';
 import { fetchBikes as fetchBikesAction, setBikes, setBikesIsFetching, setBikesFetched,
-         setBikesFetchFailed, setBikeSaved, setBikeSaveFailed, setBikeIsSaving, saveBike as saveBikeAction, mergeBike } from './actions';
-import { normalize, denormalize } from 'normalizr';
+         setBikesFetchFailed, setBikeSaved, setBikeSaveFailed, setBikeIsSaving, updateBike as updateBikeAction,
+         mergeBike, saveBike as saveBikeAction } from './actions';
+import { normalize } from 'normalizr';
 import * as schema from './schema';
 import Api from './services';
 
@@ -25,6 +26,24 @@ function* watchFetchBikes() {
   yield takeEvery(fetchBikesAction.toString(), fetchBikes);
 }
 
+function* updateBike(action) {
+  try {
+    yield put({ type: setBikeIsSaving.toString(), payload: true });
+    const bike = yield call(Api.updateBike, action.payload);
+    yield put({ type: mergeBike.toString(), payload: normalize([bike], schema.bikes)})
+    yield put({ type: setBikeSaved.toString(), payload: true})
+  } catch (e) {
+    yield put({ type: setBikeSaveFailed, payload: false });
+    throw(e);
+  } finally {
+    yield put({ type: setBikeIsSaving.toString(), payload: false });
+  }
+}
+
+function* watchUpdateBike() {
+  yield takeEvery(updateBikeAction.toString(), updateBike)
+}
+
 function* saveBike(action) {
   try {
     yield put({ type: setBikeIsSaving.toString(), payload: true });
@@ -46,6 +65,7 @@ function* watchSaveBike() {
 export default function* rootSaga() {
   yield [
     watchFetchBikes(),
+    watchUpdateBike(),
     watchSaveBike(),
   ];
 };

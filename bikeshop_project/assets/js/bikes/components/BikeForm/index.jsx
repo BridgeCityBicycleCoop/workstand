@@ -12,7 +12,7 @@ import fetch from 'isomorphic-fetch';
 import moment from 'moment-timezone';
 import Source from '../Source';
 import Size from '../Size';
-import { saveBike } from '../../actions';
+import { updateBike, saveBike } from '../../actions';
 
 const styles = {
   block: {
@@ -85,9 +85,14 @@ const validate = (values) => {
   return errors;
 };
 
-const handleSubmit = (data, dispatch) => {
-  console.log(data);
-  dispatch(saveBike(data));
+const handleSubmit = (data, dispatch, props) => {
+  const { create } = props;
+  if (create) {
+    dispatch(saveBike(data));
+
+  } else {
+    dispatch(updateBike(data));
+  }
 };
 
 class BikeForm extends React.Component {

@@ -28,10 +28,25 @@ const Api = {
         throw error;
       });
   },
-  saveBike(data) {
-    return fetch(`/api/v1/bikes/${data.id}/`, {
+  updateBike(data) {
+    return fetch(data.url, {
       credentials: 'same-origin',
       method: 'PUT',
+      headers,
+      body: JSON.stringify(data),
+    })
+      .then(checkStatus)
+      .then(parseJson)
+      .then(data => data)
+      .catch((error) => {
+        console.log('request failed', error);
+        throw error;
+      });
+  },
+  saveBike(data) {
+    return fetch(`/api/v1/bikes/`, {
+      credentials: 'same-origin',
+      method: 'POST',
       headers,
       body: JSON.stringify(data),
     })

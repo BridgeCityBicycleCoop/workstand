@@ -22,7 +22,6 @@ class BikeModal extends React.Component {
       >
           <BikeForm
             handleModalClose={this.props.handleClose}
-            enableReinitialize
           />
       </Dialog>
     )

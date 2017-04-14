@@ -104,7 +104,6 @@ class SignedInList extends React.Component {
             }
           </TableBody>
         </Table>
-
       </div>
     );
   }

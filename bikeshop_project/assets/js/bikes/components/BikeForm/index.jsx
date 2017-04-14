@@ -4,7 +4,7 @@ import { connect } from 'react-redux';
 import FlatButton from 'material-ui/FlatButton';
 import RaisedButton from 'material-ui/RaisedButton';
 import Size from '../Size';
-import { renderCheckbox, renderSelectField, renderTextField, sourceMenuItems } from './utils';
+import { renderCheckbox, renderSelectField, renderTextField, sourceMenuItems, stateMenuItems, getRequiredFields } from './utils';
 import { updateBike, saveBike, checkCpic } from '../../actions';
 
 const styles = {
@@ -19,15 +19,20 @@ const styles = {
   },
 };
 
-const validate = (values) => {
+const validate = (values, props) => {
   const errors = {};
-  const requiredFields = ['make', 'colour', 'size', 'serial_number', 'donation_source'];
+  console.log(values);
+  const requiredFields = getRequiredFields(values.new_state);
 
   requiredFields.forEach((field) => {
     if (!values[field]) {
       errors[field] = 'Required';
     }
   });
+
+  if (!props.availableStates.includes(values.new_state)) {
+    errors['new_state'] = `${values.new_state} is not allowed.`;
+  }
   return errors;
 };
 
@@ -43,11 +48,22 @@ const handleSubmit = (data, dispatch, props) => {
 
 class BikeForm extends React.Component {
   render() {
-    const { create } = this.props;
-
+    const { create, cpicSearched, id, availableStates, currentState } = this.props;
     return (
       <div>
         <form onSubmit={this.props.handleSubmit}>
+          <div className="mdl-grid">
+            <div className="mdl-cell mdl-cell--3-col">
+              <Field
+                name="new_state"
+                component={renderSelectField}
+                floatingLabelText="State"
+                fullWidth
+              >
+                {stateMenuItems([currentState].concat(availableStates))}
+              </Field>
+            </div>
+          </div>
           <div className="mdl-grid">
             <div className="mdl-cell mdl-cell--3-col">
               <Field
@@ -98,7 +114,6 @@ class BikeForm extends React.Component {
                   floatingLabelText="Created at"
                   fullWidth
                   readOnly
-                  disabled
                 />
               </div>
             }
@@ -126,7 +141,6 @@ class BikeForm extends React.Component {
               </div>
             </div>
           }
-
           {!create &&
             <div className="content-grid mdl-grid" style={styles.bottom}>
               <div className="mdl-cell mdl-cell--6-col">
@@ -134,7 +148,7 @@ class BikeForm extends React.Component {
                   name="cpic_searched_at"
                   component={renderTextField}
                   floatingLabelText="CPIC searched"
-                  disabled
+                  readOnly
                 />
               </div>
               <div className="mdl-cell mdl-cell--4-col">
@@ -149,7 +163,7 @@ class BikeForm extends React.Component {
                 />
               </div>
               <div className="mdl-cell mdl-cell--2-col">
-                <FlatButton label="Check" onTouchTap={() => this.props.checkCpic(this.props.id)} disabled={!!this.props.cpic_searched} primary />
+                <FlatButton label="Check" onTouchTap={() => this.props.checkCpic(id)} disabled={cpicSearched} primary />
               </div>
             </div>
           }
@@ -196,15 +210,17 @@ BikeForm = reduxForm({
   onSubmit: handleSubmit,
 })(BikeForm);
 
-const selector = formValueSelector('BikeForm')
-
 BikeForm = connect(
-  state => ({
-    initialValues: state.bikes.form.bike,  // pull initial values from account reducer
-    create: state.bikes.form.create,
-    cpic_searched: selector(state, 'cpic_searched_at'),
-    id: selector(state, 'id'),
-  }),
+  state => {
+    return {
+      initialValues: {...state.bikes.form.bike, new_state: state.bikes.form.bike.state.toLowerCase()}, // pull initial values from account reducer
+      create: state.bikes.form.create,
+      cpicSearched: !!state.bikes.form.bike.cpic_searched_at,
+      id: state.bikes.form.bike.id,
+      availableStates: state.bikes.form.bike.available_states,
+      currentState: state.bikes.form.bike.state.toLowerCase(),
+    };
+  },
   dispatch => ({
     checkCpic: id => dispatch(checkCpic(id)),
   }),

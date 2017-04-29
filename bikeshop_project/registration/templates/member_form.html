@@ -47,7 +47,7 @@
 {% endblock %}
 
 {% block content %}
-    <div class="mdl-cell mdl-cell--8-col">
+    <div id="member-form" class="mdl-cell mdl-cell--8-col">
         <h1>New Contact</h1>
         <p>
             The Bridge City Bicycle Co-operative (herein referred to as The BCBC and The Community) is a nonprofit,
@@ -182,44 +182,16 @@
              <p>By signing this form in the space provided below, I hereby assume all of the risks of participating and/or volunteering in the Bridge City Bicycle Co-operative, hereinafter referred to as the BCBC and the Community. I realize that liability may arise from negligence or carelessness on the part of the persons or entities being released, from dangerous or defective equipment or property owned, maintained or controlled by them or because of their possible liability without fault. I acknowledge that this Accident Waiver and Release of Liability form will be used by the Community, sponsors and organizers, in which I may participate and that it will govern my actions and responsibilities during my use of its services. In consideration of my application and permitting me to participate in this program, I hereby take action for myself, my executors, administrators, heirs, next of kin, successors, and assigns as follows:</p>
              <p>(A) Waive, Release and Discharge from any and all liability for my death, disability, personal injury, property damage, property theft or actions of any kind which may hereafter accrue to me including my travelling to and from space or using the shop's bicycle, equipment or other facilities, THE FOLLOWING ENTITIES OR PERSONS: The directors, officers, employees, volunteers, representatives, and agents, the event holders, sponsors, volunteers of the Community;</p>
              <p>(B) Indemnify and Hold Harmless the entities and persons set forth in (A) above from any and all liabilities and claims arising from my participation in the Community, including my use of a bicycle belonging to the Community, irrespective of whether the cause of the claims or liability arise from the negligence, acts or omissions of me, a third party, or the Community.</p>
+
             <label class="mdl-checkbox mdl-js-checkbox mdl-js-ripple-effect" for="{{ form.waiver_substitute.id_for_label }}">
                 {{ form.waiver_substitute }}
                 <span class="mdl-checkbox__label">{{ form.waiver_substitute.label }}</span>
             </label>
         </div>
-{#        <div>#}
-{#            <h2 class="template__header mdl-typography--title">Privacy Policy</h2>#}
-{#            <p>Bridge City Bicycle Co-operative (BCBC) values the trust of its volunteers, staff, and members and#}
-{#                is committed to protecting the privacy of all personal information entrusted to it. BCBC only#}
-{#                collects the limited personal information needed to deliver high quality services and programming.#}
-{#                Collected information will be used only for the purpose expressly identified or for other purposes#}
-{#                which could be reasonably considered to be consistent with out mission. We do not sell, rent or#}
-{#                trade personal information. The personal information collected will be protected with appropriate#}
-{#                physical, organizational, and electronic safeguards to prevent unauthorized use and will be#}
-{#                retained only for as long as needed to achieve the purposes stated above. BCBC may make personal#}
-{#                information available to others or to appropriate authorities without permission if the information#}
-{#                is used to take action during an emergency that threatens the life, health or security of an#}
-{#                individual. Information no longer required will be destroyed or erased. Upon application to the#}
-{#                Privacy Officer individuals may access their personal information held by BCBC unless the#}
-{#                information contains references to other individuals or cannot be disclosed for legal or security#}
-{#                reasons. BCBC commits to promptly correcting any inaccuracies. Complaints should be made in writing#}
-{#                to the Privacy Officer who will immediately acknowledge receipt and will respond to the complaint#}
-{#                within 30 days. Unresolved complaints may be taken to the federal Privacy Commissioner.</p>#}
-{#            <p>Contact BCBC’s Privacy Officer at:#}
-{#                <br>905 20th Street West Saskatoon, SK S7M 0Y5 or by:#}
-{#                <br>Email: <a href="mailto:bridgecitybicyclecoop@gmail.com">bridgecitybicyclecoop@gmail.com</a></p>#}
-{#        </div>#}
-{#        <div>#}
-{#            <h2 class="template__header mdl-typography--title">Membership and Privileges</h2>#}
-{#            <p>I acknowledge that my Membership and Privileges in the Bridge City Bicycle Co-operative is contingent#}
-{#                upon fulfilling the above responsibilities.</p>#}
-{#            <label class="mdl-checkbox mdl-js-checkbox mdl-js-ripple-effect" for="{{ form.priveleges.id_for_label }}">#}
-{#                {{ form.priveleges }}#}
-{#                <span class="mdl-checkbox__label">{{ form.priveleges.label }}</span>#}
-{#            </label>#}
-{#        </div>#}
-        <div>
-            <button disabled id="submit" type="submit" class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--colored">Submit</button>
+        <div class="mdl-grid">
+            <div class="mdl-cell mdl-cell--12-col">
+                <button disabled id="submit" type="submit" class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--colored">Submit</button>
+            </div>
         </div>
         </form>
     </div>

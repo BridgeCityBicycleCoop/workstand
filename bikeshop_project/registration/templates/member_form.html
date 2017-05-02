@@ -25,6 +25,15 @@
 
     var waiverCheckBox = document.getElementById('{{ form.waiver_substitute.id_for_label }}');
     var submitButton = document.getElementById('submit');
+    var form = document.getElementsByTagName('form')[0];
+    var inputs = Array.prototype.slice.call(document.getElementsByTagName('input'));
+
+    for (var anInput of inputs) {
+      anInput.addEventListener('change', function() {
+        submitButton.disabled = !form.checkValidity()
+      })
+    }
+
     var requiredCheckboxes = function() {
         return waiverCheckBox.checked;
     };

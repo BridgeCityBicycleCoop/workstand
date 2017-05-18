@@ -4,7 +4,8 @@
 {% block scripts %}
     <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.17.1/moment.min.js"></script>
     <script>
-    dateOfBirthInput = document.getElementById('{{ form.date_of_birth.id_for_label }}');
+    var dateOfBirthInput = document.getElementById('{{ form.date_of_birth.id_for_label }}');
+    var submitButton = document.getElementById('submit');
 
     dateOfBirthInput.addEventListener('blur', function(event) {
         var input = event.target;
@@ -22,6 +23,16 @@
             document.getElementById('{{ form.guardian_name.id_for_label }}').parentNode.classList.add('is-disabled');
         }
     });
+
+    var form = document.getElementsByTagName('form')[0];
+    var inputs = Array.prototype.slice.call(document.getElementsByTagName('input'));
+    var textAreas = Array.prototype.slice.call(document.getElementsByTagName('textarea'));
+
+    for (var el of inputs.concat(textAreas)) {
+      el.addEventListener('change', function() {
+        submitButton.disabled = !form.checkValidity()
+      })
+    }
 
     </script>
 {% endblock %}
@@ -220,7 +231,7 @@
         </div>
         <div class="mdl-grid">
             <div class="mdl-cell">
-                <button id="submit" type="submit"
+                <button disabled id="submit" type="submit"
                         class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--colored">
                     Save</button>
             </div>

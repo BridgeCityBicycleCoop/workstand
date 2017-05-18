@@ -3,7 +3,6 @@ const BundleTracker = require('webpack-bundle-tracker');
 const ExtractTextPlugin = require('extract-text-webpack-plugin');
 require('babel-polyfill');
 
-
 const config = require('./webpack.base.config.js');
 
 // Use webpack dev server

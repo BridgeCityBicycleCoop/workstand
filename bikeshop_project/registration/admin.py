@@ -32,6 +32,9 @@ class CustomUserAdmin(UserAdmin):
 
 @admin.register(Member)
 class MemberAdmin(admin.ModelAdmin):
-    list_display = ("get_full_name",)
+    list_display = (
+        "get_full_name",
+        "created_at",
+    )
     ordering = ("last_name",)
-    search_fields = ("email", "first_name", "last_name")
+    search_fields = ("email", "first_name", "last_name", "created_at")

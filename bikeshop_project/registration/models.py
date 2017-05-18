@@ -94,6 +94,8 @@ class Member(models.Model):
     notes = models.TextField(null=True, blank=True)
     suspended = models.BooleanField(default=False)
     banned = models.BooleanField(default=False)
+    created_at = models.DateTimeField(auto_now_add=True)
+    modified_at = models.DateTimeField(auto_now=True)
 
     def get_full_name(self):
         # The user is identified by their email address

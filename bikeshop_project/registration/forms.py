@@ -6,16 +6,33 @@ from django.forms import (
     CheckboxInput,
     BooleanField,
     Textarea,
+    DateField,
 )
 from django.utils import timezone
 from registration.models import Member
 
 
 class MemberForm(ModelForm):
+    input_formats = [
+        "%Y-%m-%d",
+        "%y-%m-%d",
+        "%d-%m-%y",
+        "%d-%m-%Y",
+        "%Y/%m/%d",
+        "%y/%m/%d",
+        "%d/%m/%y",
+        "%d/%m/%Y",
+    ]
+
     waiver_substitute = BooleanField(
         required=False,
         label="I have read and agree to the above terms & conditions.",
         widget=CheckboxInput(attrs={"class": "mdl-checkbox__input"}),
+    )
+    date_of_birth = DateField(
+        required=False,
+        input_formats=input_formats,
+        widget=DateInput(attrs={"class": "mdl-textfield__input"}),
     )
 
     class Meta:
@@ -47,7 +64,6 @@ class MemberForm(ModelForm):
             "first_name": TextInput(attrs={"class": "mdl-textfield__input"}),
             "last_name": TextInput(attrs={"class": "mdl-textfield__input"}),
             "preferred_name": TextInput(attrs={"class": "mdl-textfield__input"}),
-            "date_of_birth": DateInput(attrs={"class": "mdl-textfield__input"}),
             "guardian_name": DateInput(
                 attrs={"class": "mdl-textfield__input", "disabled": "disabled"}
             ),

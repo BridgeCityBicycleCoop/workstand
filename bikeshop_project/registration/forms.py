@@ -9,7 +9,8 @@ class MemberForm(ModelForm):
 
     waiver_substitute = BooleanField(required=False, label='I have read and agree to the above terms & conditions.',
                                      widget=CheckboxInput(attrs={'class': 'mdl-checkbox__input'}))
-    date_of_birth = DateField(input_formats=input_formats, widget=DateInput(attrs={'class': 'mdl-textfield__input'}))
+    date_of_birth = DateField(required=False, input_formats=input_formats,
+                              widget=DateInput(attrs={'class': 'mdl-textfield__input'}))
 
     class Meta:
         model = Member

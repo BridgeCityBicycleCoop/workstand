@@ -2,7 +2,7 @@
 {% load staticfiles %}
 
 {% block scripts %}
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.17.1/moment.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.18.1/moment.min.js"></script>
     <script>
     var dateOfBirthInput = document.getElementById('{{ form.date_of_birth.id_for_label }}');
     var submitButton = document.getElementById('submit');
@@ -12,7 +12,8 @@
         input.parentNode.classList.add('is-dirty');
 
         var threshold = moment.duration(18, 'years');
-        var dob = moment(input.value, 'YYYY-MM-DD');
+        var dob = moment(input.value, ['YYYY-MM-DD', 'YY-MM-DD', 'DD-MM-YY', 'DD-MM-YYYY',
+                         'YYYY/MM/DD', 'YY/MM/DD', 'DD/MM/YY', 'DD/MM/YYYY']);
 
         if (dob.add(threshold).isAfter(moment())) {
             document.getElementById('{{ form.guardian_name.id_for_label }}').disabled = false;

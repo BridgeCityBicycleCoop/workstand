@@ -17,7 +17,7 @@
     "react": "^15.4.1",
     "react-dom": "^15.4.1",
     "react-tap-event-plugin": "^2.0.1",
-    "webpack": "^1.13.1",
+    "webpack": "1.13.1",
     "webpack-bundle-tracker": "0.0.93"
   },
   "devDependencies": {
@@ -44,6 +44,6 @@
     "sass-loader": "^3.2.0",
     "style-loader": "^0.13.1",
     "toolbox-loader": "0.0.3",
-    "webpack-dev-server": "^1.14.1"
+    "webpack-dev-server": "1.14.1"
   }
 }

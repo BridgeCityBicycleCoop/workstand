@@ -373,3 +373,10 @@ span.mdl-textfield__error, span.error  {
 html [type="button"] {
   -webkit-appearance: initial !important;
 }
+
+#member-form {
+  .mdl-checkbox {
+    height: auto;
+    min-height: 24px;
+  }
+}

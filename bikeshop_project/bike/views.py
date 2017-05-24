@@ -50,7 +50,7 @@ class BikeViewSet(viewsets.ModelViewSet):
         bike = get_object_or_404(Bike, pk=pk)
         state = BikeState.AVAILABLE
         if not can_proceed(bike.available):
-            raise ValidationError(detail=f'Transition from {bike.state} to {state}')
+            raise ValidationError(detail=f'Transition from {bike.state} to {state} failed.')
 
         bike.available()
         bike.save()

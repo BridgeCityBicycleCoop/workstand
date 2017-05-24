@@ -83,6 +83,23 @@ class TestMemberSearchView(TestCase):
             [result["name"] for result in results if self.query in result["name"]]
         )
 
+    def test_search_name_with_space(self):
+        mommy.make(Member, first_name="Test", last_name="Person")
+        url = reverse("member_search", kwargs=dict(query="Test Person"))
+        c = Client()
+        c.force_login(self.user)
+        response = c.get(url)
+
+        self.assertEqual(response.status_code, 200)
+
+        data = json.loads(response.content.decode(encoding="utf-8"))
+        results = data["results"]
+
+        # Check if our made up first name is in the name returned.
+        self.assertTrue(
+            [result["name"] for result in results if "Test Person" in result["name"]]
+        )
+
 
 class TestMemberSignIn(TestCase):
     def setUp(self):

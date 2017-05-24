@@ -13,7 +13,7 @@ apiRoutes = ((r"members", MemberViewSet),)
 urlpatterns = [
     url(r"^new/$", MemberFormView.as_view(), name="member_new"),
     url(
-        r"^search/(?P<query>[\w@\.\+]+)/$",
+        r"^search/(?P<query>[\w|\W]+)/$",
         MemberSearchView.as_view(),
         name="member_search",
     ),

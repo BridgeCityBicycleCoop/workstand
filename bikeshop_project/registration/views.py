@@ -1,6 +1,7 @@
 import json
 
 from django.contrib.auth.decorators import login_required
+from django.core.exceptions import ObjectDoesNotExist
 from django.core.urlresolvers import reverse
 from django.http import HttpResponse, HttpResponseRedirect, JsonResponse
 from django.shortcuts import get_object_or_404
@@ -13,7 +14,7 @@ from rest_framework import viewsets
 from rest_framework.renderers import JSONRenderer
 from rest_framework.serializers import ModelSerializer
 
-from core.models import Visit
+from core.models import Visit, Membership
 from registration.utils import signin_member, get_signed_in_members
 from .serializers import MemberSerializer
 from .forms import MemberForm
@@ -83,9 +84,16 @@ class MemberSignIn(View):
     def post(self, request):
         member = get_object_or_404(Member, id=request.POST.get('id'))
         visit = signin_member(member, request.POST.get('purpose'))
+        try:
+            membership = Membership.objects.select_related('payment').get(member=member)
+        except ObjectDoesNotExist:
+            membership = None
+        membership_dict = dict(renewed_at=membership.renewed_at, payment=membership.payment.type,
+                               expires_at=membership.expires_at) if membership else None
         data = dict(results=dict(id=member.id, first_name=member.first_name, last_name=member.last_name,
                                  suspended=member.suspended, banned=member.banned,
-                                 created_at=visit.created_at.isoformat()))
+                                 created_at=visit.created_at.isoformat(), notes=member.notes,
+                                 membership=membership_dict))
 
         return JsonResponse(data=data, safe=False, status=201)
 

@@ -18,6 +18,10 @@ export default class SignIn extends React.Component {
       error: '',
       signedIn: [],
       searchText: '',
+      modal: {
+        open: false,
+        member: null
+      }
     };
 
     this.handleUpdate = this.handleUpdate.bind(this);
@@ -80,6 +84,25 @@ export default class SignIn extends React.Component {
               searchText: '',
               members: [],
             });
+
+            return parsedData.results;
+          }).then(parsedData => {
+            const {created_at, membership, ...rest} = parsedData
+            this.setState(state => ({
+              ...state,
+              modal: {
+                ...state.modal,
+                member: {
+                  ...rest,
+                  created_at: moment(created_at),
+                  membership: {
+                    renewed_at: membership ? membership.renewed_at : undefined,
+                    expires_at: membership ? membership.expires_at : undefined,
+                    payment: membership ? membership.payment : undefined,
+                  }
+                }
+              }
+            }))
           });
     } else {
       this.setState({ ...this.state, error: 'Member already signed in.' });

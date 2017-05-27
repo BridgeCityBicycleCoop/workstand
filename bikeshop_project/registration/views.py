@@ -85,7 +85,7 @@ class MemberSignIn(View):
         member = get_object_or_404(Member, id=request.POST.get('id'))
         visit = signin_member(member, request.POST.get('purpose'))
         try:
-            membership = Membership.objects.select_related('payment').get(member=member)
+            membership = Membership.objects.select_related('payment').filter(member=member).last()
         except ObjectDoesNotExist:
             membership = None
         membership_dict = dict(renewed_at=membership.renewed_at, payment=membership.payment.type,

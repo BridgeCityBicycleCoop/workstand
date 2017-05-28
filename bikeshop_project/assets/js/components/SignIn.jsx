@@ -163,6 +163,7 @@ export default class SignIn extends React.Component {
   }
 
   render() {
+    const { member } = this.state.modal;
     return (
       <div>
         <div className="mdl-grid">
@@ -199,27 +200,31 @@ export default class SignIn extends React.Component {
         </div>
         {this.state.modal.member &&
           <Dialog
-            title={`${this.state.modal.member.first_name} ${this.state.modal.member.last_name}`}
+            title={`${member.first_name} ${member.last_name}`}
             open={this.state.modal.open}
             onRequestClose={this.handleClose}
             actions={[<RaisedButton primary onClick={this.handleClose} label="Close" />]}
           >
             <div>
-              {renderMemberStatus(this.state.modal.member)}
+              {renderMemberStatus(member)}
             </div>
-            { this.state.modal.member.notes &&
+            { member.notes &&
               <div>
                 <h5>Notes</h5>
-                <p>{this.state.modal.member.notes}</p>
+                <p>{member.notes}</p>
               </div>
             }
             <div>
               <h5>Membership Details</h5>
-              {!this.state.modal.member.membership
+              {!member.membership
                ? <strong>No membership 😿</strong>
                : <dl>
-                  <dt>Renewed</dt><dd>{this.state.modal.member.membership.renewed_at.fromNow()}</dd>
-                  <dt>Expires</dt><dd>{this.state.modal.member.membership.expires_at.fromNow()}</dd>
+                  <dt>Renewed</dt><dd>{member.membership.renewed_at.format('MMMM Do, YYYY')} ({member.membership.renewed_at.fromNow()})</dd>
+                  <dt>{member.membership.expires_at.isAfter()
+                        ? 'Expires'
+                        : 'Expired'}
+                  </dt>
+                  <dd>{member.membership.expires_at.format('MMMM Do, YYYY')} ({member.membership.expires_at.fromNow()})</dd>
                 </dl>
               }
             </div>

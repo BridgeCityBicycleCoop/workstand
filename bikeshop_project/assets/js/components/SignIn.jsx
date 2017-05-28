@@ -2,10 +2,20 @@ import fetch from 'isomorphic-fetch';
 import moment from 'moment';
 import React from 'react';
 import RaisedButton from 'material-ui/RaisedButton';
+import Dialog from 'material-ui/Dialog';
 
 import Member from './Member';
 import Purpose from './Purpose';
 import SignedInList from './SignedInList';
+
+const renderMemberStatus = member => {
+  if (member.banned) {
+    return <h5>Banned</h5>;
+  } else if (member.suspended) {
+    return <h2>Suspended</h2>;
+  }
+  return null;
+}
 
 
 export default class SignIn extends React.Component {
@@ -25,6 +35,7 @@ export default class SignIn extends React.Component {
     };
 
     this.handleUpdate = this.handleUpdate.bind(this);
+    this.handleClose = this.handleClose.bind(this);
     this.signIn = this.signIn.bind(this);
     this.chooseMember = this.chooseMember.bind(this);
     this.handlePurposeChoice = this.handlePurposeChoice.bind(this);
@@ -53,7 +64,7 @@ export default class SignIn extends React.Component {
   }
 
   chooseMember(chosenRequest, index) {
-    const member = this.state.members[index];
+    const member = chosenRequest;
     const purpose = this.state.signOn.purpose;
 
     this.setState({ ...this.state, signOn: { member, purpose } });
@@ -88,18 +99,20 @@ export default class SignIn extends React.Component {
             return parsedData.results;
           }).then(parsedData => {
             const {created_at, membership, ...rest} = parsedData
+            const parsedMembership = membership ? {
+              renewed_at: membership ? moment(membership.renewed_at) : undefined,
+              expires_at: membership ? moment(membership.expires_at) : undefined,
+              payment: membership ? membership.payment : undefined,
+            } : null;
             this.setState(state => ({
               ...state,
               modal: {
                 ...state.modal,
+                open: true,
                 member: {
                   ...rest,
                   created_at: moment(created_at),
-                  membership: {
-                    renewed_at: membership ? membership.renewed_at : undefined,
-                    expires_at: membership ? membership.expires_at : undefined,
-                    payment: membership ? membership.payment : undefined,
-                  }
+                  membership: parsedMembership,
                 }
               }
             }))
@@ -128,12 +141,25 @@ export default class SignIn extends React.Component {
                 self.setState({
                   ...this.state,
                   error: '',
-                  members: data.results.map(result => ({ text: `${result.name}`, value: `${result.name} <${result.email}>`, id: result.id })),
+                  members: data.results.map(result => ({
+                    text: `${result.name}`,
+                    value: `${result.name} <${result.email}>`,
+                    id: result.id })),
                 });
               } else {
                 self.setState({ ...this.state, error: 'Member not found.' });
               }
             });
+  }
+
+  handleClose() {
+    this.setState(state => ({
+      ...state,
+      modal: {
+        open: false,
+        member: null,
+      }
+    }))
   }
 
   render() {
@@ -171,6 +197,34 @@ export default class SignIn extends React.Component {
         <div className="mdl-grid">
           <SignedInList members={this.state.signedIn} />
         </div>
+        {this.state.modal.member &&
+          <Dialog
+            title={`${this.state.modal.member.first_name} ${this.state.modal.member.last_name}`}
+            open={this.state.modal.open}
+            onRequestClose={this.handleClose}
+            actions={[<RaisedButton primary onClick={this.handleClose} label="Close" />]}
+          >
+            <div>
+              {renderMemberStatus(this.state.modal.member)}
+            </div>
+            { this.state.modal.member.notes &&
+              <div>
+                <h5>Notes</h5>
+                <p>{this.state.modal.member.notes}</p>
+              </div>
+            }
+            <div>
+              <h5>Membership Details</h5>
+              {!this.state.modal.member.membership
+               ? <strong>No membership 😿</strong>
+               : <dl>
+                  <dt>Renewed</dt><dd>{this.state.modal.member.membership.renewed_at.fromNow()}</dd>
+                  <dt>Expires</dt><dd>{this.state.modal.member.membership.expires_at.fromNow()}</dd>
+                </dl>
+              }
+            </div>
+          </Dialog>
+        }
       </div>
     );
   }

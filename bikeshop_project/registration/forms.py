@@ -7,6 +7,7 @@ from django.forms import (
     BooleanField,
     Textarea,
     DateField,
+    CheckboxSelectMultiple,
 )
 from django.utils import timezone
 from registration.models import Member
@@ -57,12 +58,17 @@ class MemberForm(ModelForm):
             "banned",
             "suspended",
             "notes",
+            "involvement",
         ]
         widgets = {
             "email": EmailInput(attrs={"class": "mdl-textfield__input"}),
             "email_consent": CheckboxInput(attrs={"class": "mdl-checkbox__input"}),
             "first_name": TextInput(attrs={"class": "mdl-textfield__input"}),
             "last_name": TextInput(attrs={"class": "mdl-textfield__input"}),
+            "involvement": CheckboxSelectMultiple(
+                choices=Member.involvement_choices,
+                attrs={"class": "mdl-checkbox__input"},
+            ),
             "preferred_name": TextInput(attrs={"class": "mdl-textfield__input"}),
             "guardian_name": DateInput(
                 attrs={"class": "mdl-textfield__input", "disabled": "disabled"}

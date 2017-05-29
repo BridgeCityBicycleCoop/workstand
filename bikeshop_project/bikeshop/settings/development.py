@@ -49,3 +49,6 @@ MIDDLEWARE_CLASSES.insert(0, "django.middleware.common.CommonMiddleware")  # noq
 CORS_ORIGIN_ALLOW_ALL = True
 
 ALLOWED_HOSTS = ["workstand.docker", "localhost"]
+
+MAILCHIMP_API_KEY = None 
+MAILCHIMP_USERNAME = "drew@bcbc.bike"

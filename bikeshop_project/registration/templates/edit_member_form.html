@@ -63,11 +63,21 @@
                     {% endif %}
                 </div>
                 <div>
-                    <label class="mdl-checkbox mdl-js-checkbox mdl-js-ripple-effect" for="{{ form.email_consent.id_for_label }}">
-                        {{ form.email_consent }}
-                        <span class="mdl-checkbox__label">{{ form.email_consent.label }}</span>
-                    </label>
-                </div>
+                <h3 class="template__header mdl-typography--body-2">Involvement</h3>
+                {% for checkbox in form.involvement %}
+                <label class="mdl-checkbox mdl-js-checkbox mdl-js-ripple-effect" for="{{ checkbox.id_for_label }}">
+                    {{ checkbox }}
+                    <span class="mdl-checkbox__label">{{ checkbox.label }}</span>
+                </label>
+                {% endfor %}
+            </div>
+            <div>
+                <h3 class="template__header mdl-typography--body-2">Receive Email</h3>
+                <label class="mdl-checkbox mdl-js-checkbox mdl-js-ripple-effect" for="{{ form.email_consent.id_for_label }}">
+                    {{ form.email_consent }}
+                    <span class="mdl-checkbox__label">{{ form.email_consent.label }}</span>
+                </label>
+            </div>
             </div>
         </div>
 

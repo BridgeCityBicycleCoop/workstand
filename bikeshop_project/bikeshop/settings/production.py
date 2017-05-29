@@ -65,3 +65,5 @@ ROLLBAR = {
 
 rollbar.init(**ROLLBAR)
 
+MAILCHIMP_API_KEY = 'c6bba083fb5adc45a317dfb149d3676a-us7'
+MAILCHIMP_USERNAME = 'drew@bcbc.bike'

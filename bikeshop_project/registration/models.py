@@ -1,6 +1,7 @@
 from django.contrib.auth.models import (AbstractBaseUser, BaseUserManager,
                                         PermissionsMixin)
 from django.db import models
+from multiselectfield import MultiSelectField
 
 
 class CustomUserManager(BaseUserManager):
@@ -70,8 +71,16 @@ class CustomUser(AbstractBaseUser, PermissionsMixin):
 
 
 class Member(models.Model):
+    involvement_choices = (
+        ('21cd9799b6', 'General (receive email)'),
+        ('3a5a719017', 'Volunteering'),
+        ('0ebb0b5468', 'Events'),
+        ('84309225e7', 'Workshops'),
+        ('c96d389517', 'Shop'),
+    )
+
     user = models.OneToOneField(CustomUser, on_delete=models.CASCADE,
-                                null=True)
+                                null=True, blank=True)
     email = models.EmailField(
         verbose_name='email address',
         max_length=255,
@@ -98,6 +107,7 @@ class Member(models.Model):
     banned = models.BooleanField(default=False)
     created_at = models.DateTimeField(auto_now_add=True)
     modified_at = models.DateTimeField(auto_now=True)
+    involvement = MultiSelectField(choices=involvement_choices, null=True, blank=True)
 
     def get_full_name(self):
         # The user is identified by their email address

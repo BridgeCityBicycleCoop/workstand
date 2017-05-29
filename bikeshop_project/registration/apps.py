@@ -5,5 +5,5 @@ class RegistrationConfig(AppConfig):
     name = 'registration'
 
     def ready(self):
-     import handlers
+     import registration.handlers
 

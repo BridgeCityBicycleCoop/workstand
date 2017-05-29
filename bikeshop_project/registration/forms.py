@@ -1,4 +1,4 @@
-from django.forms import ModelForm, EmailInput, TextInput, DateInput, CheckboxInput, BooleanField, Textarea, DateField
+from django.forms import ModelForm, EmailInput, TextInput, DateInput, CheckboxInput, BooleanField, Textarea, DateField, CheckboxSelectMultiple
 from django.utils import timezone
 from registration.models import Member
 
@@ -18,12 +18,14 @@ class MemberForm(ModelForm):
         exclude = ('waiver',)
         fields = ['email', 'email_consent', 'first_name', 'last_name', 'preferred_name', 'date_of_birth',
                   'guardian_name', 'phone', 'street', 'city', 'province', 'country', 'post_code', 'waiver',
-                  'banned', 'suspended', 'notes']
+                  'banned', 'suspended', 'notes', 'involvement']
         widgets = {
             'email': EmailInput(attrs={'class': 'mdl-textfield__input'}),
             'email_consent': CheckboxInput(attrs={'class': 'mdl-checkbox__input'}),
             'first_name': TextInput(attrs={'class': 'mdl-textfield__input'}),
             'last_name': TextInput(attrs={'class': 'mdl-textfield__input'}),
+            'involvement': CheckboxSelectMultiple(choices=Member.involvement_choices,
+                                                  attrs={'class': 'mdl-checkbox__input'}),
             'preferred_name': TextInput(attrs={'class': 'mdl-textfield__input'}),
             'guardian_name': DateInput(attrs={'class': 'mdl-textfield__input', 'disabled': 'disabled'}),
             'phone': TextInput(attrs={'class': 'mdl-textfield__input', 'pattern': '[0-9]*'}),

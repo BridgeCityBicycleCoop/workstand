@@ -6,10 +6,11 @@ from django.conf import settings
 from mailchimp3 import MailChimp
 from requests import HTTPError
 
+from registration.models import Member
 
-@receiver(post_save, dispatch_uid='member.save_member')
+
+@receiver(post_save, sender=Member, dispatch_uid='member.save_member')
 def update_mailchimp(sender, instance, **kwargs):
-    print('update_mailchimp')
     if instance.email:
         involvement = {id: True for id in instance.involvement}
         client = MailChimp(settings.MAILCHIMP_USERNAME, settings.MAILCHIMP_API_KEY)

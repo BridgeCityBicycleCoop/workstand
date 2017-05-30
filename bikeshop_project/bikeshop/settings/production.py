@@ -60,5 +60,5 @@ ROLLBAR = {
 
 rollbar.init(**ROLLBAR)
 
-MAILCHIMP_API_KEY = None 
+MAILCHIMP_API_KEY = os.environ.get("MAILCHIMP_API_KEY")
 MAILCHIMP_USERNAME = "drew@bcbc.bike"

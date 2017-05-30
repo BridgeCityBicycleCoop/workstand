@@ -17,3 +17,4 @@ whoosh_index
 bikeshop_project/assets/dist
 npm-debug.log
 bikeshop_project/webpack-stats-prod.json
+/workstand.env

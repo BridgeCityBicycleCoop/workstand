@@ -27,7 +27,7 @@ class MemberForm(ModelForm):
             'involvement': CheckboxSelectMultiple(choices=Member.involvement_choices,
                                                   attrs={'class': 'mdl-checkbox__input'}),
             'preferred_name': TextInput(attrs={'class': 'mdl-textfield__input'}),
-            'guardian_name': DateInput(attrs={'class': 'mdl-textfield__input', 'disabled': 'disabled'}),
+            'guardian_name': DateInput(attrs={'class': 'mdl-textfield__input', 'readonly': 'readonly'}),
             'phone': TextInput(attrs={'class': 'mdl-textfield__input', 'pattern': '[0-9]*'}),
             'street': TextInput(attrs={'class': 'mdl-textfield__input'}),
             'city': TextInput(attrs={'class': 'mdl-textfield__input'}),

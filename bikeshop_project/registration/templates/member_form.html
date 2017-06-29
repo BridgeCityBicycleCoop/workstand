@@ -15,11 +15,12 @@
                          'YYYY/MM/DD', 'YY/MM/DD', 'DD/MM/YY', 'DD/MM/YYYY']);
 
         if (dob.add(threshold).isAfter(moment())) {
-            document.getElementById('{{ form.guardian_name.id_for_label }}').disabled = false;
+            document.getElementById('{{ form.guardian_name.id_for_label }}').readOnly = false;
             document.getElementById('{{ form.guardian_name.id_for_label }}').required = true;
             document.getElementById('{{ form.guardian_name.id_for_label }}').parentNode.classList.remove('is-disabled');
+            document.getElementById('{{ form.guardian_name.id_for_label }}').focus();
         } else {
-            document.getElementById('{{ form.guardian_name.id_for_label }}').disabled = true;
+            document.getElementById('{{ form.guardian_name.id_for_label }}').readOnly = true;
             document.getElementById('{{ form.guardian_name.id_for_label }}').parentNode.classList.add('is-disabled');
         }
     });

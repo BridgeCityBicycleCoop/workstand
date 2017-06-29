@@ -71,7 +71,7 @@ class MemberForm(ModelForm):
             ),
             "preferred_name": TextInput(attrs={"class": "mdl-textfield__input"}),
             "guardian_name": DateInput(
-                attrs={"class": "mdl-textfield__input", "disabled": "disabled"}
+                attrs={"class": "mdl-textfield__input", "readonly": "readonly"}
             ),
             "phone": TextInput(
                 attrs={"class": "mdl-textfield__input", "pattern": "[0-9]*"}

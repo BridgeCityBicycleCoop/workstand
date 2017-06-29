@@ -11,7 +11,7 @@ from registration.models import Member
 
 @receiver(post_save, sender=Member, dispatch_uid="member.save_member")
 def update_mailchimp(sender, instance, **kwargs):
-    if instance.email:
+    if instance.email and settings.MAILCHIMP_API_KEY:
         involvement = {id: True for id in instance.involvement}
         client = MailChimp(settings.MAILCHIMP_USERNAME, settings.MAILCHIMP_API_KEY)
         try:

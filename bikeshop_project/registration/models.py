@@ -109,6 +109,10 @@ class Member(models.Model):
     modified_at = models.DateTimeField(auto_now=True)
     involvement = MultiSelectField(choices=involvement_choices, null=True, blank=True)
 
+    @property
+    def full_name(self):
+        return self.get_full_name()
+
     def get_full_name(self):
         # The user is identified by their email address
         return "{0} {1}".format(self.first_name, self.last_name)

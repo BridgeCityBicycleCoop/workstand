@@ -9,8 +9,6 @@ SECRET_KEY = ")8(+b48*njk+e^8-l!6s3k4d=z(#g$v=)i^=_p-l*#-kk=!v_d"
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
-
 # Covers regular testing and django-coverage
 if "test" in sys.argv or "test_coverage" in sys.argv:
     DATABASES["default"]["ENGINE"] = "django.db.backends.sqlite3"  # noqa
@@ -48,7 +46,7 @@ MIDDLEWARE_CLASSES.insert(0, "django.middleware.common.CommonMiddleware")  # noq
 
 CORS_ORIGIN_ALLOW_ALL = True
 
-ALLOWED_HOSTS = ["workstand.docker", "localhost"]
+ALLOWED_HOSTS = ["workstand.docker", "localhost", "192.168.99.100"]
 
 MAILCHIMP_API_KEY = os.environ.get("MAILCHIMP_API_KEY")
 MAILCHIMP_USERNAME = "drew@bcbc.bike"

@@ -1,0 +1,51 @@
+- model: registration.customuser
+  pk: 1
+  fields:
+    password: pbkdf2_sha256$36000$jinrcAwK8S8f$XJ1bBWrm55pertXDA07t5Htv7I1W4tnXSM9FKNYNaAA=
+    last_login: 2017-08-31 00:31:06.279698+00:00
+    is_superuser: true
+    email: admin@workstand.dev
+    is_admin: true
+    is_active: true
+    groups: []
+    user_permissions: []
+- model: registration.member
+  pk: 1
+  fields: {user: null, email: felicia@bikesrgreat.com, email_consent: true, first_name: Felicia,
+    last_name: Garcia, preferred_name: null, date_of_birth: null, guardian_name: null,
+    phone: null, street: null, city: null, province: null, country: null, post_code: H0H
+      0H0, waiver: ! '2017-08-31 00:36:08.645982+00:00', is_active: true, notes: '',
+    suspended: false, banned: false, created_at: ! '2017-08-31 00:36:08.646610+00:00',
+    modified_at: ! '2017-08-31 00:36:08.646657+00:00', involvement: '21cd9799b6,c96d389517'}
+- model: registration.member
+  pk: 2
+  fields: {user: null, email: floyd.davis@example.com, email_consent: true, first_name: Floyd,
+    last_name: Davis, preferred_name: null, date_of_birth: null, guardian_name: null,
+    phone: null, street: null, city: null, province: null, country: null, post_code: H0H
+      0H0, waiver: ! '2017-08-31 00:37:53.761949+00:00', is_active: true, notes: '',
+    suspended: true, banned: false, created_at: ! '2017-08-31 00:37:53.764037+00:00',
+    modified_at: ! '2017-08-31 00:38:00.861245+00:00', involvement: '0ebb0b5468,84309225e7'}
+- model: registration.member
+  pk: 3
+  fields: {user: null, email: lovelace.a@example.com, email_consent: true, first_name: Ada,
+    last_name: Lovelace, preferred_name: null, date_of_birth: null, guardian_name: null,
+    phone: null, street: null, city: null, province: null, country: null, post_code: H0H
+      0H0, waiver: ! '2017-08-31 00:39:41.424933+00:00', is_active: true, notes: These
+      are some notes about Ada., suspended: false, banned: false, created_at: ! '2017-08-31
+      00:39:41.426567+00:00', modified_at: ! '2017-08-31 00:40:47.824326+00:00', involvement: 21cd9799b6}
+- model: core.membership
+  pk: 1
+  fields: {created_at: ! '2017-08-31 00:36:36.851327+00:00', modified_at: ! '2017-08-31
+      00:36:36.866814+00:00', renewed_at: ! '2017-08-31 00:36:16.031457+00:00', self_identification: null,
+    gender: female, involvement: null, member: 1, payment: 1}
+- model: core.membership
+  pk: 2
+  fields: {created_at: ! '2017-08-31 00:40:09.245288+00:00', modified_at: ! '2017-08-31
+      00:40:09.280653+00:00', renewed_at: ! '2017-08-31 00:39:54.860759+00:00', self_identification: caucasian,
+    gender: female, involvement: null, member: 3, payment: 2}
+- model: core.payment
+  pk: 1
+  fields: {type: CHEQUE, created_at: ! '2017-08-31 00:36:36.820523+00:00'}
+- model: core.payment
+  pk: 2
+  fields: {type: YOUTH, created_at: ! '2017-08-31 00:40:09.148418+00:00'}

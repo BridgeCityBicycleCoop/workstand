@@ -109,10 +109,11 @@ class SignedInList extends React.Component {
   }
 }
 
-export default SignedInList.propTypes = {
+SignedInList.propTypes = {
   members: PropTypes.arrayOf(PropTypes.shape({
     id: PropTypes.number,
     purpose: PropTypes.string,
     at: PropTypes.instanceOf(moment),
   })),
 };
+export default SignedInList;

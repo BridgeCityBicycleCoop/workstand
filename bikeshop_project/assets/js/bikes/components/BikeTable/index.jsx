@@ -7,6 +7,7 @@ import React from 'react';
 import { friendlySize } from '../Size';
 import BikeModal from '../BikeModal';
 import { fetchBikes, setBike, editBike, createBike } from '../../actions';
+import isEmpty from 'lodash/isEmpty';
 
 class BikeTableComponent extends React.Component {
   constructor(props) {
@@ -77,7 +78,7 @@ class BikeTableComponent extends React.Component {
 }
 
   render() {
-    if (this.props.bikes.fetched) {
+    if (!isEmpty(this.props.bikes) && this.props.bikes.fetched) {
       const bikeRows = this.renderBikes(Object.values(this.props.bikes.entities));
       return (
         <div className="mdl-grid">

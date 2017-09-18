@@ -1,4 +1,4 @@
-import { connect } from 'react-redux'
+import { connect } from 'react-redux';
 import { Table, TableBody, TableHeader, TableHeaderColumn, TableRow, TableRowColumn } from 'material-ui/Table';
 import FlatButton from 'material-ui/FlatButton';
 import FloatingActionButton from 'material-ui/FloatingActionButton';
@@ -6,7 +6,7 @@ import ContentAdd from 'material-ui/svg-icons/content/add';
 import React from 'react';
 import { friendlySize } from '../Size';
 import BikeModal from '../BikeModal';
-import { fetchBikes, setBike, editBike, createBike } from '../../actions';
+import { createBike, editBike, fetchBikes, setBike } from '../../actions';
 import isEmpty from 'lodash/isEmpty';
 
 class BikeTableComponent extends React.Component {
@@ -37,7 +37,7 @@ class BikeTableComponent extends React.Component {
         open: true,
       },
     });
-   this.props.editBike(bike);
+    this.props.editBike(bike);
   }
 
   handleOpenCreate() {
@@ -48,7 +48,7 @@ class BikeTableComponent extends React.Component {
         open: true,
       },
     });
-   this.props.createBike();
+    this.props.createBike();
   }
 
   handleClose() {
@@ -59,26 +59,26 @@ class BikeTableComponent extends React.Component {
         open: false,
       },
     });
-}
+  }
 
   renderBikes(bikes) {
-  const bikeRows = bikes.map(bike => (
-    <TableRow selectable={false} key={bike.id}>
-      <TableRowColumn>{friendlySize(bike.size)}</TableRowColumn>
-      <TableRowColumn>{bike.colour}</TableRowColumn>
-      <TableRowColumn>{bike.make}</TableRowColumn>
-      <TableRowColumn>{bike.serial_number}</TableRowColumn>
-      <TableRowColumn>{bike.state}</TableRowColumn>
-      <TableRowColumn>{bike.claimed_by}</TableRowColumn>
-      <TableRowColumn><FlatButton label="Edit" primary onTouchTap={(e) => this.handleOpenEdit(bike)} /></TableRowColumn>
-    </TableRow>
+    const bikeRows = bikes.map(bike => (
+      <TableRow selectable={false} key={bike.id}>
+        <TableRowColumn>{friendlySize(bike.size)}</TableRowColumn>
+        <TableRowColumn>{bike.colour}</TableRowColumn>
+        <TableRowColumn>{bike.make}</TableRowColumn>
+        <TableRowColumn>{bike.serial_number}</TableRowColumn>
+        <TableRowColumn>{bike.state}</TableRowColumn>
+        <TableRowColumn>{bike.claimed_by}</TableRowColumn>
+        <TableRowColumn><FlatButton label="Edit" primary onTouchTap={e => this.handleOpenEdit(bike)} /></TableRowColumn>
+      </TableRow>
     ));
 
-  return bikeRows;
-}
+    return bikeRows;
+  }
 
   render() {
-    if (!isEmpty(this.props.bikes) && this.props.bikes.fetched) {
+    if (this.props.bikes.fetched) {
       const bikeRows = this.renderBikes(Object.values(this.props.bikes.entities));
       return (
         <div className="mdl-grid">
@@ -133,8 +133,8 @@ const mapDispatchToProps = dispatch => ({
     dispatch(editBike(bike));
   },
   createBike: () => {
-    dispatch(createBike())
-  }
+    dispatch(createBike());
+  },
 });
 
 const BikeTable = connect(mapStateToProps, mapDispatchToProps)(BikeTableComponent);

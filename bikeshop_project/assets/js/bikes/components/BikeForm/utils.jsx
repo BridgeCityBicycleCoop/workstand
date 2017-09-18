@@ -7,17 +7,10 @@ import TextField from 'material-ui/TextField';
 
 const sources = ['COS_BIKE_DIVERSION_PILOT', 'UOFS', 'DROP_OFF'];
 
-const friendlySources = (s) => {
-  switch (s) {
-    case 'COS_BIKE_DIVERSION_PILOT':
-      return 'City of Saskatoon Bike Diversion Pilot';
-    case 'UOFS':
-      return 'University of Saskatchewan';
-    case 'DROP_OFF':
-      return 'Drop Off';
-    default:
-      return undefined;
-  }
+const donationSourceMap = {
+  COS_BIKE_DIVERSION_PILOT: 'City of Saskatoon Bike Diversion Pilot',
+  UOFS: 'University of Saskatchewan',
+  DROP_OFF: 'Drop Off',
 };
 
 const states = ['received', 'assessed', 'available', 'claimed', 'purchased', 'scrapped', 'transferred_to_police'];
@@ -35,10 +28,10 @@ const friendlStates = (s) => {
       return 'Purchased';
     case 'scrapped':
       return 'Scrapped';
-    case 'transferred_to_police':
+    case 'transfer_to_police':
       return 'Transferred to police';
     default:
-      throw Error(`${s} is not an allowed state.`)
+      throw Error(`${s} is not an allowed state.`);
   }
 };
 
@@ -56,12 +49,12 @@ export const getRequiredFields = (bikeState) => {
       return ['make', 'colour', 'size', 'serial_number', 'donation_source', 'price', 'stolen', 'cpic_searched'];
     case 'scrapped':
       return ['make', 'colour', 'size', 'serial_number', 'donation_source', 'cpic_searched'];
-    case 'transferred_to_police':
+    case 'transfer_to_police':
       return ['make', 'colour', 'size', 'serial_number', 'donation_source', 'cpic_searched'];
     default:
       throw new Error(`${bikeState} is an invalid state.`);
   }
-}
+};
 
 const canAvailable = (stolen, cpicSearched) => !stolen && cpicSearched;
 const canClaim = (claimedBy, lastWorkedOn) => !claimedBy || lastWorkedOn.isAfter(moment().add(4, 'weeks'));
@@ -69,12 +62,11 @@ const canPurchase = canClaim;
 const canScrap = (stripped, claim) => stripped && claim;
 const canTransferToPolice = stolen => stolen;
 
-export const stateMenuItems = availableStates => states
-  .filter(s => availableStates.includes(s))
+export const stateMenuItems = availableStates => availableStates
   .map(s => <MenuItem key={s} value={s} primaryText={friendlStates(s)} />);
 
 export const sourceMenuItems = sources.map(s =>
-  <MenuItem key={s} value={s} primaryText={friendlySources(s)} />,
+  <MenuItem key={s} value={s} primaryText={donationSourceMap[s]} />,
 );
 
 export const renderTextField = ({ input, meta: { touched, error }, ...custom }) => (

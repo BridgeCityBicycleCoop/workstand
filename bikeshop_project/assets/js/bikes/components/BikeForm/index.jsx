@@ -1,11 +1,18 @@
+import { Field, reduxForm } from 'redux-form';
 import React, { PropTypes } from 'react';
-import { Field, formValueSelector, reduxForm } from 'redux-form';
-import { connect } from 'react-redux';
+import connect from './connect';
 import FlatButton from 'material-ui/FlatButton';
 import RaisedButton from 'material-ui/RaisedButton';
+import { checkCpic, saveBike, updateBike } from '../../actions';
+import {
+  getRequiredFields,
+  renderCheckbox,
+  renderSelectField,
+  renderTextField,
+  sourceMenuItems,
+  stateMenuItems,
+} from './utils';
 import Size from '../Size';
-import { renderCheckbox, renderSelectField, renderTextField, sourceMenuItems, stateMenuItems, getRequiredFields } from './utils';
-import { updateBike, saveBike, checkCpic } from '../../actions';
 
 const styles = {
   block: {
@@ -21,18 +28,14 @@ const styles = {
 
 const validate = (values, props) => {
   const errors = {};
-  console.log(values);
-  const requiredFields = getRequiredFields(values.new_state);
+  // const requiredFields = getRequiredFields(values.new_state);
 
-  requiredFields.forEach((field) => {
-    if (!values[field]) {
-      errors[field] = 'Required';
-    }
-  });
+  // requiredFields.forEach((field) => {
+  //   if (!values[field]) {
+  //     errors[field] = 'Required';
+  //   }
+  // });
 
-  if (!props.availableStates.includes(values.new_state)) {
-    errors['new_state'] = `${values.new_state} is not allowed.`;
-  }
   return errors;
 };
 
@@ -40,7 +43,6 @@ const handleSubmit = (data, dispatch, props) => {
   const { create } = props;
   if (create) {
     dispatch(saveBike(data));
-
   } else {
     dispatch(updateBike(data));
   }
@@ -48,12 +50,18 @@ const handleSubmit = (data, dispatch, props) => {
 
 class BikeForm extends React.Component {
   render() {
-    const { create, cpicSearched, id, availableStates, currentState } = this.props;
+    const {
+      create,
+      cpicSearched,
+      id,
+      availableStates,
+      currentState,
+    } = this.props;
     return (
       <div>
         <form onSubmit={this.props.handleSubmit}>
           <div className="mdl-grid">
-            <div className="mdl-cell mdl-cell--3-col">
+            <div className="mdl-cell mdl-cell--6-col">
               <Field
                 name="new_state"
                 component={renderSelectField}
@@ -106,7 +114,7 @@ class BikeForm extends React.Component {
                 fullWidth
               />
             </div>
-            {!create &&
+            {!create && (
               <div className="mdl-cell mdl-cell--6-col">
                 <Field
                   name="created_at"
@@ -116,9 +124,9 @@ class BikeForm extends React.Component {
                   readOnly
                 />
               </div>
-            }
+            )}
           </div>
-          {!create &&
+          {!create && (
             <div className="mdl-grid">
               <div className="mdl-cell mdl-cell--6-col">
                 <Field
@@ -140,8 +148,8 @@ class BikeForm extends React.Component {
                 />
               </div>
             </div>
-          }
-          {!create &&
+          )}
+          {!create && (
             <div className="content-grid mdl-grid" style={styles.bottom}>
               <div className="mdl-cell mdl-cell--6-col">
                 <Field
@@ -163,10 +171,15 @@ class BikeForm extends React.Component {
                 />
               </div>
               <div className="mdl-cell mdl-cell--2-col">
-                <FlatButton label="Check" onTouchTap={() => this.props.checkCpic(id)} disabled={cpicSearched} primary />
+                <FlatButton
+                  label="Check"
+                  onTouchTap={() => this.props.checkCpic(id)}
+                  disabled={cpicSearched}
+                  primary
+                />
               </div>
             </div>
-          }
+          )}
           <div className="mdl-grid" style={styles.bottom}>
             <div className="mdl-cell mdl-cell--8-col">
               <Field
@@ -178,7 +191,7 @@ class BikeForm extends React.Component {
                 {sourceMenuItems}
               </Field>
             </div>
-            {!create &&
+            {!create && (
               <div className="mdl-cell mdl-cell--4-col">
                 <div style={styles.block}>
                   <Field
@@ -190,12 +203,29 @@ class BikeForm extends React.Component {
                   />
                 </div>
               </div>
-            }
+            )}
           </div>
           <div className="mdl-grid">
-            <div style={{ textAlign: 'right' }} className="mdl-cell mdl-cell--12-col">
-              <RaisedButton style={{ marginRight: '8px' }} label="Cancel" onTouchTap={this.props.handleModalClose} secondary />
-              <RaisedButton type="submit" label="Save" default disabled={this.props.pristine || this.props.submitting || this.props.invalid} />
+            <div
+              style={{ textAlign: 'right' }}
+              className="mdl-cell mdl-cell--12-col"
+            >
+              <RaisedButton
+                style={{ marginRight: '8px' }}
+                label="Cancel"
+                onTouchTap={this.props.handleModalClose}
+                secondary
+              />
+              <RaisedButton
+                type="submit"
+                label="Save"
+                default
+                disabled={
+                  this.props.pristine ||
+                  this.props.submitting ||
+                  this.props.invalid
+                }
+              />
             </div>
           </div>
         </form>
@@ -205,33 +235,16 @@ class BikeForm extends React.Component {
 }
 
 BikeForm = reduxForm({
-  form: 'BikeForm',  // a unique identifier for this form
+  form: 'BikeForm', // a unique identifier for this form
   validate,
   onSubmit: handleSubmit,
 })(BikeForm);
 
-BikeForm = connect(
-  state => {
-    return {
-      initialValues: {...state.bikes.form.bike, new_state: state.bikes.form.bike.state.toLowerCase()}, // pull initial values from account reducer
-      create: state.bikes.form.create,
-      cpicSearched: !!state.bikes.form.bike.cpic_searched_at,
-      id: state.bikes.form.bike.id,
-      availableStates: state.bikes.form.bike.available_states,
-      currentState: state.bikes.form.bike.state.toLowerCase(),
-    };
-  },
-  dispatch => ({
-    checkCpic: id => dispatch(checkCpic(id)),
-  }),
-)(BikeForm);
+BikeForm = connect(BikeForm);
 
 BikeForm.propTypes = {
   create: PropTypes.bool,
   handleClose: PropTypes.func,
-}
-
-
+};
 
 export default BikeForm;
-

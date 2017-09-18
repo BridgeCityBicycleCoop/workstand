@@ -18,6 +18,10 @@ services:
     restart: always
   db:
     restart: always
+    environment:
+            POSTGRES_PASSWORD: password
+    ports:
+      - "5432:5432"
   webpack:
     build:
       context: .

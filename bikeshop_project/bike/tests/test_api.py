@@ -1,5 +1,7 @@
+from datetime import timedelta
 from django.test import TestCase
-from model_mommy import mommy, timezone
+from django.utils import timezone
+from model_mommy import mommy
 from rest_framework import status
 from rest_framework.test import APIClient
 
@@ -359,5 +361,108 @@ class TestBikeApi(TestCase):
         result = client.get(f'/api/v1/bikes/1/validate/?transition=assessed')
 
         self.assertEqual(result.status_code, status.HTTP_400_BAD_REQUEST)
-        self.assertTrue('price' in result.data.keys())
+        self.assertTrue('price' in result.data['field_errors'].keys())
 
+    def test_validate_available_field_errors(self):
+        data = {
+            "colour": "black",
+            "make": "Miyata",
+            "serial_number": "12345676",
+            "source": Bike.COS_BIKE_DIVERSION_PILOT,
+            "size": Bike.SMALL,
+            "state": BikeState.RECEIVED,
+            "cpic_searched_at": None,
+            "serial_number": '123',
+            "stolen": False
+        }
+        Bike.objects.create(**data)
+        client = APIClient()
+        client.force_authenticate(user=self.user, token='blah')
+        result = client.get(f'/api/v1/bikes/1/validate/?transition=available')
+
+        self.assertEqual(result.status_code, status.HTTP_400_BAD_REQUEST)
+        self.assertTrue('cpic_searched_at' in result.data['field_errors'].keys())
+
+    def test_validate_available_claimed_worked_on_one_week_ago(self):
+        member = mommy.make(Member)
+        data = {
+            "colour": "black",
+            "make": "Miyata",
+            "source": Bike.COS_BIKE_DIVERSION_PILOT,
+            "size": Bike.SMALL,
+            "cpic_searched_at": timezone.now(),
+            "serial_number": '123',
+            "stolen": False,
+            "claimed_by": member,
+            "last_worked_on": timezone.now() - timedelta(weeks=1),
+            "state": BikeState.CLAIMED
+        }
+        bike = Bike.objects.create(**data)
+        client = APIClient()
+        client.force_authenticate(user=self.user, token='blah')
+        result = client.get(f'/api/v1/bikes/1/validate/?transition=available')
+
+        self.assertEqual(result.status_code, status.HTTP_400_BAD_REQUEST)
+        self.assertTrue(result.data['form_errors'])
+
+    def test_validate_available_claimed_worked_on_one_week_ago(self):
+        member = mommy.make(Member)
+        data = {
+            "colour": "black",
+            "make": "Miyata",
+            "source": Bike.COS_BIKE_DIVERSION_PILOT,
+            "size": Bike.SMALL,
+            "cpic_searched_at": timezone.now(),
+            "serial_number": '123',
+            "stolen": False,
+            "claimed_by": member,
+            "last_worked_on": timezone.now() - timedelta(weeks=1),
+            "state": BikeState.CLAIMED
+        }
+        Bike.objects.create(**data)
+        client = APIClient()
+        client.force_authenticate(user=self.user, token='blah')
+        result = client.get(f'/api/v1/bikes/1/validate/?transition=available')
+
+        self.assertEqual(result.status_code, status.HTTP_400_BAD_REQUEST)
+        self.assertTrue(result.data['form_errors'])
+
+    def test_validate_available_claimed_worked_on_four_weeks_ago(self):
+        member = mommy.make(Member)
+        data = {
+            "colour": "black",
+            "make": "Miyata",
+            "source": Bike.COS_BIKE_DIVERSION_PILOT,
+            "size": Bike.SMALL,
+            "cpic_searched_at": timezone.now(),
+            "serial_number": '123',
+            "stolen": False,
+            "claimed_by": member,
+            "last_worked_on": timezone.now() - timedelta(weeks=4, seconds=1.0),
+            "state": BikeState.CLAIMED
+        }
+        Bike.objects.create(**data)
+        client = APIClient()
+        client.force_authenticate(user=self.user, token='blah')
+        result = client.get(f'/api/v1/bikes/1/validate/?transition=available')
+
+        self.assertEqual(result.status_code, status.HTTP_204_NO_CONTENT)
+
+    def test_validate_available_stolen(self):
+        data = {
+            "colour": "black",
+            "make": "Miyata",
+            "source": Bike.COS_BIKE_DIVERSION_PILOT,
+            "size": Bike.SMALL,
+            "cpic_searched_at": timezone.now(),
+            "serial_number": '123',
+            "stolen": True,
+            "state": BikeState.RECEIVED
+        }
+        Bike.objects.create(**data)
+        client = APIClient()
+        client.force_authenticate(user=self.user, token='blah')
+        result = client.get(f'/api/v1/bikes/1/validate/?transition=available')
+
+        self.assertEqual(result.status_code, status.HTTP_400_BAD_REQUEST)
+        self.assertTrue(result.data['form_errors'])

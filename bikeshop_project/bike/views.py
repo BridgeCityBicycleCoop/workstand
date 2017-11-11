@@ -109,10 +109,10 @@ class BikeViewSet(viewsets.ModelViewSet):
     def stolen(self, request, pk):
         bike = get_object_or_404(Bike, pk=pk)
         state = BikeState.TRANSFERRED_TO_POLICE
-        if not can_proceed(bike.transferred_to_police):
+        if not can_proceed(bike.transfer_to_police):
             raise ValidationError(detail=f'Transition from {bike.state} to {state}')
 
-        bike.transferred_to_police()
+        bike.transfer_to_police()
         bike.save()
 
         serializer = BikeSerializer(bike, context={'request': request})

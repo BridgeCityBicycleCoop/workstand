@@ -13,7 +13,6 @@ services:
       - webpack
     environment:
       - PYTHONUNBUFFERED=0
-    restart: always
   redis:
     restart: always
   db:

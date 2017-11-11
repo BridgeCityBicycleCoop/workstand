@@ -1,7 +1,7 @@
 import { call, put, takeEvery } from 'redux-saga/effects';
-import { fetchBikes as fetchBikesAction, setBikes, setBikesIsFetching, setBikesFetched,
-         setBikesFetchFailed, setBikeSaved, setBikeSaveFailed, setBikeIsSaving, updateBike as updateBikeAction,
-         mergeBike, saveBike as saveBikeAction, checkCpic as checkCpicAction } from './actions';
+import { changeState as changeStateAction, checkCpic as checkCpicAction, fetchBikes as fetchBikesAction,
+         mergeBike, saveBike as saveBikeAction, setBikeIsSaving, setBikeSaveFailed, setBikeSaved,
+         setBikes, setBikesFetchFailed, setBikesFetched, setBikesIsFetching, updateBike as updateBikeAction } from './actions';
 import { normalize } from 'normalizr';
 import * as schema from './schema';
 import Api from './services';
@@ -30,48 +30,64 @@ function* updateBike(action) {
   try {
     yield put({ type: setBikeIsSaving.toString(), payload: true });
     const bike = yield call(Api.updateBike, action.payload);
-    yield put({ type: mergeBike.toString(), payload: normalize([bike], schema.bikes)})
-    yield put({ type: setBikeSaved.toString(), payload: true})
+    yield put({ type: mergeBike.toString(), payload: normalize([bike], schema.bikes) });
+    yield put({ type: setBikeSaved.toString(), payload: true });
   } catch (e) {
     yield put({ type: setBikeSaveFailed, payload: false });
-    throw(e);
+    throw (e);
   } finally {
     yield put({ type: setBikeIsSaving.toString(), payload: false });
   }
 }
 
 function* watchUpdateBike() {
-  yield takeEvery(updateBikeAction.toString(), updateBike)
+  yield takeEvery(updateBikeAction.toString(), updateBike);
 }
 
 function* saveBike(action) {
   try {
     yield put({ type: setBikeIsSaving.toString(), payload: true });
     const bike = yield call(Api.saveBike, action.payload);
-    yield put({ type: mergeBike.toString(), payload: normalize([bike], schema.bikes)})
-    yield put({ type: setBikeSaved.toString(), payload: true})
+    yield put({ type: mergeBike.toString(), payload: normalize([bike], schema.bikes) });
+    yield put({ type: setBikeSaved.toString(), payload: true });
   } catch (e) {
     yield put({ type: setBikeSaveFailed, payload: false });
-    throw(e);
+    throw (e);
   } finally {
     yield put({ type: setBikeIsSaving.toString(), payload: false });
   }
 }
 
 function* watchSaveBike() {
-  yield takeEvery(saveBikeAction.toString(), saveBike)
+  yield takeEvery(saveBikeAction.toString(), saveBike);
 }
 
 function* checkCpic(action) {
   try {
     yield call(Api.cpicBike, action.payload);
   } catch (e) {
-    throw(e);
+    throw (e);
   }
 }
 
 function* watchCheckCpic() {
-  yield takeEvery(checkCpicAction.toString(), checkCpic)
+  yield takeEvery(checkCpicAction.toString(), checkCpic);
+}
+
+function* changeState(action) {
+  try {
+    const { bikeId, ...rest } = action.payload;
+    yield put({ type: setBikeIsSaving.toString(), payload: true });
+    const bike = yield call(Api.changeState, bikeId, rest);
+    yield put({ type: mergeBike.toString(), payload: normalize([bike], schema.bikes) });
+    yield put({ type: setBikeSaved.toString(), payload: true });
+  } catch (e) {
+    throw (e);
+  }
+}
+
+function* watchChangeStatus() {
+  yield takeEvery(changeStateAction.toString(), changeState);
 }
 
 export default function* rootSaga() {
@@ -80,5 +96,6 @@ export default function* rootSaga() {
     watchUpdateBike(),
     watchSaveBike(),
     watchCheckCpic(),
+    watchChangeStatus(),
   ];
-};
+}

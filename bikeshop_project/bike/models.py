@@ -105,24 +105,24 @@ class Bike(models.Model):
         pass
 
     @transition(field=state, source=[BikeState.AVAILABLE], target=BikeState.CLAIMED, conditions=[can_claim])
-    def claim(self, member):
+    def claimed(self, member):
         self.claimed_by = member
         self.claimed_at = timezone.now()
         self.last_worked_on = timezone.now()
 
     @transition(field=state, source=[BikeState.AVAILABLE, BikeState.CLAIMED], target=BikeState.PURCHASED,
                 conditions=[can_purchase])
-    def purchase(self, member):
+    def purchased(self, member):
         self.purchased_at = timezone.now()
         self.purchased_by = member
 
     @transition(field=state, source=[BikeState.ASSESSED, BikeState.AVAILABLE, BikeState.CLAIMED],
                 target=BikeState.SCRAPPED, conditions=[can_scrap])
-    def scrap(self):
+    def scrapped(self):
         pass
 
     @transition(field=state, source=[BikeState.ASSESSED, BikeState.RECEIVED], conditions=[can_transfer_to_police])
-    def transfer_to_police(self):
+    def transferred_to_police(self):
         pass
 
     @property

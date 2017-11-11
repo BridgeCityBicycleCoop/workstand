@@ -14,7 +14,7 @@ services:
   db:
     networks:
       - default
-    image: postgres:latest
+    image: postgres:9.6
     volumes:
       - pgdata:/var/lib/postgresql/data/
 

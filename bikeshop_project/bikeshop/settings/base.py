@@ -34,6 +34,7 @@ INSTALLED_APPS = [
     'compressor',
     'rest_framework',
     'channels',
+    'django_fsm',
 
     'registration',
     'core',

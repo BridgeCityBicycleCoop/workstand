@@ -48,6 +48,14 @@ const handleSubmit = (data, dispatch, props) => {
   }
 };
 
+const stateActionMapper = memberId => ({
+  claimed: { memberId },
+  purchased: { memberId },
+});
+
+// handleStateSelectChange(getSelectedBike, changeBikeState, value) {
+//   const data = stateActionMapper(value)
+// }
 class BikeForm extends React.Component {
   render() {
     const {
@@ -59,6 +67,14 @@ class BikeForm extends React.Component {
     } = this.props;
     return (
       <div>
+        <div className="mdl-grid">
+          <SelectField
+            fullWidth
+            floatingLabelText="State"
+            name="state"
+            onChange={handleStateSelectChange}
+          />
+        </div>
         <form onSubmit={this.props.handleSubmit}>
           <div className="mdl-grid">
             <div className="mdl-cell mdl-cell--6-col">

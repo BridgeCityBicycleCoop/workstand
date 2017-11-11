@@ -13,7 +13,7 @@ const donationSourceMap = {
   DROP_OFF: 'Drop Off',
 };
 
-const states = ['received', 'assessed', 'available', 'claimed', 'purchased', 'scrapped', 'transferred_to_police'];
+const states = ['received', 'assessed', 'available', 'claimed', 'purchased', 'scrapped', 'transfer_to_police'];
 const friendlStates = (s) => {
   switch (s) {
     case 'received':
@@ -95,3 +95,5 @@ export const renderSelectField = ({ input, label, meta: { touched, error }, chil
     {...custom}
   />
 );
+
+

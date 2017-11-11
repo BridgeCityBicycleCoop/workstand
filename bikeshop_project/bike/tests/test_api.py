@@ -1,18 +1,10 @@
-from decimal import Decimal
-
-from channels import Channel
-from channels.tests import ChannelTestCase
 from django.test import TestCase
-from model_mommy import timezone
-
-from rest_framework.test import APIClient
-from model_mommy import mommy
+from model_mommy import mommy, timezone
 from rest_framework import status
+from rest_framework.test import APIClient
 
-from bike.consumers import check_cpic
+from bike.models import Bike, BikeState
 from registration.models import Member
-from .models import Bike, BikeState
-from unittest.mock import patch
 
 
 class TestBikeApi(TestCase):
@@ -35,7 +27,7 @@ class TestBikeApi(TestCase):
         self.assertEqual(result.status_code, status.HTTP_200_OK)
         self.assertEqual(len(result.data), 10)
 
-    def test_create_new_bike(self,):
+    def test_create_new_bike(self, ):
         client = APIClient()
         client.force_authenticate(user=self.user, token='blah')
         data = {
@@ -44,7 +36,7 @@ class TestBikeApi(TestCase):
             "serial_number": "12345676",
             "source": Bike.COS_BIKE_DIVERSION_PILOT,
             "donated_by": "Greg",
-          }
+        }
         result = client.post('/api/v1/bikes/', data=data)
 
         self.assertEqual(result.status_code, status.HTTP_201_CREATED)
@@ -106,10 +98,8 @@ class TestBikeApi(TestCase):
             "make": "Miyata",
             "serial_number": "12345676",
             "source": Bike.COS_BIKE_DIVERSION_PILOT,
-            "donated_by": "Greg",
-            "donated_at": "2017-01-01",
             "size": Bike.SMALL,
-            "price": Decimal('68.00')
+            "price": '68.00'
         }
         bike = Bike.objects.create(**data)
         client = APIClient()
@@ -128,7 +118,7 @@ class TestBikeApi(TestCase):
             "donated_by": "Greg",
             "donated_at": "2017-01-01",
             "size": Bike.SMALL,
-            "price": Decimal('68.00'),
+            "price": '68.00',
             "state": BikeState.ASSESSED
         }
         bike = Bike.objects.create(**data)
@@ -147,7 +137,7 @@ class TestBikeApi(TestCase):
             "donated_by": "Greg",
             "donated_at": "2017-01-01",
             "size": Bike.SMALL,
-            "price": Decimal('68.00'),
+            "price": '68.00',
             "state": BikeState.ASSESSED,
             "stolen": False,
             "cpic_searched_at": timezone.now(),
@@ -172,7 +162,7 @@ class TestBikeApi(TestCase):
             "donated_by": "Greg",
             "donated_at": "2017-01-01",
             "size": Bike.SMALL,
-            "price": Decimal('68.00'),
+            "price": '68.00',
             "state": BikeState.ASSESSED,
             "stolen": False,
             "cpic_searched_at": timezone.now(),
@@ -195,7 +185,7 @@ class TestBikeApi(TestCase):
             "donated_by": "Greg",
             "donated_at": "2017-01-01",
             "size": Bike.SMALL,
-            "price": Decimal('68.00'),
+            "price": '68.00',
             "state": BikeState.CLAIMED,
             "stolen": False,
             "cpic_searched_at": timezone.now(),
@@ -221,7 +211,7 @@ class TestBikeApi(TestCase):
             "donated_by": "Greg",
             "donated_at": "2017-01-01",
             "size": Bike.SMALL,
-            "price": Decimal('68.00'),
+            "price": '68.00',
             "state": BikeState.AVAILABLE,
             "stolen": False,
             "cpic_searched_at": timezone.now(),
@@ -247,7 +237,7 @@ class TestBikeApi(TestCase):
             "donated_by": "Greg",
             "donated_at": "2017-01-01",
             "size": Bike.SMALL,
-            "price": Decimal('68.00'),
+            "price": '68.00',
             "state": BikeState.AVAILABLE,
             "stolen": False,
             "cpic_searched_at": timezone.now(),
@@ -273,7 +263,7 @@ class TestBikeApi(TestCase):
             "donated_by": "Greg",
             "donated_at": "2017-01-01",
             "size": Bike.SMALL,
-            "price": Decimal('68.00'),
+            "price": '68.00',
             "state": BikeState.ASSESSED,
             "stolen": False,
             "cpic_searched_at": timezone.now(),
@@ -296,7 +286,7 @@ class TestBikeApi(TestCase):
             "donated_by": "Greg",
             "donated_at": "2017-01-01",
             "size": Bike.SMALL,
-            "price": Decimal('68.00'),
+            "price": '68.00',
             "state": BikeState.CLAIMED,
             "stolen": False,
             "cpic_searched_at": timezone.now(),
@@ -320,7 +310,7 @@ class TestBikeApi(TestCase):
             "donated_by": "Greg",
             "donated_at": "2017-01-01",
             "size": Bike.SMALL,
-            "price": Decimal('68.00'),
+            "price": '68.00',
             "state": BikeState.ASSESSED,
             "stolen": False,
             "cpic_searched_at": timezone.now(),
@@ -342,7 +332,7 @@ class TestBikeApi(TestCase):
             "donated_by": "Greg",
             "donated_at": "2017-01-01",
             "size": Bike.SMALL,
-            "price": Decimal('68.00'),
+            "price": '68.00',
             "state": BikeState.ASSESSED,
             "cpic_searched_at": timezone.now(),
             "stolen": True
@@ -353,50 +343,3 @@ class TestBikeApi(TestCase):
         result = client.put(f'/api/v1/bikes/{bike.id}/stolen/')
 
         self.assertEqual(result.status_code, status.HTTP_200_OK)
-
-
-class TestBikeSignals(TestCase):
-    @patch('bike.consumers._is_stolen')
-    def test_check_cpic_stolen_bike(self, is_stolen_mock):
-        bike = mommy.make(Bike)
-        message = {'bike_id': bike.id, 'serial_number': bike.serial_number}
-        is_stolen_mock.return_value = True
-        check_cpic(message)
-
-        updated_bike = Bike.objects.get(id=bike.id)
-
-        self.assertTrue(updated_bike.stolen)
-        self.assertIsNotNone(updated_bike.cpic_searched_at)
-
-    @patch('bike.consumers._is_stolen')
-    def test_check_cpic_not_stolen_bike(self, is_stolen_mock):
-        bike = mommy.make(Bike)
-        message = {'bike_id': bike.id, 'serial_number': bike.serial_number}
-        is_stolen_mock.return_value = False
-        check_cpic(message)
-
-        updated_bike = Bike.objects.get(id=bike.id)
-
-        self.assertFalse(updated_bike.stolen)
-        self.assertIsNotNone(updated_bike.cpic_searched_at)
-
-
-class TestBikeCheckCpic(ChannelTestCase):
-    @patch('bike.consumers._is_stolen')
-    def test_start_check(self, is_stolen_mock):
-        is_stolen_mock.return_value = False
-        bike = mommy.make(Bike)
-        message = {'bike_id': bike.id, 'serial_number': bike.serial_number}
-
-        Channel('check-cpic').send(message)
-        check_cpic(self.get_next_message('check-cpic', require=True))
-
-        result = self.get_next_message('check-cpic', require=True)
-
-        updated_bike = Bike.objects.get(id=bike.id)
-
-        self.assertFalse(updated_bike.stolen)
-        self.assertIsNotNone(updated_bike.cpic_searched_at)
-        self.assertFalse(result['stolen'])
-        self.assertEqual(result['bike_id'], message['bike_id'])
-        self.assertEqual(result['serial_number'], message['serial_number'])

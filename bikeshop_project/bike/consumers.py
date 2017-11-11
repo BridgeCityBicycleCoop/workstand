@@ -63,4 +63,4 @@ def check_cpic(message: Dict[str, Union[str, int]]) -> None:
     response = {'stolen': stolen}
     response.update(message)
 
-    Channel('check-cpic').send(response)
+    Channel('result-cpic').send(response)

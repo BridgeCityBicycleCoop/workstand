@@ -343,3 +343,21 @@ class TestBikeApi(TestCase):
         result = client.put(f'/api/v1/bikes/{bike.id}/stolen/')
 
         self.assertEqual(result.status_code, status.HTTP_200_OK)
+
+    def test_validate_assessed_error(self):
+        data = {
+            "colour": "black",
+            "make": "Miyata",
+            "serial_number": "12345676",
+            "source": Bike.COS_BIKE_DIVERSION_PILOT,
+            "size": Bike.SMALL,
+
+        }
+        Bike.objects.create(**data)
+        client = APIClient()
+        client.force_authenticate(user=self.user, token='blah')
+        result = client.get(f'/api/v1/bikes/1/validate/?transition=assessed')
+
+        self.assertEqual(result.status_code, status.HTTP_400_BAD_REQUEST)
+        self.assertTrue('price' in result.data.keys())
+

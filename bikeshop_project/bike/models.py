@@ -3,6 +3,7 @@ from django.db import models
 from django.utils import timezone
 
 from django_fsm import FSMField, transition
+from rest_framework.exceptions import ValidationError
 
 from registration.models import Member
 
@@ -71,9 +72,33 @@ class Bike(models.Model):
     last_worked_on = models.DateTimeField(blank=True, null=True)
     purchased_at = models.DateTimeField(blank=True, null=True)
 
-    def can_assessed(self):
-        return self.colour is not None and self.make is not None and self.size is not None and self.source is not None \
-               and self.price is not None
+    def __can_assessed(self) -> bool:
+        try:
+            return self.can_assessed()
+        except ValidationError:
+            return False
+
+    def can_assessed(self) -> bool:
+        """
+        Check to see if we can change state to assessed.
+        :return: bool
+        :raise: rest_framework.exceptions.ValidationError
+        """
+        required_fields = [
+            'colour',
+            'make',
+            'size',
+            'source',
+            'price'
+        ]
+        validated_fields = [getattr(self, field) for field in required_fields]
+        validated_pairs = zip(required_fields, validated_fields)
+        if None not in validated_fields:
+            return True
+
+        missing_attrs = {pair[0]: 'Required.' for pair in validated_pairs if not pair[1]}
+
+        raise ValidationError(missing_attrs)
 
     def can_available(self):
         return self.stolen is False and self.cpic_searched_at is not None and self.serial_number is not None
@@ -95,7 +120,7 @@ class Bike(models.Model):
     def can_transfer_to_police(self):
         return self.stolen
 
-    @transition(field=state, source=[BikeState.RECEIVED], target=BikeState.ASSESSED, conditions=[can_assessed])
+    @transition(field=state, source=[BikeState.RECEIVED], target=BikeState.ASSESSED, conditions=[__can_assessed])
     def assessed(self):
         pass
 

@@ -32,6 +32,12 @@ class BikeViewSet(viewsets.ModelViewSet):
     queryset = Bike.objects.all()
     serializer_class = BikeSerializer
 
+    @detail_route(methods=['get'])
+    def validate(self, request, pk):
+        bike = get_object_or_404(Bike, pk=pk)
+        getattr(bike, 'can_{0}'.format(request.query_params['transition']))()  # Raises ValidationError
+        return Response(None, status=status.HTTP_204_NO_CONTENT)
+
     @detail_route(methods=['put'])
     def assessed(self, request, pk):
         bike = get_object_or_404(Bike, pk=pk)

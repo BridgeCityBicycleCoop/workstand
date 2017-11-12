@@ -212,7 +212,6 @@ class BikeForm extends React.Component {
                 <FlatButton
                   label="Check"
                   onTouchTap={() => this.props.checkCpic(id)}
-                  disabled={cpicSearched}
                   primary
                 />
               </div>

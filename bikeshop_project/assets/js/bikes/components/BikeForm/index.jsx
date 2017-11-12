@@ -68,12 +68,12 @@ class BikeForm extends React.Component {
     return (
       <div>
         <div className="mdl-grid">
-          <SelectField
+          {/* <SelectField
             fullWidth
             floatingLabelText="State"
             name="state"
             onChange={handleStateSelectChange}
-          />
+          /> */}
         </div>
         <form onSubmit={this.props.handleSubmit}>
           <div className="mdl-grid">

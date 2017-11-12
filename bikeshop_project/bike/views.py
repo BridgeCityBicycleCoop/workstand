@@ -120,7 +120,8 @@ class BikeViewSet(viewsets.ModelViewSet):
 
     @detail_route(methods=['put'])
     def check(self, request, pk):
-        message = {'bike_id': pk, 'serial_number': request.data.get('serial_number')}
+        bike = get_object_or_404(Bike, pk=pk)
+        message = {'bike_id': pk, 'serial_number': bike.serial_number}
         Channel('check-cpic').send(message)
 
         return Response({'status': 'pending'})

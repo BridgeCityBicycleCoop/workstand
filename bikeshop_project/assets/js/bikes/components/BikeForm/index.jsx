@@ -37,13 +37,13 @@ const styles = {
 
 const validate = (values, props) => {
   const errors = {};
-  // const requiredFields = getRequiredFields(values.new_state);
+  const requiredFields = ['serial_number'];
 
-  // requiredFields.forEach((field) => {
-  //   if (!values[field]) {
-  //     errors[field] = 'Required';
-  //   }
-  // });
+  requiredFields.forEach((field) => {
+    if (!values[field]) {
+      errors[field] = 'Required';
+    }
+  });
 
   return errors;
 };
@@ -67,8 +67,7 @@ const asyncValidate = values => Api.validateState(values.id, { state: values.sta
     const missingFields = Object.keys(errors.field_errors).filter(k => !values[k]);
 
     const fieldErrors = missingFields.reduce((acc, k) => ({ ...acc, [k]: errors.field_errors[k] }), {});
-    if (!isEmpty(fieldErrors))
-      throw fieldErrors;
+    if (!isEmpty(fieldErrors))      { throw fieldErrors; }
   }
 });
 
@@ -273,7 +272,7 @@ class BikeForm extends React.Component {
 
 BikeForm = reduxForm({
   form: 'BikeForm', // a unique identifier for this form
-  // validate,
+  validate,
   asyncValidate,
   asyncBlurFields: ['state'],
   onSubmit: handleSubmit,

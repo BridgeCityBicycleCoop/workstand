@@ -3,7 +3,12 @@ import React, { PropTypes } from 'react';
 import connect from './connect';
 import FlatButton from 'material-ui/FlatButton';
 import RaisedButton from 'material-ui/RaisedButton';
-import { checkCpic, saveBike, updateBike } from '../../actions';
+import {
+  checkCpic,
+  fetchValidateState,
+  saveBike,
+  updateBike,
+} from '../../actions';
 import {
   getRequiredFields,
   renderCheckbox,
@@ -13,6 +18,10 @@ import {
   stateMenuItems,
 } from './utils';
 import Size from '../Size';
+import capitalize from 'lodash/capitalize';
+import isEmpty from 'lodash/isEmpty';
+
+import Api from '../../services';
 
 const styles = {
   block: {
@@ -53,6 +62,16 @@ const stateActionMapper = memberId => ({
   purchased: { memberId },
 });
 
+const asyncValidate = values => Api.validateState(values.id, { state: values.state.toLocaleLowerCase() }).then((errors) => {
+  if (errors) {
+    const missingFields = Object.keys(errors.field_errors).filter(k => !values[k]);
+
+    const fieldErrors = missingFields.reduce((acc, k) => ({ ...acc, [k]: errors.field_errors[k] }), {});
+    if (!isEmpty(fieldErrors))
+      throw fieldErrors;
+  }
+});
+
 // handleStateSelectChange(getSelectedBike, changeBikeState, value) {
 //   const data = stateActionMapper(value)
 // }
@@ -68,23 +87,26 @@ class BikeForm extends React.Component {
     return (
       <div>
         <div className="mdl-grid">
-          {/* <SelectField
+          {/* <Field
             fullWidth
             floatingLabelText="State"
             name="state"
-            onChange={handleStateSelectChange}
+            component{renderSelectField}
           /> */}
         </div>
         <form onSubmit={this.props.handleSubmit}>
           <div className="mdl-grid">
             <div className="mdl-cell mdl-cell--6-col">
               <Field
-                name="new_state"
-                component={renderSelectField}
+                name="state"
+                component="select"
                 floatingLabelText="State"
                 fullWidth
+                value={this.props.state}
               >
-                {stateMenuItems([currentState].concat(availableStates))}
+                {
+                  [<option value={this.props.state}>{capitalize(this.props.state)}</option>]
+                    .concat(availableStates.map(state => <option value={state}>{capitalize(state)}</option>))}
               </Field>
             </div>
           </div>
@@ -252,7 +274,9 @@ class BikeForm extends React.Component {
 
 BikeForm = reduxForm({
   form: 'BikeForm', // a unique identifier for this form
-  validate,
+  // validate,
+  asyncValidate,
+  asyncBlurFields: ['state'],
   onSubmit: handleSubmit,
 })(BikeForm);
 

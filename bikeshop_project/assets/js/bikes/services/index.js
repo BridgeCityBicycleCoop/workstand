@@ -5,7 +5,7 @@ const csrfToken = Cookies.get('csrftoken');
 const headers = new Headers({ 'X-CSRFToken': csrfToken, 'Content-Type': 'application/json' });
 
 const checkStatus = (response) => {
-  if (response.status >= 200 && response.status < 300) {
+  if (response.status >= 200 && response.status < 500) {
     return response;
   }
   const error = new Error(response.statusText);
@@ -13,7 +13,12 @@ const checkStatus = (response) => {
   throw error;
 };
 
-const parseJson = response => response.json();
+const parseJson = response => {
+  if (response.status === 204) {
+    return null;
+  }
+  return response.json();
+};
 
 const Api = {
   fetchBikes() {
@@ -92,6 +97,23 @@ const Api = {
     .catch((error) => {
       console.log('request failed', error);
       throw error;
+    });
+  },
+  validateState(id, { state }) {
+    return fetch(`/api/v1/bikes/${id}/validate/?transition=${state}`, {
+      credentials: 'same-origin',
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json',
+        'X-CSRFToken': csrfToken,
+      },
+    })
+    .then(checkStatus)
+    .then(parseJson)
+    .then(d => d)
+    .catch((error) => {
+      console.error('request failed', error);
+      return error;
     });
   },
 };

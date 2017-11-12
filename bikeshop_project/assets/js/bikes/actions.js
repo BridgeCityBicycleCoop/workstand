@@ -15,3 +15,5 @@ export const mergeBike = createAction('merge bike');
 export const saveBike = createAction('save bike');
 export const checkCpic = createAction('check cpic');
 export const changeState = createAction('change bike.state');
+export const fetchValidateState = createAction('fetch validate state');
+export const setAsyncErrors = createAction('set bike.form.asyncErrors');

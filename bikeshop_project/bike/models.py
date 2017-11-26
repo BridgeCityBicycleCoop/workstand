@@ -59,6 +59,7 @@ class Bike(models.Model):
         'size': 'Required.',
         'source': 'Required',
         'price': 'Required',
+        'stripped': 'Bike must be stripped first.',
         'cpic_searched_at': 'This bike has not been checked in CPIC. Please dispatch a check now.'
 
     }

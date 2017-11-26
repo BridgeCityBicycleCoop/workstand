@@ -33,20 +33,21 @@ class BikeViewSet(viewsets.ModelViewSet):
     serializer_class = BikeSerializer
 
     def __validate(self, bike, state):
-        if not state == BikeState.RECEIVED:
+        if not state == BikeState.RECEIVED and not state == bike.state:
             getattr(bike, 'can_{0}'.format(state.lower()))()  # Raises ValidationError
 
     def update(self, request, pk=None):
         bike = get_object_or_404(Bike, pk=pk)
         new_state = request.data['state']
-        self.__validate(bike, new_state)
-        if not new_state == BikeState.RECEIVED:
-            getattr(bike, new_state.lower())()
-            bike.save()
         serializer = BikeSerializer(bike, request.data, context={'request': request})
         if serializer.is_valid():
             serializer.save()
-            return Response(serializer.data)
+            self.__validate(serializer.instance, new_state)
+            if not (new_state == bike.state or new_state == BikeState.RECEIVED):
+                getattr(bike, new_state.lower())()
+                bike.save()
+            new_serializer = BikeSerializer(bike, context={'request': request})
+            return Response(new_serializer.data)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
     @detail_route(methods=['get'])

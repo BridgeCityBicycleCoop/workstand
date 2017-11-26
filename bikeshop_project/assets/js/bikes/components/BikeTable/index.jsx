@@ -130,7 +130,7 @@ const mapDispatchToProps = dispatch => ({
     dispatch(fetchBikes());
   },
   editBike: (bike) => {
-    dispatch(editBike(bike));
+    dispatch(editBike(bike.id));
   },
   createBike: () => {
     dispatch(createBike());

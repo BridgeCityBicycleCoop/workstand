@@ -186,24 +186,24 @@ class Bike(models.Model):
     def can_transfer_to_police(self):
         return self.stolen
 
-    @transition(field=state, source=[BikeState.RECEIVED], target=BikeState.ASSESSED, conditions=[__can_assessed])
+    @transition(field=state, source=[BikeState.RECEIVED], target=BikeState.ASSESSED)
     def assessed(self):
         pass
 
-    @transition(field=state, source=[BikeState.ASSESSED, BikeState.CLAIMED], target=BikeState.AVAILABLE,
-                conditions=[__can_available])
+    @transition(field=state, source=[BikeState.ASSESSED, BikeState.CLAIMED], target=BikeState.AVAILABLE
+                )
     def available(self):
         self.claimed_by = None
         self.claimed_at = None
 
-    @transition(field=state, source=[BikeState.AVAILABLE], target=BikeState.CLAIMED, conditions=[__can_claimed])
+    @transition(field=state, source=[BikeState.AVAILABLE], target=BikeState.CLAIMED)
     def claimed(self, member):
         self.claimed_by = member
         self.claimed_at = timezone.now()
         self.last_worked_on = timezone.now()
 
     @transition(field=state, source=[BikeState.AVAILABLE], target=BikeState.PURCHASED,
-                conditions=[can_purchase])
+                )
     def purchased(self, member):
         self.purchased_at = timezone.now()
         self.purchased_by = member
@@ -211,12 +211,12 @@ class Bike(models.Model):
         self.claimed_by = None
 
     @transition(field=state, source=[BikeState.ASSESSED, BikeState.AVAILABLE],
-                target=BikeState.SCRAPPED, conditions=[can_scrapped])
+                target=BikeState.SCRAPPED)
     def scrapped(self):
         self.claimed_at = None
         self.claimed_by = None
 
-    @transition(field=state, source=[BikeState.ASSESSED, BikeState.RECEIVED], conditions=[can_transfer_to_police])
+    @transition(field=state, source=[BikeState.ASSESSED, BikeState.RECEIVED])
     def transfer_to_police(self):
         self.claimed_at = None
         self.claimed_by = None
@@ -225,6 +225,6 @@ class Bike(models.Model):
     def available_states(self):
         omit = ['transfer_to_police', 'purchased']
         states = {state_transition.name
-                  for state_transition in self.get_all_state_transitions() if state_transition.name not in omit}
+                  for state_transition in self.get_available_state_transitions() if state_transition.name not in omit}
 
         return states

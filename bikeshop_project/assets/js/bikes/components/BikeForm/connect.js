@@ -5,7 +5,6 @@ export default connect(
   state => ({
     initialValues: {
       ...state.bikes.form.bike,
-      new_state: state.bikes.form.bike.state.toLowerCase(),
     }, // pull initial values from account reducer
     create: state.bikes.form.create,
     cpicSearched: !!state.bikes.form.bike.cpic_searched_at,

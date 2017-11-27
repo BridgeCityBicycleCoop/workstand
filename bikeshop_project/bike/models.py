@@ -224,7 +224,7 @@ class Bike(models.Model):
 
     @property
     def available_states(self):
-        omit = ['transfer_to_police', 'purchased']
+        omit = ['transfer_to_police', 'purchased', 'claimed']
         states = {state_transition.name
                   for state_transition in self.get_available_state_transitions() if state_transition.name not in omit}
 

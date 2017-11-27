@@ -1,4 +1,4 @@
-import { Field, reduxForm, propTypes, formValueSelector } from 'redux-form';
+import { Field, propTypes, reduxForm } from 'redux-form';
 import React, { PropTypes } from 'react';
 import FlatButton from 'material-ui/FlatButton';
 import RaisedButton from 'material-ui/RaisedButton';
@@ -14,6 +14,7 @@ import { saveBike, updateBike } from '../../actions';
 import Api from '../../services';
 import Size from '../Size';
 import connect from './connect';
+import moment from 'moment';
 
 const styles = {
   block: {
@@ -29,7 +30,7 @@ const styles = {
 
 const validate = values => {
   const errors = {};
-  const requiredFields = ['serial_number'];
+  const requiredFields = ['serial_number', 'colour'];
 
   requiredFields.forEach(field => {
     if (!values[field]) {
@@ -49,24 +50,28 @@ const handleSubmit = (data, dispatch, props) => {
   }
 };
 
-const asyncValidate = values =>
-  Api.validateState(values.id, {
-    state: values.state.toLocaleLowerCase(),
-  }).then(errors => {
-    if (errors) {
-      const missingFields = Object.keys(errors.field_errors).filter(
-        k => !values[k],
-      );
+const asyncValidate = values => {
+  if (values.state)
+    return Api.validateState(values.id, {
+      state: values.state.toLocaleLowerCase(),
+    }).then(errors => {
+      if (errors) {
+        const missingFields = Object.keys(errors.field_errors).filter(
+          k => !values[k],
+        );
 
-      const fieldErrors = missingFields.reduce(
-        (acc, k) => ({ ...acc, [k]: errors.field_errors[k] }),
-        {},
-      );
-      if (!isEmpty(fieldErrors)) {
-        throw fieldErrors;
+        const fieldErrors = missingFields.reduce(
+          (acc, k) => ({ ...acc, [k]: errors.field_errors[k] }),
+          {},
+        );
+        if (!isEmpty(fieldErrors)) {
+          throw fieldErrors;
+        }
       }
-    }
-  });
+    });
+
+  return new Promise(resolve => resolve(true));
+};
 
 // handleStateSelectChange(getSelectedBike, changeBikeState, value) {
 //   const data = stateActionMapper(value)
@@ -85,24 +90,28 @@ const BikeFormComponent = ({
 }) => (
   <div>
     <form onSubmit={handleSubmit}>
-      <div className="mdl-grid">
-        <div className="mdl-cell mdl-cell--6-col">
-          <Field
-            name="state"
-            component="select"
-            floatingLabelText="State"
-            fullWidth
-          >
-            {[
-              <option value={currentState}>{capitalize(currentState)}</option>,
-            ].concat(
-              availableStates.map(s => (
-                <option value={s.toLocaleUpperCase()}>{capitalize(s)}</option>
-              )),
-            )}
-          </Field>
+      {availableStates && (
+        <div className="mdl-grid">
+          <div className="mdl-cell mdl-cell--6-col">
+            <Field
+              name="state"
+              component="select"
+              floatingLabelText="State"
+              fullWidth
+            >
+              {[
+                <option value={currentState}>
+                  {capitalize(currentState)}
+                </option>,
+              ].concat(
+                availableStates.map(s => (
+                  <option value={s.toLocaleUpperCase()}>{capitalize(s)}</option>
+                )),
+              )}
+            </Field>
+          </div>
         </div>
-      </div>
+      )}
       <div className="mdl-grid">
         <div className="mdl-cell mdl-cell--3-col">
           <Field
@@ -150,14 +159,15 @@ const BikeFormComponent = ({
             <Field
               name="created_at"
               component={renderTextField}
-              floatingLabelText="Created at"
+              floatingLabelText="Added"
               fullWidth
               readOnly
+              format={value => moment(value).format('MMM Do, YYYY')}
             />
           </div>
         )}
       </div>
-      {!create && (
+      {/* {!create && (
         <div className="mdl-grid">
           <div className="mdl-cell mdl-cell--6-col">
             <Field
@@ -179,7 +189,7 @@ const BikeFormComponent = ({
             />
           </div>
         </div>
-      )}
+      )} */}
       {!create && (
         <div className="content-grid mdl-grid" style={styles.bottom}>
           <div className="mdl-cell mdl-cell--6-col">
@@ -188,6 +198,7 @@ const BikeFormComponent = ({
               component={renderTextField}
               floatingLabelText="CPIC searched"
               readOnly
+              format={value => moment(value).format('MMM Do, YYYY')}
             />
           </div>
           <div className="mdl-cell mdl-cell--4-col">
@@ -265,13 +276,6 @@ BikeFormComponent.propTypes = {
   checkCpic: PropTypes.func.isRequired,
   id: PropTypes.number.isRequired,
   ...propTypes,
-};
-
-const selector = formValueSelector('BikeForm');
-
-const mapStateToProps = state => {
-  const availableStates = selector(state, 'available_states');
-  return { availableStates };
 };
 
 const BikeForm = connect(

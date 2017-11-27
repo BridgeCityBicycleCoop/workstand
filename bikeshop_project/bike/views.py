@@ -33,8 +33,9 @@ class BikeViewSet(viewsets.ModelViewSet):
     serializer_class = BikeSerializer
 
     def __validate(self, bike, state):
-        if not state == BikeState.RECEIVED and not state == bike.state:
-            getattr(bike, 'can_{0}'.format(state.lower()))()  # Raises ValidationError
+        upper_state = state.upper()
+        if not (upper_state == BikeState.RECEIVED or upper_state == bike.state):
+            getattr(bike, 'can_{0}'.format(upper_state.lower()))()  # Raises ValidationError
 
     def update(self, request, pk=None):
         bike = get_object_or_404(Bike, pk=pk)

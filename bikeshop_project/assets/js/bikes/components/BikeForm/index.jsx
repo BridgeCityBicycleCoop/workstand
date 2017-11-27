@@ -1,4 +1,4 @@
-import { Field, propTypes, reduxForm } from 'redux-form';
+import { Field, propTypes, reduxForm, SubmissionError } from 'redux-form';
 import React, { PropTypes } from 'react';
 import FlatButton from 'material-ui/FlatButton';
 import RaisedButton from 'material-ui/RaisedButton';
@@ -48,6 +48,8 @@ const handleSubmit = (data, dispatch, props) => {
   } else {
     dispatch(updateBike(data));
   }
+
+  props.handleModalClose();
 };
 
 const asyncValidate = values => {
@@ -65,7 +67,7 @@ const asyncValidate = values => {
           {},
         );
         if (!isEmpty(fieldErrors)) {
-          throw fieldErrors;
+          throw new SubmissionError(fieldErrors);
         }
       }
     });
@@ -198,7 +200,9 @@ const BikeFormComponent = ({
               component={renderTextField}
               floatingLabelText="CPIC searched"
               readOnly
-              format={value => moment(value).format('MMM Do, YYYY')}
+              format={value =>
+                value ? moment(value).format('MMM Do, YYYY') : ''
+              }
             />
           </div>
           <div className="mdl-cell mdl-cell--4-col">

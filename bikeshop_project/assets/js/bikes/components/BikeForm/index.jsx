@@ -1,9 +1,10 @@
-import { Field, SubmissionError, propTypes, reduxForm } from 'redux-form';
+import { Field, propTypes, reduxForm } from 'redux-form';
 import React, { PropTypes } from 'react';
 import FlatButton from 'material-ui/FlatButton';
 import RaisedButton from 'material-ui/RaisedButton';
 import capitalize from 'lodash/capitalize';
 import isEmpty from 'lodash/isEmpty';
+import moment from 'moment';
 import {
   renderCheckbox,
   renderSelectField,
@@ -14,7 +15,6 @@ import { saveBike, updateBike } from '../../actions';
 import Api from '../../services';
 import Size from '../Size';
 import connect from './connect';
-import moment from 'moment';
 
 const styles = {
   block: {

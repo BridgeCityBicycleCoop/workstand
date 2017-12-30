@@ -41,7 +41,7 @@ const validate = (values) => {
   return errors;
 };
 
-const handleSubmit = (data, dispatch, props) => {
+const submitHandler = (data, dispatch, props) => {
   const { create } = props;
   if (create) {
     dispatch(saveBike(data));
@@ -289,7 +289,7 @@ const BikeForm = connect(
     validate,
     asyncValidate,
     asyncBlurFields: ['state'],
-    onSubmit: handleSubmit,
+    onSubmit: submitHandler,
   })(BikeFormComponent),
 );
 

@@ -150,7 +150,7 @@ export const renderTextField = ({
   input,
   meta: { touched, error },
   ...custom
-}) => <TextField errorText={touched && error} {...input} {...custom} />;
+}) => <TextField errorText={error} {...input} {...custom} />;
 
 export const renderCheckbox = ({ input, meta, label, ...custom }) => (
   <ValidatedCheckbox

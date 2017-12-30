@@ -1,4 +1,4 @@
-import { Field, propTypes, reduxForm, SubmissionError } from 'redux-form';
+import { Field, SubmissionError, propTypes, reduxForm } from 'redux-form';
 import React, { PropTypes } from 'react';
 import FlatButton from 'material-ui/FlatButton';
 import RaisedButton from 'material-ui/RaisedButton';
@@ -28,11 +28,11 @@ const styles = {
   },
 };
 
-const validate = values => {
+const validate = (values) => {
   const errors = {};
   const requiredFields = ['serial_number', 'colour'];
 
-  requiredFields.forEach(field => {
+  requiredFields.forEach((field) => {
     if (!values[field]) {
       errors[field] = 'Required';
     }
@@ -52,11 +52,11 @@ const handleSubmit = (data, dispatch, props) => {
   props.handleModalClose();
 };
 
-const asyncValidate = values => {
-  if (values.state)
+const asyncValidate = (values) => {
+  if (values.state) {
     return Api.validateState(values.id, {
       state: values.state.toLocaleLowerCase(),
-    }).then(errors => {
+    }).then((errors) => {
       if (errors) {
         const missingFields = Object.keys(errors.field_errors).filter(
           k => !values[k],
@@ -67,10 +67,11 @@ const asyncValidate = values => {
           {},
         );
         if (!isEmpty(fieldErrors)) {
-          throw new SubmissionError(fieldErrors);
+          throw fieldErrors;
         }
       }
     });
+  }
 
   return new Promise(resolve => resolve(true));
 };

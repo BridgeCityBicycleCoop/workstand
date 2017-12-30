@@ -202,7 +202,7 @@ const BikeFormComponent = ({
               floatingLabelText="CPIC searched"
               readOnly
               format={value =>
-                value ? moment(value).format('MMM Do, YYYY') : ''
+                (value ? moment(value).format('MMM Do, YYYY') : '')
               }
             />
           </div>

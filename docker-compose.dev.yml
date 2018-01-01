@@ -7,15 +7,20 @@ services:
     command: python manage.py runserver 0.0.0.0:8000
     ports:
       - "8000:8000"
-      - "62260:62260"
     volumes:
-      - ./bikeshop_project:/code:rw
+      - ./bikeshop_project:/code
     volumes_from:
       - webpack
+    environment:
+      - PYTHONUNBUFFERED=0
   redis:
     restart: always
   db:
     restart: always
+    environment:
+            POSTGRES_PASSWORD: password
+    ports:
+      - "5432:5432"
   webpack:
     build:
       context: .

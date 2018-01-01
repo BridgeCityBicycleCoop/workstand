@@ -2,7 +2,6 @@ import values from 'lodash/values';
 import curry from 'lodash/fp/curry';
 import { SIZE_ALL, STATE_ALL } from './constants';
 
-
 export const getEditBikeId = state => state.bikes.form.bike;
 export const getBike = state => state.bikes.entities[getEditBikeId(state)];
 export const getFilterSizes = state => state.bikes.filters.sizes;
@@ -28,5 +27,7 @@ export const filterSerial = curry((state, bikes) => {
     return bikes;
   }
 
-  return bikes.filter(bike => bike.serial_number.includes(getFilterSerial(state)));
+  return bikes.filter(bike =>
+    bike.serial_number.includes(getFilterSerial(state)),
+  );
 });

@@ -20,11 +20,19 @@ import {
   setBike,
   setFilter,
   resetFilters,
-  setFilterSerial
+  setFilterSerial,
 } from '../../actions';
 import isEmpty from 'lodash/isEmpty';
 import Controls from './controls';
-import { filterSize, getFilterStates, filterState, getBikes, getFilterSizes, filterSerial, getFilterSerial } from '../../selectors';
+import {
+  filterSize,
+  getFilterStates,
+  filterState,
+  getBikes,
+  getFilterSizes,
+  filterSerial,
+  getFilterSerial,
+} from '../../selectors';
 import flow from 'lodash/fp/flow';
 
 class BikeTableComponent extends React.Component {
@@ -164,7 +172,9 @@ class BikeTableComponent extends React.Component {
 }
 
 const mapStateToProps = state => ({
-  bikes: flow(filterSize(state), filterState(state), filterSerial(state))(getBikes(state)),
+  bikes: flow(filterSize(state), filterState(state), filterSerial(state))(
+    getBikes(state),
+  ),
   fetched: state.bikes.fetched,
   sizeFilters: getFilterSizes(state),
   stateFilters: getFilterStates(state),

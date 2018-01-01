@@ -7,7 +7,9 @@ export const SizeSelect = ({ sizeFilters, setSizeFilter }) => (
     selectedMenuValues={sizeFilters}
     handleChange={setSizeFilter}
     menuValuesMap={SIZE_MAP}
-    style={{ marginBottom: 16, fontSize: 14 }}
+    style={{
+      marginBottom: 16,
+    }}
   />
 );
 export default SizeSelect;

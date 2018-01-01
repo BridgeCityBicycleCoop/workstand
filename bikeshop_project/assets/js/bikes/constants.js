@@ -25,4 +25,3 @@ export const STATE_MAP = {
   [STATE_AVAILABLE]: 'Available',
   [STATE_SCRAPPED]: 'Scrapped',
 };
-

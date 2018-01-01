@@ -1,5 +1,12 @@
 import { filterSize, getBikes } from '../selectors';
-import { SIZE_SMALL, SIZE_CHILD, SIZE_MEDIUM, SIZE_LARGE, SIZE_XLARGE, SIZE_ALL } from '../constants';
+import {
+  SIZE_SMALL,
+  SIZE_CHILD,
+  SIZE_MEDIUM,
+  SIZE_LARGE,
+  SIZE_XLARGE,
+  SIZE_ALL,
+} from '../constants';
 
 describe('selectors', () => {
   const initialState = {
@@ -22,7 +29,7 @@ describe('selectors', () => {
       ...initialState,
       bikes: { ...initialState.bikes, filters: { sizes: [SIZE_ALL] } },
     };
-    const received = filterSize(newState);
+    const received = filterSize(newState)(getBikes(newState));
     const expected = [
       { size: SIZE_SMALL, id: 1 },
       { size: SIZE_CHILD, id: 2 },
@@ -37,9 +44,12 @@ describe('selectors', () => {
   test('filterSize returns medium and small', () => {
     const newState = {
       ...initialState,
-      bikes: { ...initialState.bikes, filters: { sizes: [SIZE_MEDIUM, SIZE_SMALL] } },
+      bikes: {
+        ...initialState.bikes,
+        filters: { sizes: [SIZE_MEDIUM, SIZE_SMALL] },
+      },
     };
-    const received = filterSize(newState);
+    const received = filterSize(newState)(getBikes(newState));
     const expected = [
       { size: SIZE_SMALL, id: 1 },
       { size: SIZE_MEDIUM, id: 3 },
@@ -50,13 +60,13 @@ describe('selectors', () => {
 
   test('getBikes returns all bikes', () => {
     const received = getBikes(initialState);
-    const expected = {
-      1: { size: SIZE_SMALL, id: 1 },
-      2: { size: SIZE_CHILD, id: 2 },
-      3: { size: SIZE_MEDIUM, id: 3 },
-      4: { size: SIZE_LARGE, id: 4 },
-      5: { size: SIZE_XLARGE, id: 5 },
-    };
+    const expected = [
+      { size: SIZE_SMALL, id: 1 },
+      { size: SIZE_CHILD, id: 2 },
+      { size: SIZE_MEDIUM, id: 3 },
+      { size: SIZE_LARGE, id: 4 },
+      { size: SIZE_XLARGE, id: 5 },
+    ];
 
     expect(received).toEqual(expected);
   });

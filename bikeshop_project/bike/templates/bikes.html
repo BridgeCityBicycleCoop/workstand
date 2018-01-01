@@ -2,6 +2,8 @@
 {% load render_bundle from webpack_loader %}
 {% block content %}
     <div id="root"></div>
-    {% render_bundle 'webpack' %}
+    {% if DEBUG %}
+        {% render_bundle 'webpack' %}
+    {% endif %}
     {% render_bundle 'bikes' %}
 {% endblock %}

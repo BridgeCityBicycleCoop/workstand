@@ -22,3 +22,11 @@ export const filterState = curry((state, bikes) => {
 
   return bikes.filter(bike => getFilterStates(state).includes(bike.state));
 });
+export const getFilterSerial = state => state.bikes.filters.serial;
+export const filterSerial = curry((state, bikes) => {
+  if (!getFilterSerial(state)) {
+    return bikes;
+  }
+
+  return bikes.filter(bike => bike.serial_number.includes(getFilterSerial(state)));
+});

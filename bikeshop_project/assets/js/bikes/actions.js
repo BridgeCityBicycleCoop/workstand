@@ -19,3 +19,4 @@ export const fetchValidateState = createAction('fetch validate state');
 export const setAsyncErrors = createAction('set bike.form.asyncErrors');
 export const setFilter = createAction('set bikes.filters');
 export const resetFilters = createAction('reset bikes.filters');
+export const setFilterSerial = createAction('set bikes.filters.serial');

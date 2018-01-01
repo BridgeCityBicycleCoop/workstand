@@ -15,13 +15,31 @@ import {
 import SizeSelect from './SizeSelect';
 import StateSelect from './StateSelect';
 import FlatButton from 'material-ui/FlatButton/FlatButton';
+import TextField from 'material-ui/TextField/TextField';
 
-const Controls = ({ setSizeFilter, sizeFilters, setStateFilter, stateFilters, resetFilters, handleOpenCreate }) => (
+const Controls = ({
+  setSizeFilter,
+  sizeFilters,
+  setStateFilter,
+  stateFilters,
+  resetFilters,
+  handleOpenCreate,
+  handleSerialSearchChange,
+  serialFilter,
+}) => (
   <Toolbar>
     <ToolbarGroup>
       <ToolbarTitle text="Filter" />
       <SizeSelect setSizeFilter={setSizeFilter} sizeFilters={sizeFilters} />
-      <StateSelect setStateFilter={setStateFilter} stateFilters={stateFilters} />
+      <StateSelect
+        setStateFilter={setStateFilter}
+        stateFilters={stateFilters}
+      />
+      <TextField
+        hintText="Search for serial number"
+        onChange={handleSerialSearchChange}
+        value={serialFilter}
+      />
       <FlatButton label="reset" secondary onTouchTap={resetFilters} />
     </ToolbarGroup>
     <ToolbarGroup>

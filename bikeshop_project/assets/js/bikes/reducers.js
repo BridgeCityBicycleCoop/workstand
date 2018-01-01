@@ -11,6 +11,7 @@ import {
   setFilter,
   removeFilter,
   resetFilters,
+  setFilterSerial,
 } from './actions';
 import without from 'lodash/without';
 import { SIZE_ALL, STATE_ALL } from './constants';
@@ -70,6 +71,14 @@ export default handleActions(
       filters: {
         sizes: [SIZE_ALL],
         states: [SIZE_ALL],
+        serial: '',
+      },
+    }),
+    [setFilterSerial]: (state, action) => ({
+      ...state,
+      filters: {
+        ...state.filters,
+        serial: action.payload,
       },
     }),
   },
@@ -82,6 +91,7 @@ export default handleActions(
     filters: {
       sizes: [SIZE_ALL],
       states: [STATE_ALL],
+      serial: '',
     },
   },
 );

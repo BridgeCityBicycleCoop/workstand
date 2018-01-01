@@ -20,10 +20,11 @@ import {
   setBike,
   setFilter,
   resetFilters,
+  setFilterSerial
 } from '../../actions';
 import isEmpty from 'lodash/isEmpty';
 import Controls from './controls';
-import { filterSize, getFilterStates, filterState, getBikes, getFilterSizes } from '../../selectors';
+import { filterSize, getFilterStates, filterState, getBikes, getFilterSizes, filterSerial, getFilterSerial } from '../../selectors';
 import flow from 'lodash/fp/flow';
 
 class BikeTableComponent extends React.Component {
@@ -122,6 +123,8 @@ class BikeTableComponent extends React.Component {
               stateFilters={this.props.stateFilters}
               resetFilters={this.props.resetFilters}
               handleOpenCreate={this.handleOpenCreate}
+              handleSerialSearchChange={this.props.handleSerialSearchChange}
+              serialFilter={this.props.serialFilter}
             />
             <Table selectable={false}>
               <TableHeader adjustForCheckbox={false} displaySelectAll={false}>
@@ -161,10 +164,11 @@ class BikeTableComponent extends React.Component {
 }
 
 const mapStateToProps = state => ({
-  bikes: flow(filterSize(state), filterState(state))(getBikes(state)),
+  bikes: flow(filterSize(state), filterState(state), filterSerial(state))(getBikes(state)),
   fetched: state.bikes.fetched,
   sizeFilters: getFilterSizes(state),
   stateFilters: getFilterStates(state),
+  serialFilter: getFilterSerial(state),
 });
 
 const mapDispatchToProps = dispatch => ({
@@ -184,6 +188,7 @@ const mapDispatchToProps = dispatch => ({
     dispatch(setFilter({ filter: 'states', value }));
   },
   resetFilters: () => dispatch(resetFilters()),
+  handleSerialSearchChange: (_, value) => dispatch(setFilterSerial(value)),
 });
 
 const BikeTable = connect(mapStateToProps, mapDispatchToProps)(

@@ -9,12 +9,10 @@ import {
   setBikesFetched,
   setBikesIsFetching,
   setFilter,
-  removeFilter,
   resetFilters,
   setFilterSerial,
 } from './actions';
-import without from 'lodash/without';
-import { SIZE_ALL, STATE_ALL, STATE_AVAILABLE } from './constants';
+import { SIZE_ALL, STATE_AVAILABLE } from './constants';
 // import { start } from 'repl';
 
 export default handleActions(
@@ -70,7 +68,7 @@ export default handleActions(
       ...state,
       filters: {
         sizes: [SIZE_ALL],
-        states: [SIZE_ALL],
+        states: [STATE_AVAILABLE],
         serial: '',
       },
     }),

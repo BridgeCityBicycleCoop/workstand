@@ -44,20 +44,9 @@ const Controls = ({
       <FlatButton label="reset" secondary onTouchTap={resetFilters} />
     </ToolbarGroup>
     <ToolbarGroup>
-      {/* <ToolbarTitle text="Options" /> */}
       <FontIcon className="muidocs-icon-custom-sort" />
       <ToolbarSeparator />
       <RaisedButton label="Add Bike" primary onTouchTap={handleOpenCreate} />
-      {/* <IconMenu
-        iconButtonElement={
-          <IconButton touch>
-            <NavigationExpandMoreIcon />
-          </IconButton>
-        }
-      >
-        <MenuItem primaryText="Download" />
-        <MenuItem primaryText="More Info" />
-      </IconMenu> */}
     </ToolbarGroup>
   </Toolbar>
 );

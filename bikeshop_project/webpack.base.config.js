@@ -21,7 +21,12 @@ module.exports = {
   ], // add all common plugins here
 
   module: {
-    loaders: [],
+    loaders: [
+      {
+        test: /\.json$/,
+        loader: 'json-loader',
+      },
+    ],
   },
 
   resolve: {

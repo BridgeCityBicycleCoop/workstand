@@ -1,5 +1,5 @@
 from datetime import timedelta
-from django.test import TestCase
+from django import test
 from django.utils import timezone
 from model_mommy import mommy
 from rest_framework import status
@@ -9,7 +9,10 @@ from bike.models import Bike, BikeState
 from registration.models import Member
 
 
-class TestBikeApi(TestCase):
+# @test.modify_settings(MIDDLEWARE={'remove':[
+#     'rollbar.contrib.django.middleware.RollbarNotifierMiddleware',
+# ]})
+class TestBikeApi(test.TestCase):
     def setUp(self):
         self.user = mommy.make('registration.CustomUser', is_admin=True)
 
@@ -56,7 +59,7 @@ class TestBikeApi(TestCase):
         bike = mommy.make('bike.Bike')
         client = APIClient()
         client.force_authenticate(user=self.user, token='blah')
-        data = {'created_at': timezone.now().isoformat()}
+        data = {'state': BikeState.ASSESSED, 'created_at': timezone.now().isoformat()}
         result = client.put(f'/api/v1/bikes/{bike.id}/', data=data)
 
         self.assertEqual(result.status_code, status.HTTP_400_BAD_REQUEST)
@@ -69,30 +72,32 @@ class TestBikeApi(TestCase):
         result = client.put(f'/api/v1/bikes/{bike.id}/', data=data)
 
         self.assertEqual(result.status_code, status.HTTP_400_BAD_REQUEST)
+    # TODO: We now do async validation, so tests that rely on validation to prevent a transition do not work.
+    # In the future, these tests should be removed.
 
-    def test_assessed_cannot_transition(self):
-        bike = mommy.make('bike.Bike')
-        client = APIClient()
-        client.force_authenticate(user=self.user, token='blah')
-        result = client.put(f'/api/v1/bikes/{bike.id}/assessed/')
+    # def test_assessed_cannot_transition(self):
+    #     bike = mommy.make('bike.Bike')
+    #     client = APIClient()
+    #     client.force_authenticate(user=self.user, token='blah')
+    #     result = client.put(f'/api/v1/bikes/{bike.id}/assessed/')
+    #
+    #     self.assertEqual(result.status_code, status.HTTP_400_BAD_REQUEST)
 
-        self.assertEqual(result.status_code, status.HTTP_400_BAD_REQUEST)
-
-    def test_assessed_still_cannot_transition(self):
-        data = {
-            "colour": "black",
-            "make": "Miyata",
-            "serial_number": "12345676",
-            "source": Bike.COS_BIKE_DIVERSION_PILOT,
-            "donated_by": "Greg",
-            "donated_at": "2017-01-01",
-        }
-        bike = Bike.objects.create(**data)
-        client = APIClient()
-        client.force_authenticate(user=self.user, token='blah')
-        result = client.put(f'/api/v1/bikes/{bike.id}/assessed/')
-
-        self.assertEqual(result.status_code, status.HTTP_400_BAD_REQUEST)
+    # def test_assessed_still_cannot_transition(self):
+    #     data = {
+    #         "colour": "black",
+    #         "make": "Miyata",
+    #         "serial_number": "12345676",
+    #         "source": Bike.COS_BIKE_DIVERSION_PILOT,
+    #         "donated_by": "Greg",
+    #         "donated_at": "2017-01-01",
+    #     }
+    #     bike = Bike.objects.create(**data)
+    #     client = APIClient()
+    #     client.force_authenticate(user=self.user, token='blah')
+    #     result = client.put(f'/api/v1/bikes/{bike.id}/assessed/')
+    #
+    #     self.assertEqual(result.status_code, status.HTTP_400_BAD_REQUEST)
 
     def test_assessed_can_transition(self):
         data = {
@@ -111,24 +116,24 @@ class TestBikeApi(TestCase):
         self.assertEqual(result.status_code, status.HTTP_200_OK)
         self.assertEqual(result.data['state'], BikeState.ASSESSED)
 
-    def test_available_cannot_transition(self):
-        data = {
-            "colour": "black",
-            "make": "Miyata",
-            "serial_number": "12345676",
-            "source": Bike.COS_BIKE_DIVERSION_PILOT,
-            "donated_by": "Greg",
-            "donated_at": "2017-01-01",
-            "size": Bike.SMALL,
-            "price": '68.00',
-            "state": BikeState.ASSESSED
-        }
-        bike = Bike.objects.create(**data)
-        client = APIClient()
-        client.force_authenticate(user=self.user, token='blah')
-        result = client.put(f'/api/v1/bikes/{bike.id}/available/')
-
-        self.assertEqual(result.status_code, status.HTTP_400_BAD_REQUEST)
+    # def test_available_cannot_transition(self):
+    #     data = {
+    #         "colour": "black",
+    #         "make": "Miyata",
+    #         "serial_number": "12345676",
+    #         "source": Bike.COS_BIKE_DIVERSION_PILOT,
+    #         "donated_by": "Greg",
+    #         "donated_at": "2017-01-01",
+    #         "size": Bike.SMALL,
+    #         "price": '68.00',
+    #         "state": BikeState.ASSESSED
+    #     }
+    #     bike = Bike.objects.create(**data)
+    #     client = APIClient()
+    #     client.force_authenticate(user=self.user, token='blah')
+    #     result = client.put(f'/api/v1/bikes/{bike.id}/available/')
+    #
+    #     self.assertEqual(result.status_code, status.HTTP_400_BAD_REQUEST)
 
     def test_available_can_transition(self):
         data = {

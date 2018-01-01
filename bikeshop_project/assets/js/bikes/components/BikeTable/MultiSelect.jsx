@@ -14,11 +14,12 @@ const menuItems = (itemsMap, selectedItems) =>
     />
   ));
 
-export const MultiSelect = ({ selectedMenuValues, handleChange, menuValuesMap }) => (
+export const MultiSelect = ({ selectedMenuValues, handleChange, menuValuesMap, style={} }) => (
   <DropDownMenu
     multiple
     value={selectedMenuValues}
     onChange={(_e, _k, v) => handleChange(v)}
+    style={style}
   >
     {menuItems(menuValuesMap, selectedMenuValues)}
   </DropDownMenu>

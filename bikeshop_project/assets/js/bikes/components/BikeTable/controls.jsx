@@ -29,7 +29,7 @@ const Controls = ({
 }) => (
   <Toolbar>
     <ToolbarGroup>
-      <ToolbarTitle text="Filter" />
+      <ToolbarTitle text="Filter" style={{ fontSize: 14 }} />
       <SizeSelect setSizeFilter={setSizeFilter} sizeFilters={sizeFilters} />
       <StateSelect
         setStateFilter={setStateFilter}
@@ -39,6 +39,7 @@ const Controls = ({
         hintText="Search for serial number"
         onChange={handleSerialSearchChange}
         value={serialFilter}
+        style={{ fontSize: 14 }}
       />
       <FlatButton label="reset" secondary onTouchTap={resetFilters} />
     </ToolbarGroup>

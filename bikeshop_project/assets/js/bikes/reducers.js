@@ -8,7 +8,12 @@ import {
   setBikesFetchFailed,
   setBikesFetched,
   setBikesIsFetching,
+  setFilter,
+  removeFilter,
+  resetFilters,
 } from './actions';
+import without from 'lodash/without';
+import { SIZE_ALL, STATE_ALL } from './constants';
 // import { start } from 'repl';
 
 export default handleActions(
@@ -53,6 +58,20 @@ export default handleActions(
       ...state,
       form: { ...state.form, asyncErrorss: action.payload },
     }),
+    [setFilter]: (state, action) => ({
+      ...state,
+      filters: {
+        ...state.filters,
+        [action.payload.filter]: action.payload.value,
+      },
+    }),
+    [resetFilters]: state => ({
+      ...state,
+      filters: {
+        sizes: [SIZE_ALL],
+        states: [SIZE_ALL],
+      },
+    }),
   },
   {
     entities: {},
@@ -60,5 +79,9 @@ export default handleActions(
     isFetching: false,
     fetched: false,
     fetchFailed: undefined,
+    filters: {
+      sizes: [SIZE_ALL],
+      states: [STATE_ALL],
+    },
   },
 );

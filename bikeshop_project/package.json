@@ -6,7 +6,8 @@
   "scripts": {
     "build": "node_modules/.bin/webpack --config webpack.config.js --progress --colors",
     "build-production": "node_modules/.bin/webpack --config webpack.prod.config.js --progress --colors",
-    "watch": "node server.js"
+    "watch": "node server.js",
+    "test": "jest"
   },
   "author": "",
   "license": "MIT",
@@ -54,6 +55,7 @@
     "eslint-plugin-react": "^6.10.3",
     "extract-text-webpack-plugin": "^1.0.1",
     "i": "^0.3.5",
+    "jest": "^22.0.4",
     "normalize.css": "^4.1.1",
     "postcss-loader": "^0.9.1",
     "react-toolbox": "^0.16.2",

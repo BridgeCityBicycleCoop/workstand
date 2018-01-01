@@ -21,7 +21,7 @@ const styles = {
     maxWidth: 250,
   },
   checkbox: {
-    marginBottom: 16,
+    marginBottom: 8,
   },
   bottom: {
     alignItems: 'flex-end',

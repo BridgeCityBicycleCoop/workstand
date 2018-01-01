@@ -17,3 +17,5 @@ export const checkCpic = createAction('check cpic');
 export const changeState = createAction('change bike.state');
 export const fetchValidateState = createAction('fetch validate state');
 export const setAsyncErrors = createAction('set bike.form.asyncErrors');
+export const setFilter = createAction('set bikes.filters');
+export const resetFilters = createAction('reset bikes.filters');

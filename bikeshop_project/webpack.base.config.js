@@ -8,6 +8,7 @@ module.exports = {
   entry: {
     signin: './assets/js/index',
     members: './assets/js/members/index',
+    bikes: './assets/js/bikes/index',
     babelPolyfill: 'babel-polyfill',
   },
 

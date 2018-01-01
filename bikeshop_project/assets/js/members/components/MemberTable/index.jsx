@@ -36,7 +36,7 @@ export default class MemberTable extends React.Component {
   }
 
   componentDidMount() {
-    fetch('/api/v1/members/')
+    fetch('/api/v1/members/', { credentials: 'same-origin' })
       .then(checkStatus)
       .then(parseJSON)
       .then((data) => {
@@ -63,11 +63,12 @@ export default class MemberTable extends React.Component {
     const value = this.state.searchText.trim();
     const self = this;
 
-    fetch(`/members/search/${value}/`)
+    fetch(`/members/search/${value}/`, { credentials: 'same-origin' })
       .then((response) => {
         if (response.status === 200) {
           return response.json();
         }
+
         throw new Error('Bad response from server');
       })
       .then((data) => {
@@ -77,15 +78,11 @@ export default class MemberTable extends React.Component {
             error: '',
             filteredMembers: this.state.members.filter((member) => {
               const ids = data.results.map(m => m.id);
-              console.log(ids);
-
-              if (ids.indexOf(member.id) !== -1) {
-                return member;
-              }
+              return ids.indexOf(member.id) !== -1;
             }),
           });
         } else {
-          self.setState({ ...this.state, error: 'Member not found.' });
+          self.setState({ ...this.state, filteredMembers: [], error: 'Member not found.' });
         }
       });
   }
@@ -142,7 +139,7 @@ export default class MemberTable extends React.Component {
               {memberRows.length && !this.state.searchText ?
               memberRows :
               <TableRow>
-                <TableRowColumn>{'Members loading.'}</TableRowColumn>
+                <TableRowColumn>{this.state.error || 'Members loading.'}</TableRowColumn>
               </TableRow>
             }
             </TableBody>

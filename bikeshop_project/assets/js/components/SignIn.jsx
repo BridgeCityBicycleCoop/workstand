@@ -1,5 +1,5 @@
 import fetch from 'isomorphic-fetch';
-import moment from 'moment';
+import moment from 'moment-timezone';
 import React from 'react';
 import RaisedButton from 'material-ui/RaisedButton';
 import Dialog from 'material-ui/Dialog';
@@ -182,7 +182,6 @@ export default class SignIn extends React.Component {
               searchText={this.state.searchText}
             />
           </div>
-
           <div className="mdl-cell mdl-cell--4-col">
             <Purpose
               handleChange={this.handlePurposeChoice}

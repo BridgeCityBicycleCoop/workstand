@@ -3,7 +3,7 @@ import FloatingActionButton from 'material-ui/FloatingActionButton';
 import _ from 'lodash';
 import React, { PropTypes } from 'react';
 import { Table, TableBody, TableHeader, TableHeaderColumn, TableRow, TableRowColumn } from 'material-ui/Table';
-import moment from 'moment';
+import moment from 'moment-timezone';
 
 const styles = {
   suspended: {
@@ -32,15 +32,7 @@ const styles = {
   },
 };
 
-export default class SignedInList extends React.Component {
-  static propTypes = {
-    members: PropTypes.arrayOf(PropTypes.shape({
-      id: PropTypes.number,
-      purpose: PropTypes.string,
-      at: PropTypes.instanceOf(moment),
-    })),
-  }
-
+class SignedInList extends React.Component {
   constructor(props) {
     super(props);
     this.state = { tick: 0 };
@@ -112,8 +104,16 @@ export default class SignedInList extends React.Component {
             }
           </TableBody>
         </Table>
-
       </div>
     );
   }
 }
+
+SignedInList.propTypes = {
+  members: PropTypes.arrayOf(PropTypes.shape({
+    id: PropTypes.number,
+    purpose: PropTypes.string,
+    at: PropTypes.instanceOf(moment),
+  })),
+};
+export default SignedInList;

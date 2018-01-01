@@ -33,9 +33,12 @@ INSTALLED_APPS = [
     'webpack_loader',
     'compressor',
     'rest_framework',
+    'channels',
+    'django_fsm',
 
     'registration',
     'core',
+    'bike',
 ]
 
 MIDDLEWARE_CLASSES = [
@@ -160,3 +163,28 @@ HAYSTACK_SIGNAL_PROCESSOR = 'haystack.signals.RealtimeSignalProcessor'
 
 LOGIN_REDIRECT_URL = 'home'
 LOGIN_URL = 'login'
+
+REST_FRAMEWORK = {
+    # Use Django's standard `django.contrib.auth` permissions,
+    # or allow read-only access for unauthenticated users.
+    'DEFAULT_PERMISSION_CLASSES': [
+        'rest_framework.permissions.IsAuthenticated'
+    ],
+    'DEFAULT_AUTHENTICATION_CLASSES': (
+            'rest_framework.authentication.SessionAuthentication',
+            'rest_framework.authentication.BasicAuthentication',
+            'rest_framework_jwt.authentication.JSONWebTokenAuthentication',
+        ),
+}
+
+DATE_INPUT_FORMATS = ['iso-8601']
+
+CHANNEL_LAYERS = {
+    "default": {
+        "BACKEND": "asgi_redis.RedisChannelLayer",
+        "CONFIG": {
+            "hosts": [os.environ.get('REDIS_URL', 'redis://redis:6379')],
+        },
+        "ROUTING": "bike.routing.channel_routing",
+    },
+}

@@ -47,12 +47,12 @@
           <a class="mdl-navigation__link" href="{% url 'home' %}"><i class="mdl-color-text--blue-grey-400 material-icons" role="presentation">home</i>Home</a>
           <a class="mdl-navigation__link" href="{% url 'member_new' %}"><i class="mdl-color-text--blue-grey-400 material-icons" role="presentation">person</i>New Member</a>
           <a class="mdl-navigation__link" href="{% url 'members' %}"><i class="mdl-color-text--blue-grey-400 material-icons" role="presentation">people</i>Members</a>
+          <a class="mdl-navigation__link" href="{% url 'bikes' %}"><i class="mdl-color-text--blue-grey-400 material-icons" role="presentation">directions_bike</i>Bikes</a>
           <div class="mdl-layout-spacer"></div>
 {#          <a class="mdl-navigation__link" href=""><i class="mdl-color-text--blue-grey-400 material-icons" role="presentation">help_outline</i><span class="visuallyhidden">Help</span></a>#}
         </nav>
       </div>
 {% endblock %}
-
 
 {% block content %}
     <div id="root"></div>
@@ -60,7 +60,7 @@
 {% endblock %}
 
 {% block scripts %}
-    {% render_bundle 'babelPolyfill' %}
+{#    {% render_bundle 'babelPolyfill' %}#}
     {% if DEBUG %}
         {% render_bundle 'webpack' %}
     {% endif %}

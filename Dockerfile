@@ -17,6 +17,9 @@ RUN bower install --allow-root
 ADD ./bikeshop_project/package.json package.json
 RUN npm install --unsafe-perm
 RUN npm run build-production
-RUN DJANGO_SETTINGS_MODULE=bikeshop.settings.production python manage.py test
+ARG mailchimp_api_key=''
+ENV MAILCHIMP_API_KEY=$mailchimp_api_key
+ARG django_secret_key='super-secret-key'
+ENV DJANGO_SECRET_KEY=$django_secret_key
 CMD 'bash -c "PYTHONUNBUFFERED=TRUE python manage.py migrate --no-input && python manage.py collectstatic --no-input && python manage.py rebuild_index --noinput && gunicorn --log-file=- -b 0.0.0.0:8000 bikeshop.wsgi:application"'
 EXPOSE 8000

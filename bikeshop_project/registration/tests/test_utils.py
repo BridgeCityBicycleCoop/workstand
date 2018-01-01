@@ -13,9 +13,9 @@ class GetSignedInMembersTests(TestCase):
     def setUp(self):
         self.now = timezone.now()
 
-        self.member1 = mommy.make(model=Member)
-        self.member2 = mommy.make(model=Member)
-        self.member3 = mommy.make(model=Member)
+        self.member1 = mommy.make(Member)
+        self.member2 = mommy.make(Member)
+        self.member3 = mommy.make(Member)
 
         three_hours_ago = self.now - timedelta(hours=3)
         five_hours_ago = self.now - timedelta(hours=5)
@@ -66,7 +66,7 @@ class CheckMemberSignedIn(TestCase):
         """
         Returns false when member is not signed-in
         """
-        not_signed_member = mommy.make(model=Member)
+        not_signed_member = mommy.make(Member)
         result = member_signed_in(not_signed_member)
 
         self.assertFalse(result)
@@ -76,7 +76,7 @@ class CheckMemberSignedIn(TestCase):
         Returns true when member is signed-in
         """
 
-        member = mommy.make(model=Member)
+        member = mommy.make(Member)
         Visit.objects.create(member=member, purpose=Visit.DONATE)
         result = member_signed_in(member)
 

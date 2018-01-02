@@ -30,7 +30,7 @@ const styles = {
 
 const validate = (values) => {
   const errors = {};
-  const requiredFields = ['serial_number', 'colour'];
+  const requiredFields = ['serial_number', 'colour', 'source'];
 
   requiredFields.forEach((field) => {
     if (!values[field]) {
@@ -266,7 +266,7 @@ const BikeFormComponent = ({
             type="submit"
             label="Save"
             default
-            disabled={pristine || submitting || invalid}
+            disabled={pristine || submitting}
           />
         </div>
       </div>

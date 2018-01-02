@@ -19,7 +19,7 @@ export default handleActions(
   {
     [setBikes]: (state, action) => ({
       ...state,
-      entities: action.payload.entities.bikes,
+      entities: action.payload.entities.bikes || {},
     }),
     [setBikesIsFetching]: (state, action) => ({
       ...state,

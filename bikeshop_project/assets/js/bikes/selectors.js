@@ -3,7 +3,7 @@ import curry from 'lodash/fp/curry';
 import { SIZE_ALL, STATE_ALL } from './constants';
 
 export const getEditBikeId = state => state.bikes.form.bike;
-export const getBike = state => state.bikes.entities[getEditBikeId(state)];
+export const getBike = state => state.bikes.entities[getEditBikeId(state)] || {};
 export const getFilterSizes = state => state.bikes.filters.sizes;
 export const getBikes = state => values(state.bikes.entities);
 export const filterSize = curry((state, bikes) => {

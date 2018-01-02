@@ -119,11 +119,6 @@ class BikeTableComponent extends React.Component {
         <div className="mdl-grid">
           <div className="mdl-cell mdl-cell--12-col">
             <h3>Bikes</h3>
-            {/* <div style={{ display: 'flex', justifyContent: 'flex-end', marginBottom: -8 }}>
-              <FloatingActionButton onTouchTap={this.handleOpenCreate}>
-                <ContentAdd />
-              </FloatingActionButton>
-            </div> */}
             <Controls
               setSizeFilter={this.props.setSizeFilter}
               sizeFilters={this.props.sizeFilters}

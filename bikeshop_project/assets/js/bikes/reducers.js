@@ -12,7 +12,7 @@ import {
   resetFilters,
   setFilterSerial,
 } from './actions';
-import { SIZE_ALL, STATE_AVAILABLE } from './constants';
+import { SIZE_ALL, STATE_AVAILABLE, STATE_RECEIVED, STATE_ASSESSED } from './constants';
 // import { start } from 'repl';
 
 export default handleActions(
@@ -88,7 +88,7 @@ export default handleActions(
     fetchFailed: undefined,
     filters: {
       sizes: [SIZE_ALL],
-      states: [STATE_AVAILABLE],
+      states: [STATE_RECEIVED, STATE_ASSESSED, STATE_AVAILABLE],
       serial: '',
     },
   },

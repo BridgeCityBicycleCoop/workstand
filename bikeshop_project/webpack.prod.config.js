@@ -29,14 +29,14 @@ config.plugins = config.plugins.concat([
 
 // Add a loader for JSX files
 config.module.loaders.push(
-  { test: /\.jsx?$/, exclude: /node_modules/, loader: 'babel' },
-  {
-    test: /(\.scss|\.css)$/,
-    loader: ExtractTextPlugin.extract(
-      'style',
-      'css?sourceMap&modules&importLoaders=1&localIdentName=[name]__[local]___[hash:base64:5]!postcss!sass?sourceMap!toolbox'
-    ),
-  }
+  // { test: /\.jsx?$/, exclude: /node_modules/, loader: 'babel' },
+  // {
+  //   test: /(\.scss|\.css)$/,
+  //   loader: ExtractTextPlugin.extract(
+  //     'style',
+  //     'css?sourceMap&modules&importLoaders=1&localIdentName=[name]__[local]___[hash:base64:5]!postcss!sass?sourceMap!toolbox'
+  //   ),
+  // }
 );
 
 module.exports = config;

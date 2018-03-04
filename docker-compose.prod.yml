@@ -1,31 +1,43 @@
 version: "2"
 services:
-  nginx:
-    build:
-      context: docker/nginx
-    image: bcbc/nginx:production
-    ports:
-      - "80:80"
-      - "443:443"
-    volumes_from:
-      - workstand:ro
-    volumes:
-      - certs:/etc/letsencrypt
-    restart: always
-    networks:
-      - default
-    links:
-      - workstand
+#  nginx:
+#    build:
+#      context: docker/nginx
+#    image: bcbc/nginx:production
+#    ports:
+#      - "80:80"
+#      - "443:443"
+#    volumes_from:
+#      - workstand:ro
+#    volumes:
+#      - certs:/etc/letsencrypt
+#    restart: always
+#    networks:
+#      - default
+#    links:
+#      - workstand
   workstand:
     build:
       context: .
       dockerfile: Dockerfile
     image: bcbc/workstand:production
-#    env_file:
-#      - workstand.env
-    command: 'bash -c "PYTHONUNBUFFERED=TRUE python manage.py migrate --no-input && python manage.py collectstatic --no-input && python manage.py rebuild_index --noinput && gunicorn --log-file=- -b 0.0.0.0:8000 bikeshop.wsgi:application"'
+    command: 'bash /code/entrypoint-interface.sh'
     environment:
       - DJANGO_SETTINGS_MODULE=bikeshop.settings.production
+      - PYTHONUNBUFFERED=TRUE
+    ports:
+      - "8000:8000"
+    volumes:
+      - static:/code/static
+  worker:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    image: bcbc/workstand:production
+    command: 'bash /code/entrypoint-worker.sh'
+    environment:
+      - DJANGO_SETTINGS_MODULE=bikeshop.settings.production
+      - PYTHONUNBUFFERED=TRUE
     volumes:
       - static:/code/static
   redis:

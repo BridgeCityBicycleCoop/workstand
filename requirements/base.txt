@@ -15,6 +15,6 @@ PyYAML
 djangorestframework-jwt==1.11.0 # Updated from 1.9.0
 django-multiselectfield==0.1.7 # Updated from 0.1.4
 mailchimp3==2.0.14 # Updated from 2.0.11
-channels
+channels==1.1.8
 asgi-redis
 beautifulsoup4

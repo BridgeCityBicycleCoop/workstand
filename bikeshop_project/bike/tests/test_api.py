@@ -73,9 +73,6 @@ class TestBikeApi(test.TestCase):
 
         self.assertEqual(result.status_code, status.HTTP_400_BAD_REQUEST)
 
-    # TODO: We now do async validation, so tests that rely on validation to prevent a transition do not work.
-    # In the future, these tests should be removed.
-
     # def test_assessed_cannot_transition(self):
     #     bike = mommy.make('bike.Bike')
     #     client = APIClient()

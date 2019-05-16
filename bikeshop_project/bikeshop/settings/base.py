@@ -78,12 +78,8 @@ WSGI_APPLICATION = 'bikeshop.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.postgresql',
-        'NAME': 'postgres',
-        'USER': 'postgres',
-        'HOST': 'db',
-        'PORT': '5432',
-        'PASSWORD': 'password'
+        'ENGINE': 'django.db.backends.sqlite3',
+        'NAME': 'workstand',
     }
 }
 
@@ -180,12 +176,10 @@ REST_FRAMEWORK = {
 
 DATE_INPUT_FORMATS = ['iso-8601']
 
+
 CHANNEL_LAYERS = {
     "default": {
-        "BACKEND": "asgi_redis.RedisChannelLayer",
-        "CONFIG": {
-            "hosts": [os.environ.get('REDIS_URL', 'redis://redis:6379')],
-        },
+        "BACKEND": "asgiref.inmemory.ChannelLayer",
         "ROUTING": "bike.routing.channel_routing",
     },
 }

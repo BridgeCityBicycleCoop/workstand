@@ -1,20 +1,31 @@
-language: generic
-services:
-  - docker
-before_install:
-  - docker build --build-arg mailchimp_api_key=$MAILCHIMP_API_KEY --build-arg django_secret_key=$DJANGO_SECRET_KEY -t bcbc/workstand:production .
-  - docker-compose -f docker-compose.yml -f docker-compose.prod.yml run workstand python manage.py test
-  - docker-compose -f docker-compose.yml -f docker-compose.prod.yml run workstand npm test -- --ci
-branches:
-  only:
-  - master
-after_success:
-  - BRANCH=${TRAVIS_PULL_REQUEST_BRANCH:-$TRAVIS_BRANCH}
-  - echo $BRANCH
-  - if [ "$BRANCH" == "master" ]; then
-    docker login -u="$DOCKER_USERNAME" -p="$DOCKER_PASSWORD";
-    docker push bcbc/workstand:production;
-    fi
+jobs:
+  include:
+    - stage: test
+      name: "Back End Tests"
+      language: python
+      python:
+        - "3.6.6"
+      cache: pip
+      install:
+        - cd bikeshop_project && npm install
+        - cd ..
+        - pip install pipenv
+        - pipenv install --dev
+        - cd bikeshop_project
+      script:
+        - pipenv run ./manage.py test
+    - stage: test
+      name: "Front End Tests"
+      language: node_js
+      node_js:
+        - "7.9.0"
+      cache: npm
+      install:
+        - cd bikeshop_project && npm install
+      script:
+       - npm test
 notifications:
   slack:
-    secure: n2tF/UW/3cnLgqxU0iq6M6mXoYitXgv4x8Iqv9uFuO6AXJktKADVbSeHVmeDVJu7vlyexytpN7BfJ2W0rbMB5Q+yef3TmWhc5P0MWRR3J+QwbLXdqBIP2tku69OK2aUEcxPvoJZLtDKdfNTt9vtQurGC9kbJ+MKmU0Sm+MFrrxrM4D7/74rynbhppMnwcwouVgzdfmJOt0gc0ySZlWqOacUSOVZxhpJ6aqABkFHWbIzO9LHXBwFLJU3oa8poFg51AYx2cuy7PjHfMtEt2i5bHXPR0NkVm4UMbtmkLvvmHLErS1tAHUgWnLAKAL8i7j8hsKWjBc/+0Pwz7t4j5M79+XcF78dS7VQOzmrP/TdyWfsN4rZeUvl+b+owZKLv1uLG6kQhRI332fzCwtK+VejtBtjdoC9nq1KTOIHa6y10aswqGgfsPL4+6UOke/LZsgb9fqfiB44TYkn0dgfh1J/3P+hNtLOsm1Q2IZQvDU97CqdavfAlye4uKC/WlnY3fXeISEMeE57ZAu8Tz4IKrAIbg7mt7qFTmNqxUIvzfWO5ZaMQZhncRfIMajAUigXr9XjRkewo9cxF2cuDwllTVeY5MTrq8hTqlr0g/N5njS72KkLAzaXKUmzyTpfndrGKH5K2XiSGlpgOZ6ao/FOKr3TmzNV5fiOsLEr9Y2+Q3bgknOE=
+    rooms:
+      - secure: "n2tF/UW/3cnLgqxU0iq6M6mXoYitXgv4x8Iqv9uFuO6AXJktKADVbSeHVmeDVJu7vlyexytpN7BfJ2W0rbMB5Q+yef3TmWhc5P0MWRR3J+QwbLXdqBIP2tku69OK2aUEcxPvoJZLtDKdfNTt9vtQurGC9kbJ+MKmU0Sm+MFrrxrM4D7/74rynbhppMnwcwouVgzdfmJOt0gc0ySZlWqOacUSOVZxhpJ6aqABkFHWbIzO9LHXBwFLJU3oa8poFg51AYx2cuy7PjHfMtEt2i5bHXPR0NkVm4UMbtmkLvvmHLErS1tAHUgWnLAKAL8i7j8hsKWjBc/+0Pwz7t4j5M79+XcF78dS7VQOzmrP/TdyWfsN4rZeUvl+b+owZKLv1uLG6kQhRI332fzCwtK+VejtBtjdoC9nq1KTOIHa6y10aswqGgfsPL4+6UOke/LZsgb9fqfiB44TYkn0dgfh1J/3P+hNtLOsm1Q2IZQvDU97CqdavfAlye4uKC/WlnY3fXeISEMeE57ZAu8Tz4IKrAIbg7mt7qFTmNqxUIvzfWO5ZaMQZhncRfIMajAUigXr9XjRkewo9cxF2cuDwllTVeY5MTrq8hTqlr0g/N5njS72KkLAzaXKUmzyTpfndrGKH5K2XiSGlpgOZ6ao/FOKr3TmzNV5fiOsLEr9Y2+Q3bgknOE="
+    on_success: always

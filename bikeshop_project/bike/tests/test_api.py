@@ -5,6 +5,7 @@ from model_mommy import mommy
 from rest_framework import status
 from rest_framework.test import APIClient
 
+from bike.factories import BikeFactory
 from bike.models import Bike, BikeState
 from registration.models import Member
 
@@ -24,7 +25,7 @@ class TestBikeApi(test.TestCase):
         self.assertEqual(result.status_code, status.HTTP_200_OK)
 
     def test_returns_bikes(self):
-        mommy.make("bike.bike", 10)
+        BikeFactory.create_batch(10)
         client = APIClient()
         client.force_authenticate(user=self.user, token="blah")
         result = client.get("/api/v1/bikes/")
@@ -56,7 +57,7 @@ class TestBikeApi(test.TestCase):
         self.assertEqual(bike.serial_number, result.data["serial_number"])
 
     def test_update_partial_created_at(self):
-        bike = mommy.make("bike.Bike")
+        bike = BikeFactory.create()
         client = APIClient()
         client.force_authenticate(user=self.user, token="blah")
         data = {"state": BikeState.ASSESSED, "created_at": timezone.now().isoformat()}
@@ -65,7 +66,7 @@ class TestBikeApi(test.TestCase):
         self.assertEqual(result.status_code, status.HTTP_400_BAD_REQUEST)
 
     def test_update_partial_state(self):
-        bike = mommy.make("bike.Bike")
+        bike = BikeFactory.create()
         client = APIClient()
         client.force_authenticate(user=self.user, token="blah")
         data = {"state": BikeState.CLAIMED}
@@ -360,7 +361,7 @@ class TestBikeApi(test.TestCase):
             "cpic_searched_at": timezone.now(),
             "stolen": True,
         }
-        bike = Bike.objects.create(**data)
+        bike = BikeFactory.create(**data)
         client = APIClient()
         client.force_authenticate(user=self.user, token="blah")
         result = client.put(f"/api/v1/bikes/{bike.id}/stolen/")
@@ -375,7 +376,7 @@ class TestBikeApi(test.TestCase):
             "source": Bike.COS_BIKE_DIVERSION_PILOT,
             "size": Bike.SMALL,
         }
-        Bike.objects.create(**data)
+        BikeFactory.create(**data)
         client = APIClient()
         client.force_authenticate(user=self.user, token="blah")
         result = client.get(f"/api/v1/bikes/1/validate/?transition=assessed")
@@ -392,10 +393,9 @@ class TestBikeApi(test.TestCase):
             "size": Bike.SMALL,
             "state": BikeState.RECEIVED,
             "cpic_searched_at": None,
-            "serial_number": "123",
             "stolen": False,
         }
-        Bike.objects.create(**data)
+        BikeFactory.create(**data)
         client = APIClient()
         client.force_authenticate(user=self.user, token="blah")
         result = client.get(f"/api/v1/bikes/1/validate/?transition=available")
@@ -417,29 +417,7 @@ class TestBikeApi(test.TestCase):
             "last_worked_on": timezone.now() - timedelta(weeks=1),
             "state": BikeState.CLAIMED,
         }
-        bike = Bike.objects.create(**data)
-        client = APIClient()
-        client.force_authenticate(user=self.user, token="blah")
-        result = client.get(f"/api/v1/bikes/1/validate/?transition=available")
-
-        self.assertEqual(result.status_code, status.HTTP_400_BAD_REQUEST)
-        self.assertTrue(result.data["form_errors"])
-
-    def test_validate_available_claimed_worked_on_one_week_ago(self):
-        member = mommy.make(Member)
-        data = {
-            "colour": "black",
-            "make": "Miyata",
-            "source": Bike.COS_BIKE_DIVERSION_PILOT,
-            "size": Bike.SMALL,
-            "cpic_searched_at": timezone.now(),
-            "serial_number": "123",
-            "stolen": False,
-            "claimed_by": member,
-            "last_worked_on": timezone.now() - timedelta(weeks=1),
-            "state": BikeState.CLAIMED,
-        }
-        Bike.objects.create(**data)
+        BikeFactory.create(**data)
         client = APIClient()
         client.force_authenticate(user=self.user, token="blah")
         result = client.get(f"/api/v1/bikes/1/validate/?transition=available")
@@ -461,7 +439,7 @@ class TestBikeApi(test.TestCase):
             "last_worked_on": timezone.now() - timedelta(weeks=4, seconds=1.0),
             "state": BikeState.CLAIMED,
         }
-        Bike.objects.create(**data)
+        BikeFactory.create(**data)
         client = APIClient()
         client.force_authenticate(user=self.user, token="blah")
         result = client.get(f"/api/v1/bikes/1/validate/?transition=available")
@@ -479,7 +457,7 @@ class TestBikeApi(test.TestCase):
             "stolen": True,
             "state": BikeState.RECEIVED,
         }
-        Bike.objects.create(**data)
+        BikeFactory.create(**data)
         client = APIClient()
         client.force_authenticate(user=self.user, token="blah")
         result = client.get(f"/api/v1/bikes/1/validate/?transition=available")

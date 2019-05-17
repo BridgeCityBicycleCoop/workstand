@@ -1,5 +1,6 @@
 from unittest.mock import patch
 
+from channels.test import ChannelTestCase
 from django.test import TestCase
 from model_mommy import mommy
 
@@ -7,7 +8,7 @@ from bike.consumers import check_cpic
 from bike.models import Bike
 
 
-class TestBikeSignals(TestCase):
+class TestBikeSignals(ChannelTestCase):
     @patch("bike.consumers._is_stolen")
     def test_check_cpic_stolen_bike(self, is_stolen_mock):
         bike = mommy.make(Bike)

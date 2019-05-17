@@ -29,6 +29,7 @@ django_compressor = "==2.1.1"
 Django = "==1.11.20"
 PyYAML = "*"
 Whoosh = "==2.7.4"
+factory-boy = "*"
 
 [packages]
 beautifulsoup4 = "*"

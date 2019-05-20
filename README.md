@@ -3,28 +3,33 @@
 ## Quick Install (Project Setup)
 
 1.  `$ git clone git@github.com:BridgeCityBicycleCoop/workstand.git`
-2. `$ cd workstand/bikeshop_project`
-3. `$ npm install`
-4. `$ docker-machine start && eval $(docker-machine env)`
-5. `$ cd .. && docker-compose -f docker-compose.yml -f docker-compose.dev.yml build`
-6. `$ docker-compose -f docker-compose.yml -f docker-compose.dev.yml run workstand python manage.py migrate`
-7. `$ docker-compose -f docker-compose.yml -f docker-compose.dev.yml run workstand python manage.py loaddata fixtures.yaml`
-8. `docker-compose -f docker-compose.yml -f docker-compose.dev.yml up`
-9. Visit http://192.168.99.100:8000/ (`docker-machine ls` to see IP address)
-10. Login with `u: admin@workstand.dev`and `p: bike!bike!`
-11. Stop docker any time with `docker-compose -f docker-compose.yml -f docker-compose.dev.yml down`
+2. `$ cd workstand`
+3. `$ brew install pyenv`
+4. `$ brew install pipenv`
+5. `$ pyenv install 3.6.6`
+6. `$ pipenv install --python 3.6.6 --dev`
+7. `$ pipenv shell`
+8. `$ cd bikeshop_project`
+9. `$ npm install`
+10. `$ ./manage.py migrate`
+11. `$ ./manage.py loaddata fixtures.yaml`
+12. `$ ./manage.py runserver`
+13. `$ npm start` _open a new terminal session to run this in workstand/bikeshop_project_
+14. Visit http://localhost:8000/
+15. Login with `u: admin@workstand.dev`and `p: bike!bike!`
 
 ## Quick Start
 
-1. `$ cd workstand`
-2. `$ docker-machine start && eval $(docker-machine env)`
-3. `$ docker-compose -f docker-compose.yml -f docker-compose.dev.yml up`
-4. Stop docker at any time with `docker-compose -f docker-compose.yml -f docker-compose.dev.yml down`
+1. `$ cd workstand/bikeshop_project`
+2. `$ ./manage.py run server`
+3. `$ npm start` _open a new terminal session to run this_
 
 **Requirements**
 
-1. docker (ie: brew install docker)
-2. docker-compose (ie: brew install docker-compose)
-3. docker-machine (ie: brew install docker-machine)
-4. virtualbox (ie: brew install caskroom/cask/virtualbox)
-5. Node and NPM (installed in quick install)
+1. npm
+2. pyenv (>= 1.2.11)
+3. pipenv (>= 2018.11.26)
+
+## Depency Problems
+1. `zipimport.ZipImportError: can't decompress data; zlib not available`
+  - Looks like you are missing headers in Mac Os. Following the solution provided in [this StackOverflow solution](stackoverflow.com/questions/52741673/how-can-i-install-zlib-on-mac-os-x-mojave-10-14).

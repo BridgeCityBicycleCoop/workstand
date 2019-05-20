@@ -34,6 +34,7 @@ factory-boy = "*"
 [packages]
 beautifulsoup4 = "*"
 channels = "==1.1.8"
+django-cors-headers = "*"
 django-fsm = "==2.6.0"
 django-haystack = "==2.6.1"
 django-libsass = "==0.7"

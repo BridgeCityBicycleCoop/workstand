@@ -66,6 +66,7 @@ whitenoise = "*"
 algoliasearch = "==1.10.0"
 django-haystack-algolia = {editable = true,git = "https://github.com/drwlrsn/django-haystack-algolia.git",ref = "django-1.19"}
 #haystack-algolia = {editable = true,path = "./../django-haystack-algolia"} # Keep this around to update backend.
+django-waffle = "==0.16.0"
 
 [requires]
 python_version = "3.6"

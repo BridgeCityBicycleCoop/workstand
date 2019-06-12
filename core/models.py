@@ -55,6 +55,9 @@ class Visit(models.Model):
     VISIT = "VISIT"
     DONATE = "DONATE"
     STAFF = "STAFF"
+    PARTS = "PARTS"
+    BUY_BIKE = "BUY_BIKE"
+    TOUR = "TOUR"
 
     visit_choices = (
         (VOLUNTEER, "volunteer"),
@@ -64,6 +67,9 @@ class Visit(models.Model):
         (VISIT, "visit"),
         (DONATE, "donate"),
         (STAFF, "staff"),
+        (PARTS, "parts"),
+        (BUY_BIKE, "buy bike"),
+        (TOUR, "tour / visit"),
     )
 
     member = models.ForeignKey("registration.Member", on_delete=models.CASCADE)

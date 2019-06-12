@@ -1,6 +1,7 @@
 from django.forms import ModelForm, EmailInput, TextInput, DateInput, CheckboxInput, BooleanField, Textarea, DateField, CheckboxSelectMultiple
 from django.utils import timezone
 from registration.models import Member
+from core.models import Visit
 
 
 class MemberForm(ModelForm):
@@ -56,3 +57,11 @@ class MemberForm(ModelForm):
         if commit:
             instance.save()
         return instance
+
+class VisitForm(ModelForm):
+
+    class Meta:
+        model = Visit
+        fields = ['purpose', 'member']
+        exclude = ('member',)
+

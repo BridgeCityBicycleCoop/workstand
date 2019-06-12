@@ -171,3 +171,14 @@ class TestMemberSignIn(TestCase):
 
         response = c.post(url, data={'id': self.members[0].id, 'purpose': 'BUILD'})
         self.assertEqual(response.status_code, 201)
+
+    def test_signin_purpose_others(self):
+        """
+        Sign-in with 'BUY_BIKE' works.
+        """
+        url = reverse('member_signin')
+        c = Client()
+        c.force_login(self.user)
+
+        response = c.post(url, data={'id': self.members[0].id, 'purpose': 'BUY_BIKE'})
+        self.assertEqual(response.status_code, 201)

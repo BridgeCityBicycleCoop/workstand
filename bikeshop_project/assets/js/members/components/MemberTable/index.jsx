@@ -40,7 +40,14 @@ export default class MemberTable extends React.Component {
       .then(checkStatus)
       .then(parseJSON)
       .then((data) => {
-        this.setState({ members: data });
+        console.log('RESPONSE FRONT END');
+        console.log(data);
+        let is_active_filter_data = data.filter(function(item){
+          return item.is_active;
+        });
+        console.log('FILTERED ARRAY');
+        console.log(is_active_filter_data);
+        this.setState({ members: is_active_filter_data });
         console.log('request succeeded with JSON response', data);
       })
       .catch((error) => {

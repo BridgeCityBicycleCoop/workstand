@@ -16,7 +16,7 @@ const Purpose = ({ initialValue, handleChange }) => (
     <MenuItem value={'STAFF'} primaryText="Staff" />
     <MenuItem value={'PARTS'} primaryText="Parts" />
     <MenuItem value={'BUY_BIKE'} primaryText="Buy Bike" />
-    <MenuItem value={'TOUR / VISIT'} primaryText="Tour / Visit" />
+    <MenuItem value={'TOUR'} primaryText="Tour / Visit" />
   </SelectField>
 );
 

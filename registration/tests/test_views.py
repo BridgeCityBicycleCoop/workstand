@@ -5,7 +5,7 @@ from datetime import datetime, timedelta
 from django.core.urlresolvers import reverse
 from django.http import JsonResponse
 from django.test import Client, TestCase
-
+from rest_framework.exceptions import ValidationError
 from core.models import Visit
 from model_mommy import mommy
 
@@ -191,5 +191,5 @@ class TestMemberSignIn(TestCase):
         c = Client()
         c.force_login(self.user)
 
-        response = c.post(url, data={'id': self.members[0].id, 'purpose': 'Nothing'})
+        response = c.post(url, data={'id': self.members[0].id, 'purpose': 'NotValid'})
         self.assertEqual(response.status_code, 400)

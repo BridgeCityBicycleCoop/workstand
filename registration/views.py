@@ -1,7 +1,7 @@
 import json
 
 from django.contrib.auth.decorators import login_required
-from django.core.exceptions import ObjectDoesNotExist, ValidationError
+from django.core.exceptions import ObjectDoesNotExist
 from django.core.urlresolvers import reverse
 from django.http import HttpResponse, HttpResponseRedirect, JsonResponse
 from django.shortcuts import get_object_or_404
@@ -15,7 +15,7 @@ from rest_framework import viewsets
 from rest_framework import status
 from rest_framework.renderers import JSONRenderer
 from rest_framework.serializers import ModelSerializer
-
+from rest_framework.exceptions import ValidationError
 from core.models import Visit, Membership
 from registration.utils import signin_member, get_signed_in_members
 from .serializers import MemberSerializer
@@ -90,7 +90,7 @@ class MemberSignIn(View):
             membership = Membership.objects.select_related('payment').filter(member=member).last()
         except ObjectDoesNotExist:
             membership = None
-        except ValidationError as err:
+        except ValidationError:
             return JsonResponse(data=dict(), status=status.HTTP_400_BAD_REQUEST)
 
         membership_dict = dict(renewed_at=membership.renewed_at, payment=membership.payment.type,

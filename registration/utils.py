@@ -3,6 +3,8 @@ from typing import Optional
 
 from django.db.models import QuerySet
 from django.utils import timezone
+from rest_framework.exceptions import ValidationError
+from django.forms import ModelForm
 
 from core.models import Visit
 from registration.models import Member
@@ -11,6 +13,11 @@ from registration.models import Member
 class AlreadySignedInError(ValueError):
     pass
 
+class VisitForm(ModelForm):
+
+    class Meta:
+        model = Visit
+        fields = ('member', 'purpose')
 
 def signin_member(member: Member, purpose: str) -> Visit:
     """
@@ -21,7 +28,14 @@ def signin_member(member: Member, purpose: str) -> Visit:
     :raise: `AlreadySignedInError` or `ValidationError`
     """
     if not member_signed_in(member):
-        return Visit.objects.create(member=member, purpose=purpose)
+        instance = Visit.objects.create(member=member, purpose=purpose)
+        instance.full_clean()
+        return instance
+        # form = VisitForm(instance=instance)
+        # if form.is_valid():
+        #     return instance
+        # else:
+        #     raise ValidationError(instance)
 
     raise AlreadySignedInError
 

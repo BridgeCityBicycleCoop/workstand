@@ -98,7 +98,7 @@ class TestMemberSearchView(TestCase):
         self.assertTrue([result['name'] for result in results
                         if 'Some Thing' in result['name']])
 
-
+_PURPOSE = 'VOLUNTEER'
 
 class TestMemberSignIn(TestCase):
     def setUp(self):
@@ -115,7 +115,7 @@ class TestMemberSignIn(TestCase):
         response = c.post(url,
                           data={
                                 'id': self.members[0].id,
-                                'purpose': Visit.visit_choices[0]
+                                'purpose': _PURPOSE
                                  })
         visit = Visit.objects.filter(member=self.members[0]).first()
 
@@ -144,10 +144,10 @@ class TestMemberSignIn(TestCase):
         """
         for member in self.members:
             if member is self.members[0]:
-                Visit.objects.create(member=member, purpose=Visit.visit_choices[0],
+                Visit.objects.create(member=member, purpose=_PURPOSE,
                                      created_at=datetime.now() - timedelta(hours=5))
             else:
-                Visit.objects.create(member=member, purpose=Visit.visit_choices[0])
+                Visit.objects.create(member=member, purpose=_PURPOSE)
 
         url = reverse('member_signin')
         c = Client()
@@ -172,7 +172,7 @@ class TestMemberSignIn(TestCase):
         response = c.post(url, data={'id': self.members[0].id, 'purpose': 'BUILD'})
         self.assertEqual(response.status_code, 201)
 
-    def test_signin_purpose_others(self):
+    def test_signin_purpose_buy(self):
         """
         Sign-in with 'BUY_BIKE' works.
         """
@@ -182,3 +182,14 @@ class TestMemberSignIn(TestCase):
 
         response = c.post(url, data={'id': self.members[0].id, 'purpose': 'BUY_BIKE'})
         self.assertEqual(response.status_code, 201)
+
+    def test_signin_purpose_not_valid(self):
+        """
+        Sign-in with 'others' fails.
+        """
+        url = reverse('member_signin')
+        c = Client()
+        c.force_login(self.user)
+
+        response = c.post(url, data={'id': self.members[0].id, 'purpose': 'Nothing'})
+        self.assertEqual(response.status_code, 400)

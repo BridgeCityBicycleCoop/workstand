@@ -98,8 +98,6 @@ class TestMemberSearchView(TestCase):
         self.assertTrue([result['name'] for result in results
                         if 'Some Thing' in result['name']])
 
-_PURPOSE = 'VOLUNTEER'
-
 class TestMemberSignIn(TestCase):
     def setUp(self):
         self.user = mommy.make(CustomUser)
@@ -115,7 +113,7 @@ class TestMemberSignIn(TestCase):
         response = c.post(url,
                           data={
                                 'id': self.members[0].id,
-                                'purpose': _PURPOSE
+                                'purpose': Visit.visit_choices[0][0]
                                  })
         visit = Visit.objects.filter(member=self.members[0]).first()
 
@@ -144,10 +142,10 @@ class TestMemberSignIn(TestCase):
         """
         for member in self.members:
             if member is self.members[0]:
-                Visit.objects.create(member=member, purpose=_PURPOSE,
+                Visit.objects.create(member=member, purpose=Visit.visit_choices[0][0],
                                      created_at=datetime.now() - timedelta(hours=5))
             else:
-                Visit.objects.create(member=member, purpose=_PURPOSE)
+                Visit.objects.create(member=member, purpose=Visit.visit_choices[0][0])
 
         url = reverse('member_signin')
         c = Client()

@@ -7,11 +7,9 @@ jobs:
         - "3.6.6"
       cache: pip
       install:
-        - cd bikeshop_project && npm install
-        - cd ..
+        - npm install
         - pip install pipenv
         - pipenv install --dev
-        - cd bikeshop_project
       script:
         - pipenv run ./manage.py test
     - stage: test
@@ -21,7 +19,7 @@ jobs:
         - "7.9.0"
       cache: npm
       install:
-        - cd bikeshop_project && npm install
+        - npm install
       script:
        - npm test
 notifications:

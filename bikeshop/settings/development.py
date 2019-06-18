@@ -48,5 +48,5 @@ CORS_ORIGIN_ALLOW_ALL = True
 
 ALLOWED_HOSTS = ["workstand.docker", "localhost", "192.168.99.100"]
 
-MAILCHIMP_API_KEY = os.environ.get("MAILCHIMP_API_KEY")
+MAILCHIMP_API_KEY = None
 MAILCHIMP_USERNAME = "drew@bcbc.bike"

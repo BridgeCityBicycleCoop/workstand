@@ -1,6 +1,9 @@
 import os
+import re
 import sys
 import rollbar
+
+import dj_database_url
 
 from .base import *  # noqa
 
@@ -8,12 +11,14 @@ from .base import *  # noqa
 # SECURITY WARNING: keep the secret key used in production secret!
 WSGI_APPLICATION = "bikeshop.wsgi.application"
 
-SECRET_KEY = os.environ.get("DJANGO_SECRET_KEY", "secret")
+SECRET_KEY = os.environ["SECRET_KEY"]
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = False
 
-ALLOWED_HOSTS = ["shop.bcbc.bike"]
+DATABASES = {"default": dj_database_url.config(conn_max_age=600, ssl_require=True)}
+
+ALLOWED_HOSTS = ["shop.bcbc.bike", "warm-wildwood-83351.herokuapp.com"]
 
 LOGGING = {
     "version": 1,
@@ -46,6 +51,21 @@ WEBPACK_LOADER = {
     }
 }
 
+CACHES = {
+    "default": {
+        "BACKEND": "redis_cache.RedisCache",
+        "LOCATION": os.environ.get("REDIS_URL"),
+    }
+}
+
+CHANNEL_LAYERS = {
+    "default": {
+        "BACKEND": "asgi_redis.RedisChannelLayer",
+        "CONFIG": {"hosts": [os.environ.get("REDIS_URL")],},
+        "ROUTING": "bike.routing.channel_routing",
+    },
+}
+
 # Covers regular testing and django-coverage
 if "test" in sys.argv or "test_coverage" in sys.argv:
     DATABASES["default"]["ENGINE"] = "django.db.backends.sqlite3"  # noqa
@@ -53,12 +73,26 @@ if "test" in sys.argv or "test_coverage" in sys.argv:
 MIDDLEWARE_CLASSES += ["rollbar.contrib.django.middleware.RollbarNotifierMiddleware"]
 
 ROLLBAR = {
-    "access_token": "91808a727b9a4679a89720132071391a",
+    "access_token": os.environ.get("ROLLBAR_ACCESS_TOKEN"),
     "environment": "production",
     "root": BASE_DIR,
+    "ignorable_404_urls": (re.compile("/members/signin/"),),
 }
+
+HAYSTACK_CONNECTIONS = {
+    "default": {
+        "ENGINE": "haystack_algolia.algolia_backend.AlgoliaEngine",
+        "APP_ID": "I0KTPJJPRU",
+        "API_KEY": os.environ.get("ALGOLIA_API_KEY"),
+        "INDEX_NAME_PREFIX": "prod_workstand_",
+        "TIMEOUT": 60 * 5,
+    }
+}
+
+COMPRESS_ENABLED = True
+COMPRESS_OFFLINE = True
 
 rollbar.init(**ROLLBAR)
 
 MAILCHIMP_API_KEY = os.environ.get("MAILCHIMP_API_KEY")
-MAILCHIMP_USERNAME = "drew@bcbc.bike"
+MAILCHIMP_USERNAME = os.environ.get("MAILCHIMP_USERNAME")

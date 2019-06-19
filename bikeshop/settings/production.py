@@ -79,7 +79,11 @@ CHANNEL_LAYERS = {
 if 'test' in sys.argv or 'test_coverage' in sys.argv:
     DATABASES['default']['ENGINE'] = 'django.db.backends.sqlite3'  # noqa
 
-MIDDLEWARE_CLASSES += ['rollbar.contrib.django.middleware.RollbarNotifierMiddleware']
+MIDDLEWARE_CLASSES += [
+    # https://warehouse.python.org/project/whitenoise/
+    'whitenoise.middleware.WhiteNoiseMiddleware',
+    'rollbar.contrib.django.middleware.RollbarNotifierMiddleware'
+]
 
 ROLLBAR = {
     'access_token': os.environ.get('ROLLBAR_ACCESS_TOKEN'),

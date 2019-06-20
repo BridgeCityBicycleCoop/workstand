@@ -6,7 +6,7 @@ const config = require('./webpack.base.config.js');
 config.output.path = require('path').resolve('./assets/dist');
 
 config.plugins = config.plugins.concat([
-  new BundleTracker({ filename: './webpack-stats-prod.json' }),
+  new BundleTracker({ filename: 'webpack-stats-prod.json' }),
   new ExtractTextPlugin('react-toolbox.css', { allChunks: true }),
 
   // removes a lot of debugging code in React

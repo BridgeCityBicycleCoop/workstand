@@ -4,8 +4,8 @@
   "description": "A membership management app for the BCBC.",
   "main": "index.js",
   "scripts": {
-    "build": "node_modules/.bin/webpack --config webpack.config.js --progress --colors",
-    "build-production": "node_modules/.bin/webpack --config webpack.prod.config.js --progress --colors",
+    "build:dev": "node_modules/.bin/webpack --config webpack.dev.config.js --progress --colors",
+    "build": "node_modules/.bin/webpack --config webpack.prod.config.js --progress --colors",
     "watch": "node server.js",
     "test": "jest"
   },
@@ -18,10 +18,12 @@
     "js-cookie": "^2.1.3",
     "json-loader": "^0.5.4",
     "lodash": "^4.17.4",
+    "material-design-lite": "^1.3.0",
     "material-ui": "^0.19.1",
     "moment": "^2.13.0",
     "moment-timezone": "^0.5.13",
     "node-sass": "^4.12.0",
+    "normalize.css": "^4.1.1",
     "normalizr": "^3.2.2",
     "react": "^15.4.1",
     "react-addons-css-transition-group": "^15.4.2",
@@ -34,9 +36,7 @@
     "redux-saga": "^0.14.3",
     "revalidate": "^1.2.0",
     "webpack": "1.13.1",
-    "webpack-bundle-tracker": "0.0.93",
-    "material-design-lite": "^1.3.0",
-    "normalize.css": "^4.1.1"
+    "webpack-bundle-tracker": "0.0.93"
   },
   "devDependencies": {
     "babel": "^6.5.2",

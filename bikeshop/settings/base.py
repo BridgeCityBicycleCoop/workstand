@@ -23,6 +23,7 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 # Application definition
 
 INSTALLED_APPS = [
+    'channels',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -33,8 +34,8 @@ INSTALLED_APPS = [
     'webpack_loader',
     'compressor',
     'rest_framework',
-    'channels',
     'django_fsm',
+    'waffle',
 
     'registration',
     'core',
@@ -50,6 +51,7 @@ MIDDLEWARE_CLASSES = [
     'django.contrib.auth.middleware.SessionAuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'waffle.middleware.WaffleMiddleware',
 ]
 
 ROOT_URLCONF = 'bikeshop.urls'
@@ -130,7 +132,7 @@ STATICFILES_DIRS = [
     os.path.join(BASE_DIR, '../assets')
 ]
 
-STATIC_ROOT = 'static'
+STATIC_ROOT = os.path.join(BASE_DIR, '../static')
 STATIC_URL = '/static/'
 
 AUTH_USER_MODEL = 'registration.CustomUser'

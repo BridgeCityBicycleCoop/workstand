@@ -9,14 +9,13 @@
 5. `$ pyenv install 3.6.6`
 6. `$ pipenv install --python 3.6.6 --dev`
 7. `$ pipenv shell`
-8. `$ cd bikeshop_project`
-9. `$ npm install`
-10. `$ ./manage.py migrate`
-11. `$ ./manage.py loaddata fixtures.yaml`
-12. `$ ./manage.py runserver`
-13. `$ npm start` _open a new terminal session to run this in workstand/bikeshop_project_
-14. Visit http://localhost:8000/
-15. Login with `u: admin@workstand.dev`and `p: bike!bike!`
+8. `$ npm install`
+9. `$ ./manage.py migrate`
+10. `$ ./manage.py loaddata fixtures.yaml`
+11. `$ ./manage.py runserver`
+12. `$ npm start` _open a new terminal session to run this in workstand/bikeshop_project_
+13. Visit http://localhost:8000/
+14. Login with `u: admin@workstand.dev`and `p: bike!bike!`
 
 ## Quick Start
 

@@ -11,6 +11,7 @@ jobs:
         - pip install pipenv
         - pipenv install --dev
       script:
+        - pipenv run ./manage.py makemigrations --check
         - pipenv run ./manage.py test
     - stage: test
       name: "Front End Tests"

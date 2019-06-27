@@ -12,9 +12,10 @@ from django.views.generic import TemplateView, View
 from haystack.query import SearchQuerySet
 from rest_framework import serializers
 from rest_framework import viewsets
+from rest_framework import status
 from rest_framework.renderers import JSONRenderer
 from rest_framework.serializers import ModelSerializer
-
+from rest_framework.exceptions import ValidationError
 from core.models import Visit, Membership
 from registration.utils import signin_member, get_signed_in_members
 from .serializers import MemberSerializer
@@ -84,11 +85,14 @@ class MemberSignIn(View):
 
     def post(self, request):
         member = get_object_or_404(Member, id=request.POST.get('id'))
-        visit = signin_member(member, request.POST.get('purpose'))
         try:
+            visit = signin_member(member, request.POST.get('purpose'))
             membership = Membership.objects.select_related('payment').filter(member=member).last()
         except ObjectDoesNotExist:
             membership = None
+        except ValidationError:
+            return JsonResponse(data=dict(), status=status.HTTP_400_BAD_REQUEST)
+
         membership_dict = dict(renewed_at=membership.renewed_at, payment=membership.payment.type,
                                expires_at=membership.expires_at) if membership else None
         data = dict(results=dict(id=member.id, first_name=member.first_name, last_name=member.last_name,

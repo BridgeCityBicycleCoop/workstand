@@ -5,7 +5,7 @@ from datetime import datetime, timedelta
 from django.core.urlresolvers import reverse
 from django.http import JsonResponse
 from django.test import Client, TestCase
-
+from rest_framework.exceptions import ValidationError
 from core.models import Visit
 from model_mommy import mommy
 
@@ -98,8 +98,6 @@ class TestMemberSearchView(TestCase):
         self.assertTrue([result['name'] for result in results
                         if 'Some Thing' in result['name']])
 
-
-
 class TestMemberSignIn(TestCase):
     def setUp(self):
         self.user = mommy.make(CustomUser)
@@ -115,7 +113,7 @@ class TestMemberSignIn(TestCase):
         response = c.post(url,
                           data={
                                 'id': self.members[0].id,
-                                'purpose': Visit.visit_choices[0]
+                                'purpose': Visit.visit_choices[0][0]
                                  })
         visit = Visit.objects.filter(member=self.members[0]).first()
 
@@ -144,10 +142,10 @@ class TestMemberSignIn(TestCase):
         """
         for member in self.members:
             if member is self.members[0]:
-                Visit.objects.create(member=member, purpose=Visit.visit_choices[0],
+                Visit.objects.create(member=member, purpose=Visit.visit_choices[0][0],
                                      created_at=datetime.now() - timedelta(hours=5))
             else:
-                Visit.objects.create(member=member, purpose=Visit.visit_choices[0])
+                Visit.objects.create(member=member, purpose=Visit.visit_choices[0][0])
 
         url = reverse('member_signin')
         c = Client()
@@ -171,3 +169,25 @@ class TestMemberSignIn(TestCase):
 
         response = c.post(url, data={'id': self.members[0].id, 'purpose': 'BUILD'})
         self.assertEqual(response.status_code, 201)
+
+    def test_signin_purpose_buy(self):
+        """
+        Sign-in with 'BUY_BIKE' works.
+        """
+        url = reverse('member_signin')
+        c = Client()
+        c.force_login(self.user)
+
+        response = c.post(url, data={'id': self.members[0].id, 'purpose': 'BUY_BIKE'})
+        self.assertEqual(response.status_code, 201)
+
+    def test_signin_purpose_not_valid(self):
+        """
+        Sign-in with 'others' fails.
+        """
+        url = reverse('member_signin')
+        c = Client()
+        c.force_login(self.user)
+
+        response = c.post(url, data={'id': self.members[0].id, 'purpose': 'NotValid'})
+        self.assertEqual(response.status_code, 400)

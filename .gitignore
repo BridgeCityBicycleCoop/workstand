@@ -17,5 +17,6 @@ npm-debug.log
 webpack-stats-prod.json
 /workstand.env
 /static/
+workstand
 
 \.vscode/

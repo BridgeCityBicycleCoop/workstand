@@ -1,20 +1,19 @@
 import logging
-from channels import Channel
+
+from asgiref.sync import async_to_sync
+from channels.layers import get_channel_layer
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import get_object_or_404
 from django.utils.decorators import method_decorator
 from django.views.generic import TemplateView
 from django_fsm import can_proceed
-from rest_framework import viewsets
+from rest_framework import status, viewsets
 from rest_framework.decorators import detail_route
 from rest_framework.exceptions import ValidationError
 from rest_framework.response import Response
 
 from bike.models import Bike, BikeState
 from bike.serializers import BikeSerializer
-
-from rest_framework import status
-
 from registration.models import Member
 
 logger = logging.getLogger("bikeshop")
@@ -144,7 +143,12 @@ class BikeViewSet(viewsets.ModelViewSet):
     @detail_route(methods=["put"])
     def check(self, request, pk):
         bike = get_object_or_404(Bike, pk=pk)
-        message = {"bike_id": pk, "serial_number": bike.serial_number}
-        Channel("check-cpic").send(message)
+        message = {
+            "type": "check.cpic",
+            "bike_id": pk,
+            "serial_number": bike.serial_number,
+        }
+        channel_layer = get_channel_layer()
+        async_to_sync(channel_layer.send)("check-cpic", message)
 
         return Response({"status": "pending"})

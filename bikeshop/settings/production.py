@@ -16,7 +16,7 @@ SECRET_KEY = os.environ["SECRET_KEY"]
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = False
 
-DATABASES = {"default": dj_database_url.config(conn_max_age=600, ssl_require=True)}
+DATABASES = {"default": dj_database_url.config(ssl_require=True)}
 
 ALLOWED_HOSTS = ["shop.bcbc.bike", "warm-wildwood-83351.herokuapp.com"]
 
@@ -60,9 +60,8 @@ CACHES = {
 
 CHANNEL_LAYERS = {
     "default": {
-        "BACKEND": "asgi_redis.RedisChannelLayer",
+        "BACKEND": "channels_redis.core.RedisChannelLayer",
         "CONFIG": {"hosts": [os.environ.get("REDIS_URL")],},
-        "ROUTING": "bike.routing.channel_routing",
     },
 }
 

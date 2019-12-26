@@ -17,7 +17,11 @@ LOGGING = {
     "version": 1,
     "disable_existing_loggers": False,
     "handlers": {
-        "console": {"class": "logging.StreamHandler", "formatter": "verbose"},
+        "console": {
+            "level": "DEBUG",
+            "class": "logging.StreamHandler",
+            "formatter": "verbose",
+        },
     },
     "formatters": {
         "verbose": {"format": "%(levelname)s %(asctime)s %(pathname)s %(message)s"},
@@ -33,6 +37,11 @@ LOGGING = {
         },
     },
 }
+
+if DEBUG:
+    # make all loggers use the console.
+    for logger in LOGGING["loggers"]:
+        LOGGING["loggers"][logger]["handlers"] = ["console"]
 
 INSTALLED_APPS += [  # noqa
     "corsheaders",
@@ -50,3 +59,10 @@ ALLOWED_HOSTS = ["workstand.docker", "localhost", "192.168.99.100"]
 
 MAILCHIMP_API_KEY = None
 MAILCHIMP_USERNAME = "drew@bcbc.bike"
+
+CHANNEL_LAYERS = {
+    "default": {
+        "BACKEND": "channels_redis.core.RedisChannelLayer",
+        "CONFIG": {"hosts": [("127.0.0.1", 6379)],},
+    },
+}

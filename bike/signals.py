@@ -1,4 +1,5 @@
-from channels import Channel
+from asgiref.sync import async_to_sync
+from channels.layers import get_channel_layer
 from django.db.models.signals import post_save
 from django.dispatch import receiver
 
@@ -13,4 +14,5 @@ def bike_save_handler(sender, instance, created, **kwargs):
             "serial_number": instance.serial_number,
         }
 
-        Channel("check-cpic").send(message)
+        channel_layer = get_channel_layer()
+        async_to_sync(channel_layer.send)("check-cpic", message)

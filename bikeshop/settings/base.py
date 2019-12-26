@@ -162,10 +162,7 @@ REST_FRAMEWORK = {
 
 DATE_INPUT_FORMATS = ["iso-8601"]
 
-
+ASGI_APPLICATION = "bike.routing.application"
 CHANNEL_LAYERS = {
-    "default": {
-        "BACKEND": "asgiref.inmemory.ChannelLayer",
-        "ROUTING": "bike.routing.channel_routing",
-    },
+    "default": {"BACKEND": "channels.layers.InMemoryChannelLayer",},
 }

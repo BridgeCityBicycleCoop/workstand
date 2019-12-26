@@ -47,9 +47,9 @@ INSTALLED_APPS += [  # noqa
     "corsheaders",
 ]
 
-MIDDLEWARE_CLASSES.insert(0, "django.middleware.common.CommonMiddleware")  # noqa
+MIDDLEWARE.insert(0, "django.middleware.common.CommonMiddleware")  # noqa
 
-# MIDDLEWARE_CLASSES += [
+# MIDDLEWARE += [
 #     'debug_toolbar.middleware.DebugToolbarMiddleware'
 # ]
 

@@ -2,7 +2,7 @@ import json
 import logging
 from datetime import datetime, timedelta
 
-from django.core.urlresolvers import reverse
+from django.urls import reverse
 from django.http import JsonResponse
 from django.test import Client, TestCase
 from rest_framework.exceptions import ValidationError

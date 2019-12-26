@@ -23,6 +23,18 @@
 2. `$ ./manage.py run server`
 3. `$ npm start` _open a new terminal session to run this_
 
+## Enable Async Tasks
+
+This is needed for the experimental bike-inventory feature.
+
+### Requirements
+
+1. Docker
+
+### Start a worker process
+
+1. `./manage.py runworker -v3 --settings bikeshop.settings.development check-cpic`
+
 **Requirements**
 
 1. npm

@@ -1,5 +1,8 @@
 import os
-from channels.asgi import get_channel_layer
+import django
+from channels.routing import get_default_application
 
-os.environ.setdefault("DJANGO_SETTINGS_MODULE", "bikeshop.settings.production")
-channel_layer = get_channel_layer()
+os.environ.get("DJANGO_SETTINGS_MODULE", "bikeshop.settings.production")
+os.environ['ASGI_THREADS']="4" # See https://stackoverflow.com/a/54272368/1179222
+django.setup()
+application = get_default_application()

@@ -69,7 +69,7 @@ CHANNEL_LAYERS = {
 if "test" in sys.argv or "test_coverage" in sys.argv:
     DATABASES["default"]["ENGINE"] = "django.db.backends.sqlite3"  # noqa
 
-MIDDLEWARE_CLASSES += [
+MIDDLEWARE += [
     # https://warehouse.python.org/project/whitenoise/
     "whitenoise.middleware.WhiteNoiseMiddleware",
     "rollbar.contrib.django.middleware.RollbarNotifierMiddleware",

@@ -8,7 +8,7 @@ from django.utils.decorators import method_decorator
 from django.views.generic import TemplateView
 from django_fsm import can_proceed
 from rest_framework import status, viewsets
-from rest_framework.decorators import detail_route
+from rest_framework.decorators import action
 from rest_framework.exceptions import ValidationError
 from rest_framework.response import Response
 
@@ -52,13 +52,13 @@ class BikeViewSet(viewsets.ModelViewSet):
             return Response(new_serializer.data)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
-    @detail_route(methods=["get"])
+    @action(detail=True, methods=["get"])
     def validate(self, request, pk):
         bike = get_object_or_404(Bike, pk=pk)
         self.__validate(bike, request.query_params["transition"])
         return Response(None, status=status.HTTP_204_NO_CONTENT)
 
-    @detail_route(methods=["put"])
+    @action(detail=True, methods=["put"])
     def assessed(self, request, pk):
         bike = get_object_or_404(Bike, pk=pk)
         state = BikeState.ASSESSED.lower()
@@ -71,7 +71,7 @@ class BikeViewSet(viewsets.ModelViewSet):
         serializer = BikeSerializer(bike, context={"request": request})
         return Response(serializer.data, status=status.HTTP_200_OK)
 
-    @detail_route(methods=["put"])
+    @action(detail=True, methods=["put"])
     def available(self, request, pk):
         bike = get_object_or_404(Bike, pk=pk)
         state = BikeState.AVAILABLE
@@ -86,7 +86,7 @@ class BikeViewSet(viewsets.ModelViewSet):
         serializer = BikeSerializer(bike, context={"request": request})
         return Response(serializer.data, status=status.HTTP_200_OK)
 
-    @detail_route(methods=["put"])
+    @action(detail=True, methods=["put"])
     def claim(self, request, pk):
         bike = get_object_or_404(Bike, pk=pk)
         member = get_object_or_404(Member, id=request.data.get("member"))
@@ -100,7 +100,7 @@ class BikeViewSet(viewsets.ModelViewSet):
         serializer = BikeSerializer(bike, context={"request": request})
         return Response(serializer.data, status=status.HTTP_200_OK)
 
-    @detail_route(methods=["put"])
+    @action(detail=True, methods=["put"])
     def purchase(self, request, pk):
         bike = get_object_or_404(Bike, pk=pk)
         member = get_object_or_404(Member, id=request.data.get("member"))
@@ -114,7 +114,7 @@ class BikeViewSet(viewsets.ModelViewSet):
         serializer = BikeSerializer(bike, context={"request": request})
         return Response(serializer.data, status=status.HTTP_200_OK)
 
-    @detail_route(methods=["put"])
+    @action(detail=True, methods=["put"])
     def scrap(self, request, pk):
         bike = get_object_or_404(Bike, pk=pk)
         state = BikeState.SCRAPPED
@@ -127,7 +127,7 @@ class BikeViewSet(viewsets.ModelViewSet):
         serializer = BikeSerializer(bike, context={"request": request})
         return Response(serializer.data, status=status.HTTP_200_OK)
 
-    @detail_route(methods=["put"])
+    @action(detail=True, methods=["put"])
     def stolen(self, request, pk):
         bike = get_object_or_404(Bike, pk=pk)
         state = BikeState.TRANSFERRED_TO_POLICE
@@ -140,7 +140,7 @@ class BikeViewSet(viewsets.ModelViewSet):
         serializer = BikeSerializer(bike, context={"request": request})
         return Response(serializer.data, status=status.HTTP_200_OK)
 
-    @detail_route(methods=["put"])
+    @action(detail=True, methods=["put"])
     def check(self, request, pk):
         bike = get_object_or_404(Bike, pk=pk)
         message = {

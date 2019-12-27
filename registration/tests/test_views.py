@@ -8,6 +8,7 @@ from django.test import Client, TestCase
 from rest_framework.exceptions import ValidationError
 from core.models import Visit
 from model_mommy import mommy
+from django.utils import timezone
 
 from ..models import CustomUser, Member
 
@@ -146,7 +147,7 @@ class TestMemberSignIn(TestCase):
                 Visit.objects.create(
                     member=member,
                     purpose=Visit.visit_choices[0][0],
-                    created_at=datetime.now() - timedelta(hours=5),
+                    created_at=timezone.now() - timedelta(hours=5),
                 )
             else:
                 Visit.objects.create(member=member, purpose=Visit.visit_choices[0][0])

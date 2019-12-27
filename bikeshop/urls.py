@@ -16,7 +16,7 @@ Including another URLconf
 from django.conf import settings
 from django.conf.urls import include, url
 from django.contrib import admin
-from django.contrib.auth.views import login, logout_then_login
+from django.contrib.auth.views import logout_then_login, LoginView
 from django.contrib.staticfiles.urls import staticfiles_urlpatterns
 from rest_framework import routers
 from rest_framework_jwt.views import obtain_jwt_token
@@ -39,7 +39,7 @@ for routeList in routeLists:
 
 urlpatterns = [
     url(r"^", include(core_urls)),
-    url(r"^login/", login, {"template_name": "login.html"}, name="login"),
+    url(r"^login/", LoginView.as_view(), {"template_name": "login.html"}, name="login"),
     url(r"^logout/", logout_then_login, name="logout"),
     url(r"^members/", include(member_urls)),
     url(r"^bikes/", include(bike_urls)),

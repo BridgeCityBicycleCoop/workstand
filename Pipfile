@@ -44,6 +44,10 @@ requests = "*"
 rollbar = "==0.14.1"
 service-identity = "*"
 whitenoise = "*"
+black = "*"
 
 [requires]
 python_version = "3.6"
+
+[pipenv]
+allow_prereleases = true

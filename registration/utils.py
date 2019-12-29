@@ -34,7 +34,7 @@ def signin_member(member: Member, purpose: str) -> Visit:
 
 
 def member_signed_in(member: Member, window: int = 4) -> bool:
-    return get_signed_in_members(window=window).filter(id__in=[member.id]).exists()
+    return get_signed_in_members(window=window).filter(member_id__in=[member.id]).exists()
 
 
 def get_signed_in_members(window: int = 4, end: Optional[datetime] = None) -> QuerySet:

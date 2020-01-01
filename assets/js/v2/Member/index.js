@@ -16,7 +16,7 @@ export const Member = ({ id }) => {
     <Row>
       {member ? (
         <>
-          <Col span={12}>
+          <Col span={14}>
             <Title>
               {member.first_name} {member.last_name}
             </Title>

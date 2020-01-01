@@ -29,6 +29,7 @@ class MemberSerializer(serializers.HyperlinkedModelSerializer):
             "phone",
             "post_code",
             "preferred_name",
+            "preferred_pronoun",
             "province",
             "street",
             "suspended",

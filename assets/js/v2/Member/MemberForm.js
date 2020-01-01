@@ -133,6 +133,27 @@ const UnwrappedForm = ({ member, form }) => {
           ],
         })(<Input size="large" />)}
       </Form.Item>
+      <Form.Item
+        label={
+          <span>
+            Preferred pronoun&nbsp;
+            <Tooltip title="What prounouns do you prefer?">
+              <Icon type="question-circle-o" />
+            </Tooltip>
+          </span>
+        }
+      >
+        {getFieldDecorator('preferred_pronoun', {
+          rules: [
+            {
+              type: 'string',
+              max: 255,
+              min: 2,
+              message: 'Must be between 2 and 255 characters',
+            },
+          ],
+        })(<Input size="large" />)}
+      </Form.Item>
       <Form.Item label="Email">
         {getFieldDecorator('email', {
           rules: [
@@ -234,6 +255,9 @@ export const MemberForm = Form.create({
       last_name: Form.createFormField({
         value: props.member.last_name,
       }),
+      preferred_name: Form.createFormField({
+        value: props.member.preferred_name,
+      }),
       date_of_birth: Form.createFormField({
         value: props.member.date_of_birth
           ? moment(props.member.date_of_birth)
@@ -259,6 +283,9 @@ export const MemberForm = Form.create({
       }),
       involvement: Form.createFormField({
         value: props.member.involvement,
+      }),
+      involvement: Form.createFormField({
+        value: props.member.preferred_pronoun,
       }),
     };
   },

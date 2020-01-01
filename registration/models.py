@@ -92,6 +92,7 @@ class Member(models.Model):
     first_name = models.CharField(max_length=255, null=False, blank=False)
     last_name = models.CharField(max_length=255, null=False, blank=False)
     preferred_name = models.CharField(max_length=255, null=True, blank=True)
+    preferred_pronoun = models.CharField(max_length=255, null=True, blank=True)
     date_of_birth = models.DateField(null=True, blank=True)
     guardian_name = models.CharField(max_length=255, null=True, blank=True)
     phone = models.CharField(max_length=20, null=True, blank=True)

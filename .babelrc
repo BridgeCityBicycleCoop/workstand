@@ -1,4 +1,7 @@
 {
-  "presets": ["latest", "stage-3", "react"],
-  "plugins": ["transform-runtime"]
+  "presets": [["@babel/preset-env", {"useBuiltIns": "usage", "corejs": 3}], "@babel/preset-react"],
+  "plugins": [
+    ["import", { "libraryName": "antd", "style": "css" }], // `style: true` for less
+    "react-hot-loader/babel",
+  ]
 }

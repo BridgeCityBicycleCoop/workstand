@@ -1,55 +1,46 @@
 const path = require('path');
-const autoprefixer = require('autoprefixer');
-require('babel-polyfill');
 const ExtractTextPlugin = require('extract-text-webpack-plugin');
 
 module.exports = {
   context: __dirname,
 
   entry: {
-    signin: './assets/js/index',
-    members: './assets/js/members/index',
-    bikes: './assets/js/bikes/index',
-    babelPolyfill: 'babel-polyfill',
+    signin: [
+      'react-hot-loader/patch',
+      'webpack-dev-server/client?http://localhost:3000',
+      'webpack/hot/only-dev-server',
+      './assets/js/v2/index',
+    ],
+    // members: './assets/js/members/index',
+    // bikes: './assets/js/bikes/index',
+    // babelPolyfill: '@babel/polyfill',
   },
 
   output: {
     path: path.resolve('./assets/bundles/'),
     filename: '[name]-[hash].js',
+    publicPath: '/',
   },
 
-  plugins: [
-      new ExtractTextPlugin('react-toolbox.css', { allChunks: true }),
-  ], // add all common plugins here
+  plugins: [], // add all common plugins here
 
   module: {
-    loaders: [
+    rules: [
+      // JavaScript/JSX Files
       {
-        test: /\.json$/,
-        loader: 'json-loader',
-      },
-      {
-        test: /\.jsx?$/,
+        test: /\.js$/,
         exclude: /node_modules/,
-        loader: 'babel-loader',
-        query: {
-          presets: ['latest', 'react', 'stage-3'],
-          plugins: ['transform-runtime'],
-        },
+        use: ['babel-loader'],
       },
       {
-        test: /(\.scss|\.css)$/,
-        loader: ExtractTextPlugin.extract('style', 'css?sourceMap&modules&importLoaders=1&localIdentName=[name]__[local]___[hash:base64:5]!postcss!sass?sourceMap!toolbox')
-      }
+        test: /\.css$/i,
+        use: ['style-loader', 'css-loader'],
+      },
     ],
   },
-
   resolve: {
-    modulesDirectories: [
-      'node_modules',
-      'bower_components',
-    ],
-    extensions: ['', '.js', '.jsx', '.scss'],
+    alias: {
+      'react-dom': '@hot-loader/react-dom',
+    },
   },
-  postcss: [autoprefixer],
 };

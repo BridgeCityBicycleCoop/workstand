@@ -43,11 +43,12 @@ if DEBUG:
     for logger in LOGGING["loggers"]:
         LOGGING["loggers"][logger]["handlers"] = ["console"]
 
-INSTALLED_APPS += [  # noqa
-    "corsheaders",
-]
+# INSTALLED_APPS += [  # noqa
+#     "corsheaders",
+# ]
 
-MIDDLEWARE.insert(0, "django.middleware.common.CommonMiddleware")  # noqa
+# MIDDLEWARE.insert(1, "django.middleware.common.CommonMiddleware")  # noqa
+# MIDDLEWARE.insert(0, "corsheaders.middleware.CorsMiddleware")  # noqa
 
 # MIDDLEWARE += [
 #     'debug_toolbar.middleware.DebugToolbarMiddleware'

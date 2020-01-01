@@ -3,44 +3,6 @@
 {% load static %}
 {% load waffle_tags %}
 
-{% block header %}
-      <header class="demo-header mdl-layout__header mdl-color--grey-100 mdl-color-text--grey-600">
-        <div class="mdl-layout__header-row">
-          <span class="mdl-layout-title">BCBC</span>
-          <div class="mdl-layout-spacer"></div>
-        </div>
-      </header>
-      <div class="demo-drawer mdl-layout__drawer mdl-color--blue-grey-900 mdl-color-text--blue-grey-50">
-        <header class="demo-drawer-header">
-          <div class="demo-avatar-dropdown">
-
-            <span>{{ request.user.get_full_name }}</span>
-
-            <div class="mdl-layout-spacer"></div>
-            <button id="accbtn" class="mdl-button mdl-js-button mdl-js-ripple-effect mdl-button--icon">
-              <i class="material-icons" role="presentation">arrow_drop_down</i>
-              <span class="visuallyhidden">Accounts</span>
-            </button>
-            <ul class="mdl-menu mdl-menu--bottom-right mdl-js-menu mdl-js-ripple-effect" for="accbtn">
-              <li class="mdl-menu__item"><a href="{% url 'member_edit' member_id=request.user.id %}">Edit profile</a></li>
-              <li class="mdl-menu__item"><a href="{% url 'logout' %}">Logout</a></li>
-            </ul>
-          </div>
-        </header>
-        <nav class="demo-navigation mdl-navigation mdl-color--blue-grey-800">
-          <a class="mdl-navigation__link" href="{% url 'home' %}"><i class="mdl-color-text--blue-grey-400 material-icons" role="presentation">home</i>Home</a>
-          <a class="mdl-navigation__link" href="{% url 'member_new' %}"><i class="mdl-color-text--blue-grey-400 material-icons" role="presentation">person</i>New Member</a>
-          <a class="mdl-navigation__link" href="{% url 'members' %}"><i class="mdl-color-text--blue-grey-400 material-icons" role="presentation">people</i>Members</a>
-          {% flag "bike-management" %}
-            <a class="mdl-navigation__link" href="{% url 'bikes' %}"><i class="mdl-color-text--blue-grey-400 material-icons" role="presentation">directions_bike</i>Bikes</a>
-          {% endflag %}
-
-          <div class="mdl-layout-spacer"></div>
-{#          <a class="mdl-navigation__link" href=""><i class="mdl-color-text--blue-grey-400 material-icons" role="presentation">help_outline</i><span class="visuallyhidden">Help</span></a>#}
-        </nav>
-      </div>
-{% endblock %}
-
 {% block content %}
     <div id="root"></div>
     {% render_bundle 'signin' %}

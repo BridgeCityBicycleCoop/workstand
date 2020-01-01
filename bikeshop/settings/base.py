@@ -30,10 +30,12 @@ INSTALLED_APPS = [
     "django.contrib.sessions",
     "django.contrib.messages",
     "django.contrib.staticfiles",
+    "corsheaders",
     "haystack",
     "webpack_loader",
     "compressor",
     "rest_framework",
+    "django_filters",
     "django_fsm",
     "waffle",
     "registration",
@@ -41,9 +43,10 @@ INSTALLED_APPS = [
     "bike",
 ]
 
-MIDDLEWARE= [
+MIDDLEWARE = [
     "django.middleware.security.SecurityMiddleware",
     "django.contrib.sessions.middleware.SessionMiddleware",
+    'corsheaders.middleware.CorsMiddleware',
     "django.middleware.common.CommonMiddleware",
     "django.middleware.csrf.CsrfViewMiddleware",
     "django.contrib.auth.middleware.AuthenticationMiddleware",
@@ -157,13 +160,12 @@ REST_FRAMEWORK = {
         "rest_framework.authentication.BasicAuthentication",
         "rest_framework_jwt.authentication.JSONWebTokenAuthentication",
     ),
+    "DEFAULT_FILTER_BACKENDS": ("django_filters.rest_framework.DjangoFilterBackend",),
 }
 
 DATE_INPUT_FORMATS = ["iso-8601"]
 
 ASGI_APPLICATION = "bike.routing.application"
 CHANNEL_LAYERS = {
-    "default": {
-        "BACKEND": "channels.layers.InMemoryChannelLayer",
-    },
+    "default": {"BACKEND": "channels.layers.InMemoryChannelLayer",},
 }

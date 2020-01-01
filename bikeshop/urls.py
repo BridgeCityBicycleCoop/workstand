@@ -39,7 +39,7 @@ for routeList in routeLists:
 
 urlpatterns = [
     url(r'^', include(core_urls)),
-    url(r'^login/', LoginView.as_view(), {'template_name': 'login.html'}, name='login'),
+    url(r'^login/', LoginView.as_view(template_name='login.html'), name='login'),
     url(r'^logout/', logout_then_login, name='logout'),
     url(r'^members/', include(member_urls)),
     url(r'^bikes/', include(bike_urls)),

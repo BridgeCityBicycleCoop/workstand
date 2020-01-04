@@ -1,4 +1,4 @@
-import React, { forwardRef } from 'react';
+import React, { forwardRef, useState } from 'react';
 import {
   Form,
   Row,
@@ -9,6 +9,7 @@ import {
   Icon,
   Checkbox as AntCheckbox,
   Button,
+  Radio,
 } from 'antd';
 import moment from 'moment';
 import fetch from 'isomorphic-fetch';
@@ -18,6 +19,26 @@ const { MonthPicker } = DatePicker;
 const { TextArea } = Input;
 
 const dateFormat = 'YYYY/MM/DD';
+
+const idents = [
+  'First Nations, Métis, or Inuit',
+  'visible minority',
+  'caucasian',
+  'newcomer',
+];
+
+const genders = ['male', 'female'];
+
+const onSubmit = (url, data) =>
+  fetch(url, {
+    method: 'PUT',
+    credentials: 'same-origin',
+    headers: {
+      'Content-Type': 'application/json',
+      'X-CSRFToken': Cookie.get('csrftoken'),
+    },
+    body: JSON.stringify(data),
+  });
 
 const Checkbox = forwardRef(({ initialValue, value, onChange, text }, ref) => (
   <AntCheckbox
@@ -31,6 +52,30 @@ const Checkbox = forwardRef(({ initialValue, value, onChange, text }, ref) => (
 ));
 
 const UnwrappedForm = ({ member, form }) => {
+  const [selfIdentification, setSelfIdentification] = useState(
+    idents.includes(member.self_identification) ||
+      member.self_identification == null
+      ? member.self_identification
+      : 'other',
+  );
+  const [customSelfIdent, setCustomSelfIdent] = useState(
+    !idents.includes(member.self_identification) ||
+      member.self_identification == null
+      ? member.self_identification
+      : null,
+  );
+
+  const [gender, setGender] = useState(
+    genders.includes(member.gender) || member.gender == null
+      ? member.gender
+      : 'other',
+  );
+  const [customGender, setCustomGender] = useState(
+    !genders.includes(member.gender) || member.gender != null
+      ? member.gender
+      : null,
+  );
+
   const { getFieldDecorator } = form;
   const formItemLayout = {
     labelCol: {
@@ -56,24 +101,23 @@ const UnwrappedForm = ({ member, form }) => {
     return v1;
   };
 
+  const normalizeFormValues = values => ({
+    ...values,
+    date_of_birth: values.date_of_birth
+      ? values.date_of_birth.format('YYYY-MM-DD')
+      : null,
+    self_identification:
+      selfIdentification === 'other'
+        ? customSelfIdent
+        : values.self_identification,
+    gender: gender === 'other' ? customGender : values.gender,
+  });
+
   const handleSubmit = e => {
     e.preventDefault();
     form.validateFields((err, values) => {
       if (!err) {
-        fetch(`/api/v1/members/${member.id}/`, {
-          method: 'PUT',
-          credentials: 'same-origin',
-          headers: {
-            'Content-Type': 'application/json',
-            'X-CSRFToken': Cookie.get('csrftoken'),
-          },
-          body: JSON.stringify({
-            ...values,
-            date_of_birth: values.date_of_birth
-              ? values.date_of_birth.format('YYYY-MM-DD')
-              : null,
-          }),
-        });
+        onSubmit(`/api/v1/members/${member.id}/`, normalizeFormValues(values));
       }
     });
   };
@@ -236,6 +280,60 @@ const UnwrappedForm = ({ member, form }) => {
           </AntCheckbox.Group>,
         )}
       </Form.Item>
+      <Form.Item label="Self identification">
+        {getFieldDecorator('self_identification')(
+          <Radio.Group
+            onChange={event => {
+              setSelfIdentification(event.target.value);
+              event.target.value !== 'other' && setCustomSelfIdent(null);
+            }}
+          >
+            <Radio value="First Nations, Métis, or Inuit">
+              First Nations, Métis, or Inuit
+            </Radio>
+            <Radio value="visible minority">Visible Minority</Radio>
+            <Radio value="caucasian">Caucasian</Radio>
+            <Radio value="newcomer">Newcomer</Radio>
+            <Radio value="other" style={{ width: '50%' }}>
+              Other &nbsp;
+              <Input
+                value={customSelfIdent}
+                disabled={selfIdentification !== 'other'}
+                onChange={event =>
+                  setCustomSelfIdent(
+                    !!event.target.value ? event.target.value : null,
+                  )
+                }
+              />
+            </Radio>
+          </Radio.Group>,
+        )}
+      </Form.Item>
+      <Form.Item label="Gender">
+        {getFieldDecorator('gender')(
+          <Radio.Group
+            onChange={event => {
+              setGender(event.target.value);
+              event.target.value !== 'other' && setCustomGender(null);
+            }}
+          >
+            <Radio value="female">Female</Radio>
+            <Radio value="male">Male</Radio>
+            <Radio value="other" style={{ width: '50%' }}>
+              Other &nbsp;
+              <Input
+                value={customGender}
+                disabled={gender !== 'other'}
+                onChange={event =>
+                  setCustomGender(
+                    !!event.target.value ? event.target.value : null,
+                  )
+                }
+              />
+            </Radio>
+          </Radio.Group>,
+        )}
+      </Form.Item>
       <Form.Item wrapperCol={{ span: 12, offset: 6 }}>
         <Button type="primary" htmlType="submit">
           Save
@@ -284,8 +382,21 @@ export const MemberForm = Form.create({
       involvement: Form.createFormField({
         value: props.member.involvement,
       }),
-      involvement: Form.createFormField({
+      preferred_pronoun: Form.createFormField({
         value: props.member.preferred_pronoun,
+      }),
+      self_identification: Form.createFormField({
+        value:
+          idents.includes(props.member.self_identification) ||
+          props.member.self_identification == null
+            ? props.member.self_identification
+            : 'other',
+      }),
+      gender: Form.createFormField({
+        value:
+          genders.includes(props.member.gender) || props.member.gender == null
+            ? props.member.gender
+            : 'other',
       }),
     };
   },

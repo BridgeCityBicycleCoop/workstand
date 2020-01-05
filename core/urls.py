@@ -1,7 +1,15 @@
 from django.conf.urls import url
 
-from .views import DashboardView, NewMembershipView
+from .views import DashboardView, NewMembershipView, MembershipViewSet
+
 urlpatterns = [
-    url(r'^member/(?P<member_id>[0-9]+)/membership/new/$', NewMembershipView.as_view(), name='new_membership'),
-    url(r'^$', DashboardView.as_view(), name='home')
+    url(
+        r"^member/(?P<member_id>[0-9]+)/membership/new/$",
+        NewMembershipView.as_view(),
+        name="new_membership",
+    ),
+    url(r"^$", DashboardView.as_view(), name="home"),
 ]
+
+apiRoutes = ((r"memberships", MembershipViewSet),)
+

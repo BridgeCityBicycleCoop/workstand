@@ -6,10 +6,18 @@ const { Title } = Typography;
 
 export const Member = ({ id }) => {
   const [member, setMember] = useState(null);
+  const [memberships, setMemberships] = useState(null);
+
   useEffect(() => {
     fetch(`/api/v1/members/${id}`)
       .then(r => r.json())
       .then(member => setMember(member));
+  }, []);
+
+  useEffect(() => {
+    fetch(`/api/v1/memberships/?member_id=${id}`)
+      .then(r => r.json())
+      .then(setMemberships);
   }, []);
 
   return (
@@ -20,7 +28,7 @@ export const Member = ({ id }) => {
             <Title>
               {member.first_name} {member.last_name}
             </Title>
-            <MemberForm member={member} />
+            <MemberForm member={member} memberships={memberships} />
           </Col>{' '}
         </>
       ) : (

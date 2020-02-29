@@ -1,6 +1,7 @@
 import { Button, Col, List, Radio, Row, Typography } from 'antd';
 import React, { useState } from 'react';
 import { paymentTypes } from '../constants';
+import { Link, Router } from '@reach/router'
 
 const { Paragraph, Title } = Typography;
 
@@ -58,11 +59,9 @@ export const AddMembership = ({ onChange, onSkip }) => {
         ) : (
           <Col>
             <Button onClick={() => setAccepted(true)} type="primary">
-              Accept
+             Accept and pay for membership 
             </Button>
-            <Button type="link" onClick={onSkip}>
-              Skip
-            </Button>
+            <Link to="/">Not a member</Link>
           </Col>
         )}
       </Row>

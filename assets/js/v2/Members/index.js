@@ -1,7 +1,5 @@
-import React, { useEffect, useState } from 'react';
 import { Typography } from 'antd';
-import fetch from 'isomorphic-fetch';
-import { MembersTable } from './MembersTable';
+import React from 'react';
 
 const { Title } = Typography;
 

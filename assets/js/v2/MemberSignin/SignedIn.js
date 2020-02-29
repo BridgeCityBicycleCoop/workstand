@@ -1,6 +1,6 @@
-import React from 'react';
-import { Table, Tag, Divider } from 'antd';
 import { Link } from '@reach/router';
+import { Divider, Table, Tag } from 'antd';
+import React from 'react';
 
 export const SignedIn = ({ members = [] }) => {
   const columns = [

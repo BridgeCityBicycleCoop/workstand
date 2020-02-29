@@ -1,11 +1,12 @@
-import { hot } from 'react-hot-loader/root';
+import { Link, Router } from '@reach/router';
 import { Breadcrumb, Layout, Menu, Typography } from 'antd';
 import React from 'react';
-import { MemberSignin } from './MemberSignin';
-import { Link, Router } from '@reach/router';
+import { hot } from 'react-hot-loader/root';
+import { Member } from './Member';
 import { Members } from './Members';
 import { MembersList } from './Members/MembersList';
-import { Member } from './Member';
+import { MemberSignin } from './MemberSignin';
+import { NewMember } from './NewMember';
 
 const { Header, Content, Footer } = Layout;
 const { Title } = Typography;
@@ -26,6 +27,9 @@ const App = () => (
         <Menu.Item key="2">
           <Link to="/members">Members</Link>
         </Menu.Item>
+        <Menu.Item key="4">
+          <Link to="/members/new">New Member</Link>
+        </Menu.Item>
         <Menu.Item key="3">
           <Link to="/bikes">Bikes</Link>
         </Menu.Item>
@@ -43,6 +47,7 @@ const App = () => (
           <Members path="members">
             <MembersList path="/" />
             <Member path=":id" />
+            <NewMember path="new" />
           </Members>
         </Router>
       </div>

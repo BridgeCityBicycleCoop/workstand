@@ -21,7 +21,7 @@ export const MemberSignin = () => {
   const [selectedMember, setSelectedMember] = useState(null);
   const [currentlySignedIn, setCurrentlySignedIn] = useState([]);
 
-  useEffect(() => {
+  const fetchSignedIn = () =>
     fetch('/members/signin/')
       .then(response => response.json())
       .then(visits => {
@@ -38,9 +38,10 @@ export const MemberSignin = () => {
           })),
         );
       });
-  }, []);
 
-  const signIn = () => {
+  useEffect(fetchSignedIn, []);
+
+  const signIn = () =>
     fetch('/members/signin/', {
       method: 'post',
       body: `id=${selectedMember}&purpose=${purpose}`,
@@ -50,14 +51,13 @@ export const MemberSignin = () => {
     })
       .then(response => {
         if (response.status === 201) {
-          return response.json();
+          fetchSignedIn();
         }
         throw new Error();
       })
       .catch(() => {
         message.error('Member already signed in');
       });
-  };
 
   return (
     <div>

@@ -17,6 +17,7 @@ from rest_framework.renderers import JSONRenderer
 from rest_framework.response import Response
 from rest_framework.serializers import ModelSerializer
 from rest_framework.views import APIView
+from rest_framework.response import Response
 
 from core.models import Membership, Visit
 from registration.utils import get_signed_in_members, signin_member

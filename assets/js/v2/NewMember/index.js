@@ -9,11 +9,11 @@ const { Step } = Steps;
 const steps = [
   {
     title: 'Waiver',
-    content: () => <Waiver />,
+    content: ({onSkip}) => <Waiver onSkip={onSkip} />,
   },
   {
     title: 'Member Details',
-    content: () => <Form />,
+    content: ({onSkip}) => <Form onSkip={onSkip} />,
   },
   {
     title: 'Membership',
@@ -29,33 +29,22 @@ export const NewMember = () => {
   return (
     <div>
       <PageHeader title="New Member" subTitle="Add a new BCBC member" />
-      <Steps current={step}>
-        {steps.map(item => (
-          <Step key={item.title} title={item.title} />
-        ))}
-      </Steps>
+      <div style={{ marginBottom: '16px' }}>
+        <Steps current={step}>
+          {steps.map(item => (
+            <Step key={item.title} title={item.title} />
+          ))}
+        </Steps>
+      </div>
       <Row>
         <Col span={12} offset={6}>
           {steps[step].content({ onSkip: () => console.log('Skipped') })}
         </Col>
       </Row>
       <Row>
-        <Col span={24}>
-          {step < steps.length - 1 && (
-            <Button type="primary" onClick={next}>
-              Next
-            </Button>
-          )}
-          {step === steps.length - 1 && (
-            <Button
-              type="primary"
-              onClick={() => message.success('Processing complete!')}
-            >
-              Done
-            </Button>
-          )}
+        <Col span={4} offset={18}>
           {step > 0 && (
-            <Button style={{ marginLeft: 8 }} onClick={prev}>
+            <Button size="large" style={{ marginRight: 8 }} onClick={prev}>
               Previous
             </Button>
           )}

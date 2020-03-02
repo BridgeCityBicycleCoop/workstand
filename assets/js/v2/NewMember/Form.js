@@ -14,7 +14,7 @@ const formItemLayout = {
   },
 };
 
-const UnwrappedForm = ({ form }) => {
+const UnwrappedForm = ({ form, onSkip }) => {
   return (
     <MForm
       form={form}

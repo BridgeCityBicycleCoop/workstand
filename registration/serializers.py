@@ -3,9 +3,12 @@ from rest_framework import serializers
 from .models import Member
 from core.serializers import MembershipSerializer
 
+class ListMultipleChoiceFieldSerializer(serializers.MultipleChoiceField):
+    def to_representation(self, value):
+        return list(super().to_representation(value))
 
 class MemberSerializer(serializers.HyperlinkedModelSerializer):
-    involvement = serializers.MultipleChoiceField(
+    involvement = ListMultipleChoiceFieldSerializer(
         choices=Member.involvement_choices
     )
 

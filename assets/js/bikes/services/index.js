@@ -81,7 +81,6 @@ const Api = {
       });
   },
   changeState(id, { state, data }) {
-    debugger;
     return fetch(`/api/v1/bikes/${id}/${state}/`, {
       credentials: 'same-origin',
       method: 'PUT',

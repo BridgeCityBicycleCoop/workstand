@@ -70,7 +70,14 @@ const Checkbox = forwardRef(({ initialValue, value, onChange, text }, ref) => (
   </AntCheckbox>
 ));
 
-export const MForm = ({ formItemLayout, handleSubmit, form, member }) => {
+export const MForm = ({
+  formItemLayout,
+  handleSubmit,
+  form,
+  member,
+  isNew,
+  button,
+}) => {
   const { getFieldDecorator } = form;
 
   const [selfIdentification, setSelfIdentification] = useState(
@@ -97,9 +104,26 @@ export const MForm = ({ formItemLayout, handleSubmit, form, member }) => {
       : null,
   );
 
+  const errors = Object.entries(form.getFieldsError())
+    .filter(v => !!v[1])
+    .reduce(
+      (acc, [k, v]) => ({
+        ...acc,
+        [k]: form.isFieldTouched(k) ? form.getFieldError(k) : '',
+      }),
+      {},
+    );
+
+  const getItemValidationProps = k => ({
+    validateStatus: errors[k] ? 'error' : '',
+    help: errors[k],
+  });
   return (
     <Form {...formItemLayout} onSubmit={handleSubmit}>
-      <Form.Item label="First name">
+      <Form.Item
+        label="First name"
+        {...getItemValidationProps('first_name')}
+      >
         {getFieldDecorator('first_name', {
           rules: [
             {
@@ -112,7 +136,7 @@ export const MForm = ({ formItemLayout, handleSubmit, form, member }) => {
           ],
         })(<Input size="large" />)}{' '}
       </Form.Item>
-      <Form.Item label="Last name">
+      <Form.Item label="Last name" {...getItemValidationProps('last_name')}>
         {getFieldDecorator('last_name', {
           rules: [
             {
@@ -170,7 +194,7 @@ export const MForm = ({ formItemLayout, handleSubmit, form, member }) => {
           ],
         })(<Input size="large" />)}
       </Form.Item>
-      <Form.Item label="Email">
+      <Form.Item label="Email" {...getItemValidationProps('email')}>
         {getFieldDecorator('email', {
           rules: [
             { type: 'email', message: 'A valid email is required' },
@@ -189,7 +213,7 @@ export const MForm = ({ formItemLayout, handleSubmit, form, member }) => {
           rules: [],
         })(<DatePicker size="large" format={dateFormat} />)}
       </Form.Item>
-      <Form.Item label="Postal code">
+      <Form.Item label="Postal code" {...getItemValidationProps('post_code')}>
         {getFieldDecorator('post_code', {
           normalize: v => postCodeFormat(v),
           rules: [
@@ -206,15 +230,20 @@ export const MForm = ({ formItemLayout, handleSubmit, form, member }) => {
           ],
         })(<Input size="large" />)}
       </Form.Item>
-      <Form.Item label="Suspended">
-        {getFieldDecorator('suspended')(<Checkbox size="large" />)}
-      </Form.Item>
-      <Form.Item label="Banned">
-        {getFieldDecorator('banned')(<Checkbox size="large" />)}
-      </Form.Item>
-      <Form.Item label="Notes">
-        {getFieldDecorator('notes', {})(<TextArea size="large" />)}
-      </Form.Item>
+      {!isNew && (
+        <fieldset>
+          <Title level={4}>Member status</Title>
+          <Form.Item label="Suspended">
+            {getFieldDecorator('suspended')(<Checkbox size="large" />)}
+          </Form.Item>
+          <Form.Item label="Banned">
+            {getFieldDecorator('banned')(<Checkbox size="large" />)}
+          </Form.Item>
+          <Form.Item label="Notes">
+            {getFieldDecorator('notes', {})(<TextArea size="large" />)}
+          </Form.Item>
+        </fieldset>
+      )}
       <Form.Item label="Involvement">
         {getFieldDecorator('involvement', { initialValue: ['3a5a719017'] })(
           <AntCheckbox.Group>
@@ -310,16 +339,21 @@ export const MForm = ({ formItemLayout, handleSubmit, form, member }) => {
           </Radio.Group>,
         )}
       </Form.Item>
-      <Form.Item wrapperCol={{ span: 12, offset: 6 }}>
-        <Button type="primary" htmlType="submit">
-          Save
-        </Button>
-      </Form.Item>
+      {/* <Form.Item wrapperCol={{ span: 12, offset: 6 }}> */}
+      <Row type="flex" justify="end">
+        {button || (
+          <Button size="large" type="primary" htmlType="submit">
+            Save
+          </Button>
+        )}
+      </Row>
     </Form>
   );
 };
 
 MForm.defaultProps = {
+  button: null,
+  isNew: false,
   member: {
     gender: null,
     self_identification: null,

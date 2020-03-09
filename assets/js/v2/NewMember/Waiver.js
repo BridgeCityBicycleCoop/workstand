@@ -1,11 +1,10 @@
 import React from 'react';
-import { Typography } from 'antd';
+import { Typography, Button } from 'antd';
 
 const { Title, Paragraph } = Typography;
 
-export const Waiver = () => (
+export const Waiver = ({ onSkip }) => (
   <div>
-    <Title level={1}>Liability Waiver</Title>
     <Paragraph>
       By completing this form, I hereby assume all of the risks of participating
       and/or volunteering in the Bridge City Bicycle Co­operative. I realize
@@ -30,8 +29,10 @@ export const Waiver = () => (
       whether the cause of the claims or liability arise from the negligence,
       acts or omissions of me, a third party, or the BCBC.
     </Paragraph>
-    <Title level={2}>Human Readable Summary</Title>
-    <Title level={3}>Completing this form means you acknowledge that we can't be liable for:</Title>
+    <Title level={4}>Human Readable Summary</Title>
+    <p>
+      Completing this form means you acknowledge that we can't be liable for:
+    </p>
     <ol>
       <li>Your death</li>
       <li>Your disability</li>
@@ -40,5 +41,8 @@ export const Waiver = () => (
       <li>Theft of your bike</li>
       <li>Bad stuff because of repairs at the shop</li>
     </ol>
+    <Button size="large" type="primary" block onClick={onSkip}>
+      Accept
+    </Button>
   </div>
 );

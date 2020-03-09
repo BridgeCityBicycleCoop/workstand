@@ -9,11 +9,11 @@ const { Step } = Steps;
 const steps = [
   {
     title: 'Waiver',
-    content: ({onSkip}) => <Waiver onSkip={onSkip} />,
+    content: ({ onSkip }) => <Waiver onSkip={onSkip} />,
   },
   {
     title: 'Member Details',
-    content: ({onSkip}) => <Form onSkip={onSkip} />,
+    content: ({ onSkip }) => <Form onSkip={onSkip} />,
   },
   {
     title: 'Membership',
@@ -37,17 +37,8 @@ export const NewMember = () => {
         </Steps>
       </div>
       <Row>
-        <Col span={12} offset={6}>
-          {steps[step].content({ onSkip: () => console.log('Skipped') })}
-        </Col>
-      </Row>
-      <Row>
-        <Col span={4} offset={18}>
-          {step > 0 && (
-            <Button size="large" style={{ marginRight: 8 }} onClick={prev}>
-              Previous
-            </Button>
-          )}
+        <Col lg={{ offset: 6, span: 12 }} md={{ offset: 2, span: 22 }}>
+          {steps[step].content({ onSkip: next })}
         </Col>
       </Row>
     </div>

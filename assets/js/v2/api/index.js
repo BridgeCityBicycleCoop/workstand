@@ -4,6 +4,13 @@ import Cookies from 'js-cookie';
 const csrfToken = Cookies.get('csrftoken');
 const headers = new Headers({ 'X-CSRFToken': csrfToken, 'Content-Type': 'application/json' });
 
+const parseJson = response => {
+  if (response.status === 204) {
+    return null;
+  }
+  return response.json();
+};
+
 const checkStatus = (response) => {
   if (response.status >= 200 && response.status < 500) {
     return response;
@@ -21,7 +28,6 @@ export const createMember = (data) => fetch('/api/v1/members/', {
 })
   .then(checkStatus)
   .then(parseJson)
-  .then(d => {debugger; return d; })
   .catch((error) => {
     console.log('request failed', error);
     throw error;

@@ -1,9 +1,8 @@
 import { Button, Col, Form, message, Row, Typography } from 'antd';
 import fetch from 'isomorphic-fetch';
 import React, { useEffect, useState } from 'react';
-import { MemberSearch } from './MemberSearch';
-import { PurposeSelect } from './PurposeSelect';
 import { SignedIn } from './SignedIn';
+import { WrappedSignInForm as SignInForm } from './SignInForm';
 
 const { Title } = Typography;
 
@@ -17,8 +16,6 @@ const getStatus = member => {
 };
 
 export const MemberSignin = () => {
-  const [purpose, setPurpose] = useState('FIX');
-  const [selectedMember, setSelectedMember] = useState(null);
   const [currentlySignedIn, setCurrentlySignedIn] = useState([]);
 
   const fetchSignedIn = () =>
@@ -39,9 +36,11 @@ export const MemberSignin = () => {
         );
       });
 
-  useEffect(fetchSignedIn, []);
+  useEffect(() => {
+    fetchSignedIn();
+  }, []);
 
-  const signIn = () =>
+  const signIn = (selectedMember, purpose) =>
     fetch('/members/signin/', {
       method: 'post',
       body: `id=${selectedMember}&purpose=${purpose}`,
@@ -51,7 +50,7 @@ export const MemberSignin = () => {
     })
       .then(response => {
         if (response.status === 201) {
-          fetchSignedIn();
+          return fetchSignedIn();
         }
         throw new Error();
       })
@@ -64,25 +63,7 @@ export const MemberSignin = () => {
       <Title>Sign-in Members</Title>
       <Row gutter={[0, 16]}>
         <Col span={24}>
-          <Form
-            className="ant-advanced-search-form"
-            onSubmit={() => console.log('Submitted')}
-          >
-            {/* <Row gutter={24}></Row> */}
-            <Row gutter={16}>
-              <Col span={8}>
-                <MemberSearch onSelect={setSelectedMember} />
-              </Col>
-              <Col span={2}>
-                <PurposeSelect value={purpose} onSelect={setPurpose} />
-              </Col>
-              <Col span={8}>
-                <Button type="primary" size="large" onClick={signIn}>
-                  Sign in
-                </Button>
-              </Col>
-            </Row>
-          </Form>
+          <SignInForm onSubmit={signIn} />
         </Col>
       </Row>
       <Row gutter={[0, 16]}>

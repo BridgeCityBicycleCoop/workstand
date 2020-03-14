@@ -32,6 +32,7 @@ export const MemberSignin = () => {
             fullName: `${visit.member.first_name} ${visit.member.last_name}`,
             value: `${visit.member.first_name} ${visit.member.last_name} <${visit.member.email}>`,
             at: visit.created_at,
+            notes: visit.member.notes
           })),
         );
       });

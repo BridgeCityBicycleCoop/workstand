@@ -1,6 +1,8 @@
 import { Link } from '@reach/router';
-import { Divider, Table, Tag } from 'antd';
+import { Divider, Table, Tag, Typography } from 'antd';
 import React from 'react';
+
+const { Text } = Typography;
 
 export const SignedIn = ({ members = [] }) => {
   const columns = [
@@ -45,5 +47,14 @@ export const SignedIn = ({ members = [] }) => {
       },
     },
   ];
-  return <Table rowKey="id" columns={columns} dataSource={members} />;
+  return (
+    <Table
+      rowKey="id"
+      columns={columns}
+      dataSource={members}
+      expandedRowRender={record => {
+        return <><Text>Notes: </Text><Text type="secondary">{record.notes || "None"}</Text></>
+      }}
+    />
+  );
 };

@@ -61,7 +61,7 @@ export const MembersTable = ({ members }) => {
       dataIndex: 'name',
       render: (_, record) => `${record.firstName} ${record.lastName}`,
       filterDropdown: props => (
-        <FilterDropdown {...props} onSearch={handleSearch} />
+        <FilterDropdown {...props} />
       ),
       onFilter: (value, record) =>
         record.firstName

@@ -84,8 +84,6 @@ export const MembersTable = ({ members }) => {
         return (
           <span>
             <Link to={`/members/${v.id}`}>view profile</Link>
-            <Divider type="vertical" />
-            <a>renew membership</a>
           </span>
         );
       },

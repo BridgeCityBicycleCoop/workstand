@@ -13,16 +13,17 @@ const steps = [
   },
   {
     title: 'Member Details',
-    content: ({ onSkip }) => <Form onSkip={onSkip} />,
+    content: ({ onSkip, onSuccess }) => <Form onSkip={onSkip} onSuccess={onSuccess} />,
   },
   {
     title: 'Membership',
-    content: ({ onSkip }) => <AddMembership onSkip={onSkip} />,
+    content: ({ onSkip, member }) => <AddMembership onSkip={onSkip} member={member} />,
   },
 ];
 
 export const NewMember = () => {
   const [step, setStep] = useState(0);
+  const [member, setMember] = useState(null);
 
   const next = () => setStep(v => v + 1);
   const prev = () => setStep(v => v - 1);
@@ -38,7 +39,7 @@ export const NewMember = () => {
       </div>
       <Row>
         <Col lg={{ offset: 6, span: 12 }} md={{ offset: 2, span: 22 }}>
-          {steps[step].content({ onSkip: next })}
+          {steps[step].content({ onSkip: next, onSuccess: setMember, member })}
         </Col>
       </Row>
     </div>

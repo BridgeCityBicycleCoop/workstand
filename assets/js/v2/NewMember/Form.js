@@ -17,7 +17,7 @@ const formItemLayout = {
 const hasErrors = fieldsError =>
   Object.keys(fieldsError).some(field => fieldsError[field]);
 
-const UnwrappedForm = ({ form, onSkip }) => {
+const UnwrappedForm = ({ form, onSkip, onSuccess }) => {
   const [submitting, setSubmitting] = useState(false);
   useEffect(() => {
     form.validateFields();
@@ -46,7 +46,14 @@ const UnwrappedForm = ({ form, onSkip }) => {
             createMember({
               ...values,
               ...normalizeFormValues(values),
-            }).then(onSkip);
+            }).then(
+              (member) => {
+                debugger;
+                onSuccess(member);
+                debugger;
+                onSkip();
+              }
+            );
           }
         });
       }}

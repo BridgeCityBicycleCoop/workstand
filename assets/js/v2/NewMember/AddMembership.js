@@ -1,7 +1,8 @@
-import { Button, Col, List, Radio, Row, Typography } from 'antd';
+import { Button, Col, List, message, Radio, Row, Typography } from 'antd';
 import React, { useState } from 'react';
 import { paymentTypes } from '../constants';
-import { Link, Router } from '@reach/router'
+import { Link, navigate, Router } from '@reach/router'
+import Cookie from 'js-cookie';
 
 const { Paragraph, Title } = Typography;
 
@@ -9,7 +10,7 @@ const PaymentOptions = ({ onChange }) => {
   return (
     <div>
       <Title level={4}>Paid by</Title>
-      <Radio.Group onChange size="large">
+      <Radio.Group onChange={onChange} size="large">
         {Array.from(paymentTypes.entries()).map(p => (
           <Radio.Button value={p[0]}>{p[1]}</Radio.Button>
         ))}
@@ -18,7 +19,31 @@ const PaymentOptions = ({ onChange }) => {
   );
 };
 
-export const AddMembership = ({ onChange, onSkip }) => {
+const handleSave = async (created, type, memberId) => {
+  const response = await fetch(`/api/v1/memberships/`, {
+    method: 'POST',
+    credentials: 'same-origin',
+    headers: {
+      'Content-Type': 'application/json',
+      'X-CSRFToken': Cookie.get('csrftoken'),
+    },
+    body: JSON.stringify({
+      created_at: created,
+      payment: { type: type.payment },
+      member: memberId,
+    }),
+  });
+  if (response.ok) {
+    const body = await response.json();
+    message.success("huzzah");
+    navigate(`/`);
+  } else {
+    message.error('Unable to save membership.');
+  }
+};
+
+export const AddMembership = ({ onChange, onSkip, member}) => {
+
   const [accepted, setAccepted] = useState(false);
   return (
     <Row>
@@ -53,7 +78,11 @@ export const AddMembership = ({ onChange, onSkip }) => {
         {accepted ? (
           <Col>
             <PaymentOptions
-              onChange={onChange}
+              onChange={(event) => {
+                let paymentType = event.target.value;
+                handleSave(new Date().toISOString(),paymentType,member.id);
+              }
+            }
             />
           </Col>
         ) : (

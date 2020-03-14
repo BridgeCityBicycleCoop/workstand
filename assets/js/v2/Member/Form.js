@@ -12,7 +12,7 @@ import {
   Tooltip,
   Typography,
 } from 'antd';
-import React, { useState, forwardRef } from 'react';
+import React, { useState, forwardRef, useEffect } from 'react';
 
 const { MonthPicker } = DatePicker;
 const { TextArea } = Input;
@@ -25,10 +25,10 @@ export const normalizeFormValues = values => ({
     ? values.date_of_birth.format('YYYY-MM-DD')
     : null,
   self_identification:
-    selfIdentification === 'other'
-      ? customSelfIdent
+    values.self_identification === 'other'
+      ? values.custom_self_identification
       : values.self_identification,
-  gender: gender === 'other' ? customGender : values.gender,
+  gender: values.gender === 'other' ? values.custom_gender : values.gender,
 });
 
 const postCodeFormat = v => {
@@ -79,30 +79,19 @@ export const MForm = ({
   button,
 }) => {
   const { getFieldDecorator } = form;
+  const [isVisible, setIsVisible] = useState({});
+  const selfIdent = form.getFieldValue('self_identification');
+  const gender = form.getFieldValue('gender');
 
-  const [selfIdentification, setSelfIdentification] = useState(
-    idents.includes(member.self_identification) ||
-      member.self_identification == null
-      ? member.self_identification
-      : 'other',
-  );
-  const [customSelfIdent, setCustomSelfIdent] = useState(
-    !idents.includes(member.self_identification) ||
-      member.self_identification == null
-      ? member.self_identification
-      : null,
-  );
-
-  const [gender, setGender] = useState(
-    genders.includes(member.gender) || member.gender == null
-      ? member.gender
-      : 'other',
-  );
-  const [customGender, setCustomGender] = useState(
-    !genders.includes(member.gender) || member.gender != null
-      ? member.gender
-      : null,
-  );
+  useEffect(() => {
+    setIsVisible(v => {
+      return {
+        ...v,
+        self_identification: selfIdent == undefined ? false : !idents.includes(selfIdent),
+        gender: gender == undefined ? false : !genders.includes(gender),
+      };
+    });
+  }, []);
 
   const errors = Object.entries(form.getFieldsError())
     .filter(v => !!v[1])
@@ -120,10 +109,7 @@ export const MForm = ({
   });
   return (
     <Form {...formItemLayout} onSubmit={handleSubmit}>
-      <Form.Item
-        label="First name"
-        {...getItemValidationProps('first_name')}
-      >
+      <Form.Item label="First name" {...getItemValidationProps('first_name')}>
         {getFieldDecorator('first_name', {
           rules: [
             {
@@ -289,9 +275,14 @@ export const MForm = ({
         {getFieldDecorator('self_identification')(
           <Radio.Group
             onChange={event => {
-              setSelfIdentification(event.target.value);
-              event.target.value !== 'other' && setCustomSelfIdent(null);
+              setIsVisible(v => {
+                return {
+                  ...v,
+                  self_identification: event.target.value === 'other',
+                };
+              });
             }}
+            name="self_identification"
           >
             <Radio value="First Nations, Métis, or Inuit">
               First Nations, Métis, or Inuit
@@ -301,16 +292,9 @@ export const MForm = ({
             <Radio value="newcomer">Newcomer</Radio>
             <Radio value="other" style={{ width: '50%' }}>
               Other &nbsp;
-              <Input
-                value={customSelfIdent}
-                disabled={selfIdentification !== 'other'}
-                onChange={event =>
-                  setCustomSelfIdent(
-                    !!event.target.value ? event.target.value : null,
-                  )
-                }
-              />
             </Radio>
+            {isVisible['self_identification'] &&
+              getFieldDecorator('custom_self_identification', {})(<Input />)}
           </Radio.Group>,
         )}
       </Form.Item>
@@ -318,23 +302,20 @@ export const MForm = ({
         {getFieldDecorator('gender')(
           <Radio.Group
             onChange={event => {
-              setGender(event.target.value);
-              event.target.value !== 'other' && setCustomGender(null);
+              setIsVisible(v => {
+                return {
+                  ...v,
+                  gender: event.target.value === 'other',
+                };
+              });
             }}
           >
             <Radio value="female">Female</Radio>
             <Radio value="male">Male</Radio>
             <Radio value="other" style={{ width: '50%' }}>
               Other &nbsp;
-              <Input
-                value={customGender}
-                disabled={gender !== 'other'}
-                onChange={event =>
-                  setCustomGender(
-                    !!event.target.value ? event.target.value : null,
-                  )
-                }
-              />
+              {isVisible['gender'] &&
+                getFieldDecorator('custom_gender', {})(<Input />)}
             </Radio>
           </Radio.Group>,
         )}

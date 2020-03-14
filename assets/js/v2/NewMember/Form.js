@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { MForm } from '../Member/Form';
+import { MForm, normalizeFormValues } from '../Member/Form';
 import { Form as AntForm, Button } from 'antd';
 import { createMember } from '../api';
 
@@ -45,7 +45,7 @@ const UnwrappedForm = ({ form, onSkip }) => {
             // setSubmitting(true);
             createMember({
               ...values,
-              date_of_birth: values.date_of_birth.format('YYYY-MM-DD'),
+              ...normalizeFormValues(values),
             }).then(onSkip);
           }
         });

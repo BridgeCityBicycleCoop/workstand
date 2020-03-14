@@ -18,7 +18,7 @@ import {
 import moment from 'moment';
 import fetch from 'isomorphic-fetch';
 import Cookie from 'js-cookie';
-import { MForm, idents, genders } from './Form';
+import { MForm, idents, genders, normalizeFormValues } from './Form';
 
 const { MonthPicker } = DatePicker;
 const { TextArea } = Input;
@@ -167,10 +167,7 @@ const UnwrappedForm = ({ member, form, memberships }) => {
     e.preventDefault();
     form.validateFields((err, values) => {
       if (!err) {
-        onSubmit(
-          `/api/v1/members/${member.id}/`,
-          MForm.normalizeFormValues(values),
-        );
+        onSubmit(`/api/v1/members/${member.id}/`, normalizeFormValues(values));
       }
     });
   };
@@ -241,11 +238,21 @@ export const MemberForm = Form.create({
             ? props.member.self_identification
             : 'other',
       }),
+      custom_self_identification: Form.createFormField({
+        value: idents.includes(props.member.self_identification)
+          ? null
+          : props.member.self_identification,
+      }),
       gender: Form.createFormField({
         value:
           genders.includes(props.member.gender) || props.member.gender == null
             ? props.member.gender
             : 'other',
+      }),
+      custom_gender: Form.createFormField({
+        value: genders.includes(props.member.gender)
+          ? null
+          : props.member.gender,
       }),
     };
   },

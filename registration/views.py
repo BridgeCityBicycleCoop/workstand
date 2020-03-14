@@ -152,7 +152,7 @@ class Members(TemplateView):
 
 
 class MemberViewSet(viewsets.ModelViewSet):
-    queryset = Member.objects.all()
     serializer_class = MemberSerializer
+    queryset = Member.objects.all()
     filter_backends = [filters.SearchFilter]
     search_fields = ["first_name", "email", "last_name"]

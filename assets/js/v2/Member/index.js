@@ -1,6 +1,6 @@
-import { Col, Row, Spin, Typography, message } from 'antd';
+import { Col, message, Row, Spin, Typography } from 'antd';
 import React, { useEffect, useState } from 'react';
-import { retrieveMember, retrieveMemberships } from '../api';
+import { retrieveMember, retrieveMemberships, updateMember } from '../api';
 import { MemberForm } from './MemberForm';
 
 const { Title } = Typography;
@@ -41,7 +41,11 @@ export const Member = ({ id }) => {
         <Title>
           {member.first_name} {member.last_name}
         </Title>
-        <MemberForm member={member} memberships={memberships} />
+        <MemberForm
+          member={member}
+          memberships={memberships}
+          onSubmit={updateMember}
+        />
       </Col>{' '}
     </Row>
   ) : (

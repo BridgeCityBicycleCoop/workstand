@@ -75,3 +75,17 @@ export const retrieveMemberships = id =>
       console.log('request failed', error);
       throw error;
     });
+
+export const updateMember = (id, data) =>
+  fetch(`/api/v1/members/${id}/`, {
+    method: 'PUT',
+    credentials: 'same-origin',
+    headers,
+    body: JSON.stringify(data),
+  })
+    .then(checkStatus)
+    .then(parseJson)
+    .catch(error => {
+      console.log('request failed', error);
+      throw error;
+    });

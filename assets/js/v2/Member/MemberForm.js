@@ -26,17 +26,6 @@ const { TextArea } = Input;
 const { Title } = Typography;
 const { Option } = Select;
 
-const onSubmit = (url, data) =>
-  fetch(url, {
-    method: 'PUT',
-    credentials: 'same-origin',
-    headers: {
-      'Content-Type': 'application/json',
-      'X-CSRFToken': Cookie.get('csrftoken'),
-    },
-    body: JSON.stringify(data),
-  });
-
 const InlineMembershipForm = ({ form, onSubmit }) => {
   const handleSubmit = e => {
     e.preventDefault();
@@ -141,7 +130,7 @@ const columns = [
   },
 ];
 
-const UnwrappedForm = ({ member, form, memberships }) => {
+const UnwrappedForm = ({ member, form, memberships, onSubmit }) => {
   const formItemLayout = {
     labelCol: {
       xs: { span: 24 },
@@ -157,7 +146,7 @@ const UnwrappedForm = ({ member, form, memberships }) => {
     e.preventDefault();
     form.validateFields((err, values) => {
       if (!err) {
-        onSubmit(`/api/v1/members/${member.id}/`, normalizeFormValues(values));
+        onSubmit(member.id, normalizeFormValues(values));
       }
     });
   };

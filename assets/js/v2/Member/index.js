@@ -1,5 +1,6 @@
+import { Col, Row, Spin, Typography, message } from 'antd';
 import React, { useEffect, useState } from 'react';
-import { Typography, Row, Col, Spin } from 'antd';
+import { retrieveMember, retrieveMemberships } from '../api';
 import { MemberForm } from './MemberForm';
 
 const { Title } = Typography;
@@ -9,33 +10,45 @@ export const Member = ({ id }) => {
   const [memberships, setMemberships] = useState(null);
 
   useEffect(() => {
-    fetch(`/api/v1/members/${id}`)
-      .then(r => r.json())
-      .then(member => setMember(member));
+    const fetchData = async () => {
+      try {
+        const member = await retrieveMember(id);
+        setMember(member);
+      } catch {
+        message.error('There was an error retrieving member details.');
+      }
+    };
+    fetchData();
   }, []);
 
   useEffect(() => {
-    fetch(`/api/v1/memberships/?member_id=${id}`)
-      .then(r => r.json())
-      .then(setMemberships);
+    const fetchData = async () => {
+      try {
+        const memberships = await retrieveMemberships(id);
+        setMemberships(memberships);
+      } catch {
+        message.error(
+          "There was an error retrieving the member's membership details.",
+        );
+      }
+    };
+    fetchData();
   }, []);
 
-  return (
+  return member ? (
     <Row>
-      {member ? (
-        <>
-          <Col span={14}>
-            <Title>
-              {member.first_name} {member.last_name}
-            </Title>
-            <MemberForm member={member} memberships={memberships} />
-          </Col>{' '}
-        </>
-      ) : (
-        <Col span={24}>
-          <Spin />
-        </Col>
-      )}
+      <Col span={14}>
+        <Title>
+          {member.first_name} {member.last_name}
+        </Title>
+        <MemberForm member={member} memberships={memberships} />
+      </Col>{' '}
+    </Row>
+  ) : (
+    <Row type="flex" justify="center" align="middle">
+      <Col span={2}>
+        <Spin size="large" />
+      </Col>
     </Row>
   );
 };

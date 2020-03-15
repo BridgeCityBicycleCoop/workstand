@@ -1,8 +1,18 @@
-import { Button, Col, List, message, Radio, Row, Typography } from 'antd';
+import {
+  Button,
+  Col,
+  List,
+  message,
+  Radio,
+  Row,
+  Typography,
+  notification,
+} from 'antd';
 import React, { useState } from 'react';
 import { paymentTypes } from '../constants';
-import { Link, navigate, Router } from '@reach/router'
+import { Link, navigate, Router } from '@reach/router';
 import Cookie from 'js-cookie';
+import { createMembership } from '../api';
 
 const { Paragraph, Title } = Typography;
 
@@ -19,31 +29,26 @@ const PaymentOptions = ({ onChange }) => {
   );
 };
 
-const handleSave = async (created, type, memberId) => {
-  const response = await fetch(`/api/v1/memberships/`, {
-    method: 'POST',
-    credentials: 'same-origin',
-    headers: {
-      'Content-Type': 'application/json',
-      'X-CSRFToken': Cookie.get('csrftoken'),
-    },
-    body: JSON.stringify({
-      created_at: created,
-      payment: { type: type.payment },
-      member: memberId,
-    }),
-  });
-  if (response.ok) {
-    const body = await response.json();
-    message.success("huzzah");
+const handleSave = async (created, type, member) => {
+  try {
+    const response = await createMembership(created, type, member.id);
+    notification.success({
+      message: `Added ${member.first_name}`,
+      description: `${member.first_name} ${member.last_name} has been successfully created. They can now sign in.`,
+      duration: 10,
+    });
     navigate(`/`);
-  } else {
-    message.error('Unable to save membership.');
+  } catch {
+    notification.error({
+      message: `Failed to add membership`,
+      description: `Unable to add a new membership to ${member.first_name} ${member.last_name}. Please add the membership on ${member.first_name}'s profile page.`,
+      duration: 0,
+      btn: <Link to={`/members/${member.id}`}>Profile</Link>,
+    });
   }
 };
 
-export const AddMembership = ({ onChange, onSkip, member}) => {
-
+export const AddMembership = ({ onChange, onSkip, member }) => {
   const [accepted, setAccepted] = useState(false);
   return (
     <Row>
@@ -78,17 +83,16 @@ export const AddMembership = ({ onChange, onSkip, member}) => {
         {accepted ? (
           <Col>
             <PaymentOptions
-              onChange={(event) => {
+              onChange={event => {
                 let paymentType = event.target.value;
-                handleSave(new Date().toISOString(),paymentType,member.id);
-              }
-            }
+                handleSave(new Date().toISOString(), paymentType, member);
+              }}
             />
           </Col>
         ) : (
           <Col>
             <Button onClick={() => setAccepted(true)} type="primary">
-             Accept and pay for membership 
+              Accept and pay for membership
             </Button>
             <Link to="/">Not a member</Link>
           </Col>

@@ -19,6 +19,7 @@ import moment from 'moment';
 import fetch from 'isomorphic-fetch';
 import Cookie from 'js-cookie';
 import { MForm, idents, genders, normalizeFormValues } from './Form';
+import { createMembership } from '../api';
 
 const { MonthPicker } = DatePicker;
 const { TextArea } = Input;
@@ -84,24 +85,13 @@ const WrappedInlineMembershipForm = Form.create({ name: 'inline_membership' })(
 const Memberships = ({ memberships: m, memberId }) => {
   const [memberships, setMemberships] = useState(m);
   const [adding, setAdding] = useState(false);
+  
   const handleSave = async (created, type) => {
-    const response = await fetch(`/api/v1/memberships/`, {
-      method: 'POST',
-      credentials: 'same-origin',
-      headers: {
-        'Content-Type': 'application/json',
-        'X-CSRFToken': Cookie.get('csrftoken'),
-      },
-      body: JSON.stringify({
-        created_at: created,
-        payment: { type: type.payment },
-        member: memberId,
-      }),
-    });
-    if (response.ok) {
-      const body = await response.json();
-      setMemberships(ms => [...ms, body]);
-    } else {
+    try {
+      const data = await createMembership(created, type.payment, memberId);
+      setMemberships(ms => [...ms, data]);
+      message.success('Membership successfully added.');
+    } catch {
       message.error('Unable to save membership.');
     }
     setAdding(false);

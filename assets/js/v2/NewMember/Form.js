@@ -48,9 +48,7 @@ const UnwrappedForm = ({ form, onSkip, onSuccess }) => {
               ...normalizeFormValues(values),
             }).then(
               (member) => {
-                debugger;
                 onSuccess(member);
-                debugger;
                 onSkip();
               }
             );

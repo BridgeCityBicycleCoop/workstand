@@ -1,4 +1,4 @@
-import { Button, Col, Form, message, Row, Typography } from 'antd';
+import { Button, Col, Form, message, Modal, Row, Typography } from 'antd';
 import fetch from 'isomorphic-fetch';
 import React, { useEffect, useState } from 'react';
 import { SignedIn } from './SignedIn';
@@ -13,6 +13,14 @@ const getStatus = member => {
     return 'SUSPENDED';
   }
   return 'GOOD';
+};
+
+const memberModal = member => {
+  debugger;
+  Modal.error({
+    title: 'Member Signed in!',
+    content: member.first_name,
+  });
 };
 
 export const MemberSignin = () => {
@@ -51,12 +59,16 @@ export const MemberSignin = () => {
     })
       .then(response => {
         if (response.status === 201) {
-          return fetchSignedIn();
+          return response.json()
         }
         throw new Error();
       })
       .catch(() => {
         message.error('Member already signed in');
+      })
+      .then(data => {
+        memberModal(data.results);
+        return fetchSignedIn();
       });
 
   return (

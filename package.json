@@ -22,7 +22,7 @@
     "material-ui": "^0.19.1",
     "moment": "^2.13.0",
     "moment-timezone": "^0.5.13",
-    "node-sass": "^4.12.0",
+    "node-sass": "^7.0.0",
     "normalize.css": "^4.1.1",
     "normalizr": "^3.2.2",
     "react": "^15.4.1",
